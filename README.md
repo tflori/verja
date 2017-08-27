@@ -47,7 +47,7 @@ $container->addFields([
         ->addValidator(new Validator\NotEmpty())
         ->addValidator(new Validator\StringLength(3, 20)),
     'password' => [new Validator\NotEmpty(), new Validator\StringLength(8)],
-    'email' => ['notEmpty', App\Validator\DomainEmail('my-domain.com')]
+    'email' => ['notEmpty', new App\Validator\DomainEmail('my-domain.com')]
 ]);
 ```
 
