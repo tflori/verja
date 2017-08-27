@@ -11,8 +11,12 @@ from Old Norse language and means defender.
 
 ## Installation
 
-The usual way
+The usual way...
 
 ```console
 composer require tflori/verja
 ```
+
+## Usage
+
+This library got developed for the ability to test controllers. A comparsion

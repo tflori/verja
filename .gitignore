@@ -2,3 +2,6 @@
 composer.phar
 /composer.lock
 /vendor/
+
+# rendered documentation
+/docs/_site

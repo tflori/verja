@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>tflori/verja - Documentation - {{ page.title }}</title>
+    <link rel="stylesheet" href="stylesheets/materialize.min.css">
+    <link rel="stylesheet" href="stylesheets/custom.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  </head>
+  <body>
+
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper teal">
+          <a href="/verja/" class="brand-logo left" style="padding-left: 1rem">tflori/verja</a>
+          <ul id="nav-mobile" class="right">
+            {% for link in site.data.menu %}
+            <li {% if page.url == link[1] %}class="selected"{% endif %}>
+              <a href=".{{ link[1] }}">{{ link[0] }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <main>
+      <div class="container" style="margin-top: 1rem;" id="content">
+        <div class="row">
+          <div class="col l3 hide-on-med-and-down" id="table-of-contents">
+            {% if page.url == '/usage.html' %}
+            <ul class="menu-content" style="">
+              {% for link in site.data.usage_menu %}
+              <li><a class="waves-effect waves-teal" href="{{ link[1] }}">{{ link[0] }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="col l9 offset-l3 s12">
+            <a href="https://travis-ci.org/tflori/orm"><img src="https://travis-ci.org/tflori/orm.svg?branch=master" alt="Build Status" /></a>
+            <a href="https://coveralls.io/github/tflori/orm?branch=master"><img src="https://coveralls.io/repos/github/tflori/orm/badge.svg?branch=master" alt="Coverage Status" /></a>
+            <a href="https://packagist.org/packages/tflori/orm"><img src="https://poser.pugx.org/tflori/orm/v/stable.svg" alt="Latest Stable Version" /></a>
+            <a href="https://packagist.org/packages/tflori/orm"><img src="https://poser.pugx.org/tflori/orm/downloads.svg" alt="Total Downloads" /></a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col l9 offset-l3 s12 flow-text">
+            {{ content }}
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="page-footer teal">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">tflori/verja <small>Get the most out of foreign input</small></h5>
+            <p class="grey-text text-lighten-4">This project is maintained by <a class="grey-text text-lighten-4" href="https://github.com/tflori">tflori</a>, hosted on github pages and can be redistributed in respect of <a  class="grey-text text-lighten-2" href="https://github.com/tflori/verja/blob/master/LICENSE">MIT-License</a>.</p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Other projects</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-2" href="https://tflori.github.io/orm/">tflori/orm</a></li>
+              <li><a class="grey-text text-lighten-2" href="https://tflori.github.io/angular-translator">angular-translator</a></li>
+              <li><a class="grey-text text-lighten-2" href="https://getopt-php.github.io/getopt-php">ulrichsg/getopt-php</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          © 2017 Thomas Flori
+          <a class="grey-text text-lighten-2 right" href="https://github.com/tflori/verja">View on <b>GitHub</b></a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src="javascripts/materialize.min.js"></script>
+  </body>
+</html>
