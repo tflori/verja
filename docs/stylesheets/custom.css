@@ -31,10 +31,30 @@ h5 small {
     font-size: 60%;
 }
 
+
+pre.highlight, .highlight pre,
+pre {
+    padding: 8px 15px;
+    background: #222;
+    border-radius: 3px;
+    overflow-x: auto;
+    font-size: 10pt;
+}
+
+code, pre {
+    font-family: "Source Code Pro", "Monaco", "DejaVu Sans Mono", "Lucida Console", "Consolas", monospace;
+}
+
+code.highlighter-rouge {
+    background-color: #e9e9e9;
+    color: #333;
+    font-size: 80%;
+    display: inline-block;
+    padding: 0 3px;
+}
+
 /* highlighting */
-pre.highlight, .highlight pre { background-color: #272822; }
-.highlight code { color: #999 }
-.highlight .hll { background-color: #272822; }
+.highlight .hll { background-color: #222; }
 .highlight .c { color: #75715e } /* Comment */
 .highlight .err { color: #960050; background-color: #1e0010 } /* Error */
 .highlight .k { color: #66d9ef } /* Keyword */
