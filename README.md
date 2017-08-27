@@ -19,4 +19,36 @@ composer require tflori/verja
 
 ## Usage
 
-This library got developed for the ability to test controllers. A comparsion
+Initialize a container, set the input data, define filters and validators, validate the data, get the data.
+
+```php
+$container = new Verja\Container();
+$container->setData($_POST);
+$container->addFields([
+    'username' => ['notEmpty', 'strLen(3, 20)'],
+    'password' => ['notEmpty', 'strLen(8)'],
+    'email' => ['notEmpty', 'email'],
+]);
+
+if ($container->validate()) {
+  // how ever your orm works..
+  $user = new User($container->getData());
+  $user->save();
+} else {
+  $errors = $container->getErrors();
+}
+```
+
+If you prefer auto completion you can of course pass objects:
+
+```php
+$container->addFields([
+    'username' => (new Field())
+        ->addValidator(new Validator\NotEmpty())
+        ->addValidator(new Validator\StringLength(3, 20)),
+    'password' => [new Validator\NotEmpty(), new Validator\StringLength(8)],
+    'email' => ['notEmpty', App\Validator\DomainEmail('my-domain.com')]
+]);
+```
+
+For more information check the documentation on [github.io/verja](https://tflori.github.io/verja/). 
