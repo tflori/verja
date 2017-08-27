@@ -14,4 +14,14 @@ class MiscTest extends TestCase
 
         self::assertInstanceOf(Container::class, $container);
     }
+
+    /** @test */
+    public function returnsNoValues()
+    {
+        $container = new Container();
+
+        $data = $container->getData();
+
+        self::assertSame([], $data);
+    }
 }
