@@ -22,7 +22,7 @@ composer require tflori/verja
 Initialize a container, set the input data, define filters and validators, validate the data, get the data.
 
 ```php
-$container = new Verja\Container();
+$container = new Verja\Gate();
 $container->setData($_POST);
 $container->addFields([
     'username' => ['notEmpty', 'strLen(3, 20)'],

@@ -6,7 +6,6 @@
     <title>tflori/verja - Documentation - {{ page.title }}</title>
     <link rel="stylesheet" href="stylesheets/materialize.min.css">
     <link rel="stylesheet" href="stylesheets/custom.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
   <body>
@@ -33,7 +32,7 @@
             {% if page.url == '/usage.html' %}
             <ul class="menu-content" style="">
               {% for link in site.data.usage_menu %}
-              <li><a class="waves-effect waves-teal" href="{{ link[1] }}">{{ link[0] }}</a></li>
+              <li><a class="waves-effect waves-grey" href="{{ link[1] }}">{{ link[0] }}</a></li>
               {% endfor %}
             </ul>
             {% endif %}

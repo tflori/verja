@@ -1,3 +1,7 @@
+html {
+    font-family: "Open Sans", "OpenSans", "DejaVu Sans", "Helvetica Neue", "Calibri", sans-serif;
+}
+
 body {
     display: flex;
     min-height: 100vh;
@@ -43,6 +47,7 @@ pre {
 
 code, pre {
     font-family: "Source Code Pro", "Monaco", "DejaVu Sans Mono", "Lucida Console", "Consolas", monospace;
+    font-weight: normal;
 }
 
 code.highlighter-rouge {

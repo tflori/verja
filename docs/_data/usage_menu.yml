@@ -1,5 +1,4 @@
-Introduction: '#content'
-Initialize: '#initialize'
+Initialize: '#content'
 Define: '#define-fields'
 Execute: '#filter-and-validate'
 Errors: '#show-errors'
