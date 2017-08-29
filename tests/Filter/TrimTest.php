@@ -46,7 +46,9 @@ class TrimTest extends TestCase
     public function provideStringsWithChars()
     {
         return [
-            [ '/', '/path/to/file/', 'path/to/file' ]
+            [ '/', '/path/to/file/', 'path/to/file' ],
+            [ '#', '# untrimmed #', ' untrimmed ' ], // only slash is trimmed
+            [ '$/', '/$/$/$/42$/$/$/$', '42' ], // multiple characters
         ];
     }
 }
