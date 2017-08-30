@@ -14,7 +14,7 @@ class Trim extends Filter
      * @param string $characterMask
      * @see trim()
      */
-    public function __construct($characterMask = " \t\n\r\0\x0B")
+    public function __construct(string $characterMask = " \t\n\r\0\x0B")
     {
         $this->characterMask = $characterMask;
     }

@@ -18,8 +18,7 @@ class Field
      */
     public function appendFilter(FilterInterface $filter)
     {
-        array_push($this->filters, $filter);
-        return $this;
+        return $this->addFilter($filter, false);
     }
 
     /**
@@ -30,20 +29,27 @@ class Field
      */
     public function prependFilter(FilterInterface $filter)
     {
-        array_unshift($this->filters, $filter);
-        return $this;
+        return $this->addFilter($filter, true);
     }
 
     /**
-     * Alias for appendFilter
+     * Add $filter to the list of filters
+     *
+     * Appends by default prepends when $prepend == true
      *
      * @param FilterInterface $filter
-     * @return Field
-     * @see Field::appendFilter()
+     * @param bool            $prepend
+     * @return $this
      */
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter, $prepend = false)
     {
-        return $this->appendFilter($filter);
+        if ($prepend) {
+            array_unshift($this->filters, $filter);
+        } else {
+            array_push($this->filters, $filter);
+        }
+
+        return $this;
     }
 
 //    public function appendValidator(ValidatorInterface $validator)
