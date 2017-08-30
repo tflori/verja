@@ -6,19 +6,15 @@ abstract class Filter implements FilterInterface
 {
     public static function fromString($str)
     {
-        $filters = [];
-
-        foreach (explode('|', $str) as $f) {
-            $f = trim($f);
-            if (empty($f)) {
-                continue;
-            }
-
-            list($shortName, $parameters) = Parser::parseClassNameWithParameters($f);
-            $class = '\\Verja\\Filter\\' . ucfirst($shortName);
-            $filters[] = new $class(...$parameters);
+        if (empty($str)) {
+            return null;
         }
 
-        return $filters;
+        list($shortName, $parameters) = Parser::parseClassNameWithParameters($str);
+        $class = '\\Verja\\Filter\\' . ucfirst($shortName);
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(sprintf('Filter \'%s\' not found', $shortName));
+        }
+        return new $class(...$parameters);
     }
 }

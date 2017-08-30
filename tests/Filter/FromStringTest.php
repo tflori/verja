@@ -8,29 +8,78 @@ use Verja\Filter;
 class FromStringTest extends TestCase
 {
     /** @test */
-    public function returnsAnEmptyArray()
+    public function returnsNullForEmptyString()
     {
-        $filters = Filter::fromString('');
+        $filter = Filter::fromString('');
 
-        self::assertSame([], $filters);
+        self::assertNull($filter);
     }
 
     /** @test */
-    public function returnsOneTrimFilterWihtoutParameters()
+    public function parametersAreNotRequired()
     {
-        $filters = Filter::fromString('trim');
+        $filter = Filter::fromString('trim');
 
-        self::assertEquals([new Filter\Trim()], $filters);
+        self::assertEquals(new Filter\Trim(), $filter);
     }
 
     /** @test */
-    public function returnsTwoTrimFiltersWithParameters()
+    public function parametersFollowColon()
     {
-        $filters = Filter::fromString(' trim:" " | trim:$ ');
+        $filter = Filter::fromString('trim:/$%');
 
-        self::assertEquals([
-            new Filter\Trim(' '),
-            new Filter\Trim('$'),
-        ], $filters);
+        self::assertEquals(new Filter\Trim('/$%'), $filter);
+    }
+
+    /** @test */
+    public function parametersCanHaveSpaces()
+    {
+        $filter = Filter::fromString('trim: ');
+
+        self::assertEquals(new Filter\Trim(' '), $filter);
+    }
+
+    /** @test */
+    public function multipleParametersAllowed()
+    {
+        $filter = Filter::fromString('replace:a:b');
+
+        self::assertEquals(new Filter\Replace('a', 'b'), $filter);
+    }
+
+    /** @dataProvider provideFilterStringWithEmptyParameters
+     * @param $definition
+     * @param $expected
+     * @test */
+    public function parametersCanBeEmpty($definition, $expected)
+    {
+        $filter = Filter::fromString($definition);
+
+        self::assertEquals($expected, $filter);
+    }
+
+    public function provideFilterStringWithEmptyParameters()
+    {
+        return [
+            ['replace:a:""', new Filter\Replace('a', '')]
+        ];
+    }
+
+    /** @test */
+    public function throwsWhenFilterSpecificationIsInvalid()
+    {
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('$str is not a valid string for Verja\Parser::parseClassNameWithParameters');
+
+        Filter::fromString(':something');
+    }
+
+    /** @test */
+    public function throwsWhenFilterIsUnknown()
+    {
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('Filter \'unknownFilter\' not found');
+
+        Filter::fromString('unknownFilter');
     }
 }
