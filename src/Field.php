@@ -13,10 +13,10 @@ class Field
     /**
      * Append $filter to the list of filters
      *
-     * @param FilterInterface $filter
+     * @param FilterInterface|string $filter
      * @return $this
      */
-    public function appendFilter(FilterInterface $filter)
+    public function appendFilter($filter)
     {
         return $this->addFilter($filter, false);
     }
@@ -24,10 +24,10 @@ class Field
     /**
      * Prepend $filter to the list of filters
      *
-     * @param FilterInterface $filter
+     * @param FilterInterface|string $filter
      * @return $this
      */
-    public function prependFilter(FilterInterface $filter)
+    public function prependFilter($filter)
     {
         return $this->addFilter($filter, true);
     }
@@ -37,12 +37,16 @@ class Field
      *
      * Appends by default prepends when $prepend == true
      *
-     * @param FilterInterface $filter
-     * @param bool            $prepend
+     * @param FilterInterface|string $filter
+     * @param bool                   $prepend
      * @return $this
      */
-    public function addFilter(FilterInterface $filter, $prepend = false)
+    public function addFilter($filter, $prepend = false)
     {
+        if (!$filter instanceof FilterInterface) {
+            $filter = Filter::fromString($filter);
+        }
+
         if ($prepend) {
             array_unshift($this->filters, $filter);
         } else {

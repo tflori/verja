@@ -63,7 +63,7 @@ class FromStringTest extends TestCase
         return [
             [ 'replace:a:""', new Filter\Replace('a', '') ],
             [ "replace:'':b", new Filter\Replace('', 'b') ],
-            [ 'replace:0:1', new Filter\Replace('0','1') ]
+            [ 'replace:0:1', new Filter\Replace('0', '1') ]
         ];
     }
 

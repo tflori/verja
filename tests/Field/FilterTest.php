@@ -31,4 +31,14 @@ class FilterTest extends TestCase
 
         self::assertSame('body', $result);
     }
+
+    /** @test */
+    public function allowsStringForFilters()
+    {
+        $field = new Field();
+
+        $field->appendFilter('trim:/');
+
+        self::assertSame('body', $field->filter('/body/'));
+    }
 }
