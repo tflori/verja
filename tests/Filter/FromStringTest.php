@@ -61,8 +61,18 @@ class FromStringTest extends TestCase
     public function provideFilterStringWithEmptyParameters()
     {
         return [
-            ['replace:a:""', new Filter\Replace('a', '')]
+            [ 'replace:a:""', new Filter\Replace('a', '') ],
+            [ "replace:'':b", new Filter\Replace('', 'b') ],
+            [ 'replace:0:1', new Filter\Replace('0','1') ]
         ];
+    }
+
+    /** @test */
+    public function parametersCanBeJsonArray()
+    {
+        $filter = Filter::fromString('replace:[ ["a", "b"], ["6", "7"] ]');
+
+        self::assertEquals(new Filter\Replace(['a', 'b'], ['6', '7']), $filter);
     }
 
     /** @test */

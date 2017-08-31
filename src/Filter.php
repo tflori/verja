@@ -4,7 +4,17 @@ namespace Verja;
 
 abstract class Filter implements FilterInterface
 {
-    public static function fromString($str)
+    /**
+     * Create a Filter from $str
+     *
+     * This method uses Parser::parseClassNameWIthParameters. This method has some limitations for parameters - look
+     * at it's description to learn more.
+     *
+     * @param string $str
+     * @return FilterInterface
+     * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
+     */
+    public static function fromString(string $str)
     {
         if (empty($str)) {
             return null;

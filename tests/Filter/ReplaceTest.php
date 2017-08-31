@@ -16,4 +16,14 @@ class ReplaceTest extends TestCase
 
         self::assertSame('b', $result);
     }
+
+    /** @test */
+    public function parametersCanBeArray()
+    {
+        $filter = new Replace(['a', 'b'], ['x', 'y']);
+
+        $result = $filter->filter('ab');
+
+        self::assertSame('xy', $result);
+    }
 }
