@@ -9,5 +9,5 @@ interface ValidatorInterface
      *
      * @return bool
      */
-    public function validate($value);
+    public function validate($value): bool;
 }

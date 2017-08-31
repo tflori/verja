@@ -68,10 +68,11 @@ class Field
 //        return $this;
 //    }
 //
-//    public function addValidator(ValidatorInterface $validator)
-//    {
-//        return $this->appendValidator($validator);
-//    }
+    public function addValidator(ValidatorInterface $validator)
+    {
+        array_push($this->validators, $validator);
+        return $this;
+    }
 
     /**
      * Filter $value with predefined filters
@@ -85,5 +86,22 @@ class Field
             $value = $filter->filter($value);
         }
         return $value;
+    }
+
+    /**
+     * Validate $value with predefined validators
+     *
+     * @param $value
+     * @return bool
+     */
+    public function validate($value)
+    {
+        $valid = true;
+        foreach ($this->validators as $validator) {
+            if (!$validator->validate($value)) {
+                $valid = false;
+            }
+        }
+        return $valid;
     }
 }

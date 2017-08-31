@@ -11,7 +11,7 @@ class NotEmpty extends Validator
      *
      * @return bool
      */
-    public function validate($value)
+    public function validate($value): bool
     {
         return !empty($value);
     }
