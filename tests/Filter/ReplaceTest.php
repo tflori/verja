@@ -2,8 +2,8 @@
 
 namespace Verja\Test\Filter;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Filter\Replace;
+use Verja\Test\TestCase;
 
 class ReplaceTest extends TestCase
 {

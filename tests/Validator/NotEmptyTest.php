@@ -2,7 +2,7 @@
 
 namespace Verja\Test\Validator;
 
-use PHPUnit\Framework\TestCase;
+use Verja\Test\TestCase;
 use Verja\Validator\NotEmpty;
 
 class NotEmptyTest extends TestCase

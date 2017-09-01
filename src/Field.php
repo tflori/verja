@@ -56,21 +56,23 @@ class Field
         return $this;
     }
 
-//    public function appendValidator(ValidatorInterface $validator)
-//    {
-//        array_push($this->validators, $validator);
-//        return $this;
-//    }
-//
-//    public function prependValidator(ValidatorInterface $validator)
-//    {
-//        array_unshift($this->validators, $validator);
-//        return $this;
-//    }
-//
-    public function addValidator(ValidatorInterface $validator)
+    public function appendValidator(ValidatorInterface $validator)
     {
-        array_push($this->validators, $validator);
+        return $this->addValidator($validator, false);
+    }
+
+    public function prependValidator(ValidatorInterface $validator)
+    {
+        return $this->addValidator($validator, true);
+    }
+
+    public function addValidator(ValidatorInterface $validator, $prepend = false)
+    {
+        if ($prepend) {
+            array_unshift($this->validators, $validator);
+        } else {
+            array_push($this->validators, $validator);
+        }
         return $this;
     }
 

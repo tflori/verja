@@ -2,9 +2,9 @@
 
 namespace Verja\Test\Gate;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Gate;
 use Verja\Test\Examples;
+use Verja\Test\TestCase;
 
 class MiscTest extends TestCase
 {

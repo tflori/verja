@@ -2,8 +2,8 @@
 
 namespace Verja\Test\Gate;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Gate;
+use Verja\Test\TestCase;
 
 class GetDataTest extends TestCase
 {

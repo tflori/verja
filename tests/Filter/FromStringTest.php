@@ -2,8 +2,8 @@
 
 namespace Verja\Test\Filter;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Filter;
+use Verja\Test\TestCase;
 
 class FromStringTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 namespace Verja\Test\Field;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Field;
 use Verja\Filter\Trim;
+use Verja\Test\TestCase;
 
 class FilterTest extends TestCase
 {

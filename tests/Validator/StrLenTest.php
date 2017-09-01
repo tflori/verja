@@ -2,7 +2,7 @@
 
 namespace Verja\Test\Validator;
 
-use PHPUnit\Framework\TestCase;
+use Verja\Test\TestCase;
 use Verja\Validator\StrLen;
 
 class StrLenTest extends TestCase

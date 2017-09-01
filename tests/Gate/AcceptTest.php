@@ -2,9 +2,9 @@
 
 namespace Verja\Test\Gate;
 
-use PHPUnit\Framework\TestCase;
 use Verja\Field;
 use Verja\Test\Examples;
+use Verja\Test\TestCase;
 
 class AcceptTest extends TestCase
 {

@@ -2,14 +2,17 @@
 
 namespace Verja\Test\Field;
 
-use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Verja\Field;
+use Verja\Test\TestCase;
 use Verja\Validator\NotEmpty;
 use Verja\Validator\StrLen;
 use Verja\ValidatorInterface;
 
 class ValidatorTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /** @dataProvider provideValidatorsValueExpected
      * @param ValidatorInterface[] $validators
      * @param mixed $value
@@ -41,5 +44,20 @@ class ValidatorTest extends TestCase
                 true
             ],
         ];
+    }
+
+    /** @test */
+    public function executesInOrder()
+    {
+        $v1 = \Mockery::mock(NotEmpty::class);
+        $v2 = \Mockery::mock(StrLen::class);
+        $field = new Field();
+        $field->appendValidator($v2);
+        $field->prependValidator($v1);
+
+        $v1->shouldReceive('validate')->with('str')->globally()->once()->ordered();
+        $v2->shouldReceive('validate')->with('str')->globally()->once()->ordered();
+
+        $field->validate('str');
     }
 }
