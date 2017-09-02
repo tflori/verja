@@ -7,12 +7,24 @@ use Verja\Test\TestCase;
 
 class FromStringTest extends TestCase
 {
-    /** @test */
-    public function returnsNullForEmptyString()
+    /** @dataProvider provideInvalidDefinitions
+     * @param string $definition
+     * @test */
+    public function throwsWhenFilterSpecificationIsInvalid($definition)
     {
-        $filter = Filter::fromString('');
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('is not a valid string for Verja\Parser::parseClassNameWithParameters');
 
-        self::assertNull($filter);
+        Filter::fromString($definition);
+    }
+
+    public function provideInvalidDefinitions()
+    {
+        return [
+            [ ':something' ],
+            [ '' ],
+            [ ' ' ],
+        ];
     }
 
     /** @test */
@@ -76,19 +88,10 @@ class FromStringTest extends TestCase
     }
 
     /** @test */
-    public function throwsWhenFilterSpecificationIsInvalid()
-    {
-        self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionMessage('$str is not a valid string for Verja\Parser::parseClassNameWithParameters');
-
-        Filter::fromString(':something');
-    }
-
-    /** @test */
     public function throwsWhenFilterIsUnknown()
     {
         self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionMessage('Filter \'unknownFilter\' not found');
+        self::expectExceptionMessage('Filter \'UnknownFilter\' not found');
 
         Filter::fromString('unknownFilter');
     }

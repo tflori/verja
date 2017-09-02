@@ -56,18 +56,43 @@ class Field
         return $this;
     }
 
-    public function appendValidator(ValidatorInterface $validator)
+    /**
+     * Append $validator to the list of validators
+     *
+     * @param ValidatorInterface|string $validator
+     * @return $this
+     */
+    public function appendValidator($validator)
     {
         return $this->addValidator($validator, false);
     }
 
-    public function prependValidator(ValidatorInterface $validator)
+    /**
+     * Prepend $validator to the list of validators
+     *
+     * @param ValidatorInterface|string $validator
+     * @return $this
+     */
+    public function prependValidator($validator)
     {
         return $this->addValidator($validator, true);
     }
 
-    public function addValidator(ValidatorInterface $validator, $prepend = false)
+    /**
+     * Add $validator to the list of filters
+     *
+     * Appends by default prepends when $prepend == true
+     *
+     * @param ValidatorInterface|string $validator
+     * @param bool $prepend
+     * @return $this
+     */
+    public function addValidator($validator, $prepend = false)
     {
+        if (!$validator instanceof ValidatorInterface) {
+            $validator = Validator::fromString($validator);
+        }
+
         if ($prepend) {
             array_unshift($this->validators, $validator);
         } else {

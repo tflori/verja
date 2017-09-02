@@ -60,4 +60,14 @@ class ValidatorTest extends TestCase
 
         $field->validate('str');
     }
+
+    /** @test */
+    public function allowsStringForFilters()
+    {
+        $field = new Field();
+
+        $field->appendValidator('notEmpty');
+
+        self::assertFalse($field->validate(''));
+    }
 }

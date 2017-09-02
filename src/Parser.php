@@ -23,16 +23,20 @@ class Parser
     public static function parseClassNameWithParameters(string $str)
     {
         $colonPos = strpos($str, ':');
+        $className = ucfirst($colonPos === false ? trim($str) : trim(substr($str, 0, $colonPos)));
 
-        if (strlen($str) < 1 || $colonPos !== false && $colonPos < 1) {
-            throw new \InvalidArgumentException('$str is not a valid string for ' . __METHOD__);
+        if (empty($className)) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s is not a valid string for ' . __METHOD__,
+                empty($str) ? '$str' : $str
+            ));
         }
 
         if ($colonPos === false) {
-            return [$str, []];
+            return [$className, []];
         }
 
-        return [substr($str, 0, $colonPos), self::parseParameters(substr($str, $colonPos+1))];
+        return [$className, self::parseParameters(substr($str, $colonPos+1))];
     }
 
     /**

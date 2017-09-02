@@ -14,17 +14,15 @@ abstract class Filter implements FilterInterface
      * @return FilterInterface
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
      */
-    public static function fromString(string $str)
+    public static function fromString(string $str): FilterInterface
     {
-        if (empty($str)) {
-            return null;
-        }
-
         list($shortName, $parameters) = Parser::parseClassNameWithParameters($str);
-        $class = '\\Verja\\Filter\\' . ucfirst($shortName);
+        $class = '\\Verja\\Filter\\' . $shortName;
+
         if (!class_exists($class)) {
             throw new \InvalidArgumentException(sprintf('Filter \'%s\' not found', $shortName));
         }
+
         return new $class(...$parameters);
     }
 }
