@@ -52,6 +52,14 @@ class FromStringTest extends TestCase
     }
 
     /** @test */
+    public function invertsWithExclamationMark()
+    {
+        $validator = Validator::fromString('!contains: ');
+
+        self::assertEquals(new Validator\Not(new Validator\Contains(' ')), $validator);
+    }
+
+    /** @test */
     public function multipleParametersAllowed()
     {
         $validator = Validator::fromString('strLen:2:5');

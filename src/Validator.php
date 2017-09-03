@@ -2,6 +2,8 @@
 
 namespace Verja;
 
+use Verja\Validator\Not;
+
 abstract class Validator implements ValidatorInterface
 {
     /**
@@ -16,6 +18,10 @@ abstract class Validator implements ValidatorInterface
      */
     public static function fromString(string $definition): ValidatorInterface
     {
+        if (strlen($definition) > 0 && $definition[0] === '!') {
+            return new Not(substr($definition, 1));
+        }
+
         list($shortName, $parameters) = Parser::parseClassNameWithParameters($definition);
         $class = '\\Verja\\Validator\\' . $shortName;
 

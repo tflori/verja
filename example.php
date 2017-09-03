@@ -8,14 +8,15 @@ require_once 'vendor/autoload.php';
 // we using tflori/dependency-injector here...
 DI::set(
     'verja',                     // namne
-    function() {                 // factory
+    function () {                // factory
         return new Gate();
     },
     false                        // share / singleton
 );
 
 // this is the controller
-function controller() {
+function controller()
+{
     /** @var Gate $verja */
     $verja = DI::get('verja');
 }
