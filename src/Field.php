@@ -2,6 +2,10 @@
 
 namespace Verja;
 
+use Verja\Exception\FilterNotFound;
+use Verja\Exception\NotFound;
+use Verja\Exception\ValidatorNotFound;
+
 class Field
 {
     /** @var FilterInterface[] */
@@ -9,6 +13,21 @@ class Field
 
     /** @var ValidatorInterface[] */
     protected $validators = [];
+
+    public function __construct(array $definitions = [])
+    {
+        $notFound = array_intersect(
+            $this->addFiltersFromArray($definitions),
+            $this->addValidatorsFromArray($definitions)
+        );
+
+        if (count($notFound) > 0) {
+            throw new NotFound(sprintf(
+                'No filter or validator named \'%s\' found',
+                reset($notFound)
+            ));
+        }
+    }
 
     /**
      * Append $filter to the list of filters
@@ -99,6 +118,52 @@ class Field
             array_push($this->validators, $validator);
         }
         return $this;
+    }
+
+    /**
+     * Add Filters from $filterDefinitions
+     *
+     * Returns an array of Classes that where not found.
+     *
+     * @param array $filterDefinitions
+     * @return array
+     */
+    public function addFiltersFromArray(array $filterDefinitions)
+    {
+        $notFound = [];
+
+        foreach ($filterDefinitions as $filterDefinition) {
+            try {
+                $this->addFilter($filterDefinition);
+            } catch (FilterNotFound $exception) {
+                $notFound[] = $exception->getFilter();
+            }
+        }
+
+        return $notFound;
+    }
+
+    /**
+     * Add Filters from $validatorDefinitions
+     *
+     * Returns an array of Classes that where not found.
+     *
+     * @param array $validatorDefinitions
+     * @return array
+     */
+    public function addValidatorsFromArray(array $validatorDefinitions)
+    {
+        $notFound = [];
+
+        foreach ($validatorDefinitions as $validatorDefinition) {
+            try {
+                $this->addValidator($validatorDefinition);
+            } catch (ValidatorNotFound $exception) {
+                $notFound[] = $exception->getValidator();
+            }
+        }
+
+        return $notFound;
     }
 
     /**

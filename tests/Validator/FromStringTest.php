@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Exception\ValidatorNotFound;
 use Verja\Test\TestCase;
 use Verja\Validator;
 
@@ -70,7 +71,7 @@ class FromStringTest extends TestCase
     /** @test */
     public function throwsWhenValidatorIsUnknown()
     {
-        self::expectException(\InvalidArgumentException::class);
+        self::expectException(ValidatorNotFound::class);
         self::expectExceptionMessage('Validator \'UnknownValidator\' not found');
 
         Validator::fromString('unknownValidator');

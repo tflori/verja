@@ -2,6 +2,8 @@
 
 namespace Verja;
 
+use Verja\Exception\FilterNotFound;
+
 abstract class Filter implements FilterInterface
 {
     /**
@@ -12,6 +14,7 @@ abstract class Filter implements FilterInterface
      *
      * @param string $str
      * @return FilterInterface
+     * @throws FilterNotFound
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
      */
     public static function fromString(string $str): FilterInterface
@@ -20,7 +23,7 @@ abstract class Filter implements FilterInterface
         $class = '\\Verja\\Filter\\' . $shortName;
 
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(sprintf('Filter \'%s\' not found', $shortName));
+            throw new FilterNotFound($shortName);
         }
 
         return new $class(...$parameters);

@@ -2,6 +2,7 @@
 
 namespace Verja;
 
+use Verja\Exception\ValidatorNotFound;
 use Verja\Validator\Not;
 
 abstract class Validator implements ValidatorInterface
@@ -14,6 +15,7 @@ abstract class Validator implements ValidatorInterface
      *
      * @param string $definition
      * @return ValidatorInterface
+     * @throws ValidatorNotFound
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
      */
     public static function fromString(string $definition): ValidatorInterface
@@ -26,7 +28,7 @@ abstract class Validator implements ValidatorInterface
         $class = '\\Verja\\Validator\\' . $shortName;
 
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(sprintf('Validator \'%s\' not found', $shortName));
+            throw new ValidatorNotFound($shortName);
         }
 
         return new $class(...$parameters);

@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Filter;
 
+use Verja\Exception\FilterNotFound;
 use Verja\Filter;
 use Verja\Test\TestCase;
 
@@ -90,7 +91,7 @@ class FromStringTest extends TestCase
     /** @test */
     public function throwsWhenFilterIsUnknown()
     {
-        self::expectException(\InvalidArgumentException::class);
+        self::expectException(FilterNotFound::class);
         self::expectExceptionMessage('Filter \'UnknownFilter\' not found');
 
         Filter::fromString('unknownFilter');
