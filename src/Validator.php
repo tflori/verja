@@ -7,6 +7,9 @@ use Verja\Validator\Not;
 
 abstract class Validator implements ValidatorInterface
 {
+    /** @var string[] */
+    protected static $namespaces = [ '\\Verja\\Validator' ];
+
     /**
      * Create a Validator from $str
      *
@@ -25,12 +28,38 @@ abstract class Validator implements ValidatorInterface
         }
 
         list($shortName, $parameters) = Parser::parseClassNameWithParameters($definition);
-        $class = '\\Verja\\Validator\\' . $shortName;
-
-        if (!class_exists($class)) {
-            throw new ValidatorNotFound($shortName);
+        foreach (self::$namespaces as $namespace) {
+            $class = $namespace . '\\' . $shortName;
+            if (class_exists($class)) {
+                return new $class(...$parameters);
+            }
         }
 
-        return new $class(...$parameters);
+        throw new ValidatorNotFound($shortName);
+    }
+
+    /**
+     * Register an additional namespace
+     *
+     * @param string $namespace
+     */
+    public static function registerNamespace(string $namespace)
+    {
+        array_unshift(self::$namespaces, $namespace);
+
+        // Untestable - required to reduce performance impact
+        // @codeCoverageIgnoreStart
+        if (count(self::$namespaces) > 2) {
+            self::$namespaces = array_unique(self::$namespaces);
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Reset namespaces to defaults
+     */
+    public static function resetNamespaces()
+    {
+        self::$namespaces = [ '\\Verja\\Validator' ];
     }
 }

@@ -5,9 +5,16 @@ namespace Verja\Test\Filter;
 use Verja\Exception\FilterNotFound;
 use Verja\Filter;
 use Verja\Test\TestCase;
+use Verja\Test\Examples\CustomFilter;
 
 class FromStringTest extends TestCase
 {
+    protected function tearDown()
+    {
+        parent::tearDown();
+        Filter::resetNamespaces();
+    }
+
     /** @dataProvider provideInvalidDefinitions
      * @param string $definition
      * @test */
@@ -95,5 +102,25 @@ class FromStringTest extends TestCase
         self::expectExceptionMessage('Filter \'UnknownFilter\' not found');
 
         Filter::fromString('unknownFilter');
+    }
+
+    /** @test */
+    public function defineAdditionalNamespace()
+    {
+        Filter::registerNamespace(CustomFilter::class);
+
+        $filter = Filter::fromString('unknown');
+
+        self::assertInstanceOf(CustomFilter\Unknown::class, $filter);
+    }
+
+    /** @test */
+    public function lastInFirstOut()
+    {
+        Filter::registerNamespace(CustomFilter::class);
+
+        $filter = Filter::fromString('trim');
+
+        self::assertInstanceOf(CustomFilter\Trim::class, $filter);
     }
 }

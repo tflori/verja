@@ -6,6 +6,9 @@ use Verja\Exception\FilterNotFound;
 
 abstract class Filter implements FilterInterface
 {
+    /** @var string[] */
+    protected static $namespaces = [ '\\Verja\\Filter' ];
+
     /**
      * Create a Filter from $str
      *
@@ -20,12 +23,39 @@ abstract class Filter implements FilterInterface
     public static function fromString(string $str): FilterInterface
     {
         list($shortName, $parameters) = Parser::parseClassNameWithParameters($str);
-        $class = '\\Verja\\Filter\\' . $shortName;
 
-        if (!class_exists($class)) {
-            throw new FilterNotFound($shortName);
+        foreach (self::$namespaces as $namespace) {
+            $class = $namespace . '\\' . $shortName;
+            if (class_exists($class)) {
+                return new $class(...$parameters);
+            }
         }
 
-        return new $class(...$parameters);
+        throw new FilterNotFound($shortName);
+    }
+
+    /**
+     * Register an additional namespace
+     *
+     * @param string $namespace
+     */
+    public static function registerNamespace(string $namespace)
+    {
+        array_unshift(self::$namespaces, $namespace);
+
+        // Untestable - required to reduce performance impact
+        // @codeCoverageIgnoreStart
+        if (count(self::$namespaces) > 2) {
+            self::$namespaces = array_unique(self::$namespaces);
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Reset namespaces to defaults
+     */
+    public static function resetNamespaces()
+    {
+        self::$namespaces = [ '\\Verja\\Filter' ];
     }
 }

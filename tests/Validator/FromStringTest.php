@@ -3,11 +3,18 @@
 namespace Verja\Test\Validator;
 
 use Verja\Exception\ValidatorNotFound;
+use Verja\Test\Examples\CustomValidator;
 use Verja\Test\TestCase;
 use Verja\Validator;
 
 class FromStringTest extends TestCase
 {
+    protected function tearDown()
+    {
+        parent::tearDown();
+        Validator::resetNamespaces();
+    }
+
     /** @dataProvider provideInvalidDefinitions
      * @param string $definition
      * @test */
@@ -75,5 +82,25 @@ class FromStringTest extends TestCase
         self::expectExceptionMessage('Validator \'UnknownValidator\' not found');
 
         Validator::fromString('unknownValidator');
+    }
+
+    /** @test */
+    public function defineAdditionalNamespace()
+    {
+        Validator::registerNamespace(CustomValidator::class);
+
+        $validator = Validator::fromString('unknown');
+
+        self::assertInstanceOf(CustomValidator\Unknown::class, $validator);
+    }
+
+    /** @test */
+    public function lastInFirstOut()
+    {
+        Validator::registerNamespace(CustomValidator::class);
+
+        $validator = Validator::fromString('notEmpty');
+
+        self::assertInstanceOf(CustomValidator\NotEmpty::class, $validator);
     }
 }
