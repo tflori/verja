@@ -14,6 +14,14 @@ class Field
     /** @var ValidatorInterface[] */
     protected $validators = [];
 
+    /**
+     * Field constructor.
+     *
+     * Adds filters and validators given in $definitions in the exact order.
+     *
+     * @param array $definitions
+     * @throws NotFound
+     */
     public function __construct(array $definitions = [])
     {
         $notFound = array_intersect(
@@ -57,13 +65,17 @@ class Field
      * Appends by default prepends when $prepend == true
      *
      * @param FilterInterface|string $filter
-     * @param bool                   $prepend
+     * @param bool $prepend
      * @return $this
      */
     public function addFilter($filter, $prepend = false)
     {
-        if (!$filter instanceof FilterInterface) {
+        if (is_string($filter)) {
             $filter = Filter::fromString($filter);
+        }
+
+        if (!$filter instanceof FilterInterface) {
+            return $this;
         }
 
         if ($prepend) {
@@ -73,6 +85,29 @@ class Field
         }
 
         return $this;
+    }
+
+    /**
+     * Add Filters from $filterDefinitions
+     *
+     * Returns an array of Classes that where not found.
+     *
+     * @param array $filterDefinitions
+     * @return array
+     */
+    public function addFiltersFromArray(array $filterDefinitions)
+    {
+        $notFound = [];
+
+        foreach ($filterDefinitions as $filterDefinition) {
+            try {
+                $this->addFilter($filterDefinition);
+            } catch (FilterNotFound $exception) {
+                $notFound[] = $exception->getFilter();
+            }
+        }
+
+        return $notFound;
     }
 
     /**
@@ -108,8 +143,12 @@ class Field
      */
     public function addValidator($validator, $prepend = false)
     {
-        if (!$validator instanceof ValidatorInterface) {
+        if (is_string($validator)) {
             $validator = Validator::fromString($validator);
+        }
+
+        if (!$validator instanceof ValidatorInterface) {
+            return $this;
         }
 
         if ($prepend) {
@@ -118,29 +157,6 @@ class Field
             array_push($this->validators, $validator);
         }
         return $this;
-    }
-
-    /**
-     * Add Filters from $filterDefinitions
-     *
-     * Returns an array of Classes that where not found.
-     *
-     * @param array $filterDefinitions
-     * @return array
-     */
-    public function addFiltersFromArray(array $filterDefinitions)
-    {
-        $notFound = [];
-
-        foreach ($filterDefinitions as $filterDefinition) {
-            try {
-                $this->addFilter($filterDefinition);
-            } catch (FilterNotFound $exception) {
-                $notFound[] = $exception->getFilter();
-            }
-        }
-
-        return $notFound;
     }
 
     /**
@@ -157,7 +173,7 @@ class Field
 
         foreach ($validatorDefinitions as $validatorDefinition) {
             try {
-                $this->addValidator($validatorDefinition);
+                $this->addValidator($validatorDefinition, false);
             } catch (ValidatorNotFound $exception) {
                 $notFound[] = $exception->getValidator();
             }

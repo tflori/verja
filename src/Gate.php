@@ -43,14 +43,15 @@ class Gate
     {
         if ($field instanceof Field) {
             $this->fields[$key] = $field;
-            return $this;
+        } else {
+            $definitions = [];
+            if (is_array($field)) {
+                $definitions = $field;
+            } elseif (is_string($field) || $field instanceof ValidatorInterface || $field instanceof FilterInterface) {
+                $definitions = [$field];
+            }
+            $this->fields[$key] = new Field($definitions);
         }
-
-//        if (is_array($field)) {
-//            $this->fields[$key] = $this->constructFieldFromArray($field);
-//        } elseif (is_null($field)) {
-            $this->fields[$key] = new Field();
-//        }
 
         return $this;
     }
