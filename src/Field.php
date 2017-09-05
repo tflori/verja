@@ -185,10 +185,13 @@ class Field
     /**
      * Filter $value with predefined filters
      *
+     * Some filters may need context pass it with $context.
+     *
      * @param mixed $value
+     * @param array $context
      * @return mixed
      */
-    public function filter($value)
+    public function filter($value, array $context = [])
     {
         foreach ($this->filters as $filter) {
             $value = $filter->filter($value);
@@ -199,10 +202,13 @@ class Field
     /**
      * Validate $value with predefined validators
      *
-     * @param $value
+     * Some validators may need context pass it with $context.
+     *
+     * @param mixed $value
+     * @param array $context
      * @return bool
      */
-    public function validate($value)
+    public function validate($value, array $context = [])
     {
         $valid = true;
         foreach ($this->validators as $validator) {

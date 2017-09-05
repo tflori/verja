@@ -2,6 +2,8 @@
 
 namespace Verja;
 
+use Verja\Exception\InvalidValue;
+
 class Gate
 {
     /** @var Field[] */
@@ -10,6 +12,12 @@ class Gate
     /** @var array */
     protected $rawData = [];
 
+    /** @var string */
+    protected $filteredDataHash;
+
+    /** @var array */
+    protected $filteredData = [];
+
     public function __construct(array $data = null)
     {
         if ($data) {
@@ -17,11 +25,35 @@ class Gate
         }
     }
 
+    /**
+     * Alias for addFields
+     *
+     * @param array $fields
+     * @return $this
+     * @see Gate::addFields()
+     */
     public function accepts(array $fields)
     {
         return $this->addFields($fields);
     }
 
+    /**
+     * Add an array of fields
+     *
+     * Definitions are defined as in addField.
+     *
+     * Accepts fields without filter and validator definitions as values. So the following examples are equal:
+     *
+     * `[ $key => [] ]`
+     *
+     * `[ $key => null ]`
+     *
+     * `[ $key ]`
+     *
+     * @param array $fields
+     * @return $this
+     * @see Gate::addField() how to pass definitions
+     */
     public function addFields(array $fields)
     {
         foreach ($fields as $key => $field) {
@@ -34,11 +66,39 @@ class Gate
         return $this;
     }
 
+    /**
+     * Alias for addField
+     *
+     * @param string $key
+     * @param mixed  $field
+     * @return $this
+     * @see Gate::addField()
+     */
     public function accept($key, $field = null)
     {
         return $this->addField($key, $field);
     }
 
+    /**
+     * Add an accepted field to this gate
+     *
+     * The definition can be a single validator or filter as string or object, an array of validators and filters
+     * as string or object or an instance of Field.
+     *
+     * The following examples are equal:
+     *
+     * `(new Field)->addValidator('strLen:2:5')`
+     *
+     * `'strLen:2:5'`
+     *
+     * `['strLen:2:5']`
+     *
+     * `new Field(['strLen:2:5'])`
+     *
+     * @param string $key   The key in the data array
+     * @param mixed  $field Definition of the field
+     * @return $this
+     */
     public function addField($key, $field = null)
     {
         if ($field instanceof Field) {
@@ -56,24 +116,84 @@ class Gate
         return $this;
     }
 
+    /**
+     * Set the data that should be covered (the context)
+     *
+     * @param array $data
+     * @return $this
+     */
     public function setData(array $data)
     {
         $this->rawData = $data;
         return $this;
     }
 
-    public function getData(array $data = null)
+    /**
+     * Get all data or the value for $key
+     *
+     * @param string $key
+     * @return array|mixed
+     */
+    public function getData(string $key = null)
     {
-//        if ($data) {
-//            $this->setData($data);
-//        }
+        if ($key) {
+            return $this->getFieldValue($key);
+        }
 
         $result  = [];
-        $rawData = $this->rawData;
-        foreach ($this->fields as $key => $field) {
-            $result[$key] = isset($rawData[$key]) ? $rawData[$key] : null; // $field->filter();
+        foreach (array_keys($this->fields) as $key) {
+            $result[$key] = $this->getFieldValue($key);
         }
 
         return $result;
+    }
+
+    /**
+     * Alias for getData
+     *
+     * @param string $key
+     * @return mixed
+     * @see Gate::getData()
+     * @codeCoverageIgnore trivial
+     */
+    public function get(string $key = null)
+    {
+        return $this->getData($key);
+    }
+
+    /**
+     * Alias for getData
+     *
+     * @param string $key
+     * @return mixed
+     * @see Gate::getData()
+     * @codeCoverageIgnore trivial
+     */
+    public function __get(string $key)
+    {
+        return $this->getFieldValue($key);
+    }
+
+    /**
+     * Get the value of field $key
+     *
+     * @param string $key
+     * @return mixed
+     * @throws InvalidValue When filtered value is invalid
+     */
+    protected function getFieldValue(string $key)
+    {
+        if (!isset($this->fields[$key])) {
+            return null;
+        }
+
+        $field = $this->fields[$key];
+        $rawData = $this->rawData;
+        $filtered = $field->filter(isset($rawData[$key]) ? $rawData[$key] : null, $rawData);
+        if (!$field->validate($filtered, $rawData)) {
+            throw new InvalidValue(sprintf('The value for field \'%s\' is invalid', $key));
+        }
+
+        return $filtered;
     }
 }
