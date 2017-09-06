@@ -14,6 +14,12 @@ class Field
     /** @var ValidatorInterface[] */
     protected $validators = [];
 
+    /** @var array */
+    protected $filterCache = [];
+
+    /** @var array */
+    protected $validationCache = [];
+
     /**
      * Field constructor.
      *
@@ -77,6 +83,8 @@ class Field
         if (!$filter instanceof FilterInterface) {
             return $this;
         }
+
+        $this->filterCache = [];
 
         if ($prepend) {
             array_unshift($this->filters, $filter->assign($this));
@@ -151,6 +159,8 @@ class Field
             return $this;
         }
 
+        $this->validationCache = [];
+
         if ($prepend) {
             array_unshift($this->validators, $validator->assign($this));
         } else {
@@ -193,8 +203,20 @@ class Field
      */
     public function filter($value, array $context = [])
     {
+        try {
+            $hash = md5(serialize([$value, $context]));
+            if (isset($this->filterCache[$hash])) {
+                return $this->filterCache[$hash];
+            }
+        } catch (\Exception $exception) {
+        }
+
         foreach ($this->filters as $filter) {
             $value = $filter->filter($value, $context);
+        }
+
+        if (isset($hash)) {
+            $this->filterCache[$hash] = $value;
         }
         return $value;
     }
@@ -210,11 +232,24 @@ class Field
      */
     public function validate($value, array $context = [])
     {
+        try {
+            $hash = md5(serialize([$value, $context]));
+            if (isset($this->validationCache[$hash])) {
+                return $this->validationCache[$hash];
+            }
+        } catch (\Exception $exception) {
+        }
+
+
         $valid = true;
         foreach ($this->validators as $validator) {
             if (!$validator->validate($value, $context)) {
                 $valid = false;
             }
+        }
+
+        if (isset($hash)) {
+            $this->validationCache[$hash] = $valid;
         }
         return $valid;
     }

@@ -4,6 +4,7 @@ namespace Verja\Test\Field;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Verja\Field;
+use Verja\Test\Examples\NotSerializable;
 use Verja\Test\TestCase;
 use Verja\Validator\NotEmpty;
 use Verja\Validator\StrLen;
@@ -79,5 +80,56 @@ class ValidatorTest extends TestCase
         $validator->shouldReceive('assign')->with($field)->once()->andReturnSelf();
 
         $field->addValidator($validator);
+    }
+
+    /** @test */
+    public function storesValidation()
+    {
+        $field = new Field();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $field->addValidator($validator);
+        $validator->shouldReceive('validate')->with('body', [])->once()->andReturn(true);
+
+        $field->validate('body');
+        $field->validate('body');
+    }
+
+    /** @test */
+    public function basedOnValueHash()
+    {
+        $field = new Field();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $field->addValidator($validator);
+        $validator->shouldReceive('validate')->with('v1', [])->once()->andReturn(true);
+        $validator->shouldReceive('validate')->with('v2', [])->once()->andReturn(true);
+
+        $field->validate('v1');
+        $field->validate('v2');
+    }
+
+    /** @test */
+    public function catchesSerializeExceptions()
+    {
+        $unserializeableValue = new NotSerializable();
+        $field = new Field();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $field->addValidator($validator);
+        $validator->shouldReceive('validate')->with($unserializeableValue, [])->twice()->andReturn(true);
+
+        $field->validate($unserializeableValue);
+        $field->validate($unserializeableValue);
+    }
+
+    /** @test */
+    public function resetsCacheWhenFiltersChange()
+    {
+        $field = new Field();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $field->addValidator($validator);
+        $validator->shouldReceive('validate')->with(' body ', [])->twice()->andReturn(true);
+
+        $field->validate(' body ');
+        $field->addValidator('notEmpty');
+        $field->validate(' body ');
     }
 }

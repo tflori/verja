@@ -4,6 +4,7 @@ namespace Verja\Test\Field;
 
 use Verja\Field;
 use Verja\Filter\Trim;
+use Verja\Test\Examples\NotSerializable;
 use Verja\Test\TestCase;
 
 class FilterTest extends TestCase
@@ -52,17 +53,54 @@ class FilterTest extends TestCase
         $field->addFilter($filter);
     }
 
-//    /** @test */
-//    public function storesFilteredValue()
-//    {
-//        $field = new Field();
-//        $filter = \Mockery::mock(Trim::class)->makePartial();
-//        $field->addFilter($filter);
-//        $filter->shouldReceive('filter')->with(' body ')->once()->andReturn('body');
-//
-//        $field->filter(' body ');
-//        $result = $field->filter(' body ');
-//
-//        self::assertSame('body', $result);
-//    }
+    /** @test */
+    public function storesFilteredValue()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->once()->andReturn('body');
+
+        $field->filter(' body ');
+        $field->filter(' body ');
+    }
+
+    /** @test */
+    public function basedOnValueHash()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->once()->andReturn('body');
+        $filter->shouldReceive('filter')->with('body', [])->once()->andReturn('body');
+
+        $field->filter(' body ');
+        $field->filter('body');
+    }
+
+    /** @test */
+    public function catchesSerializeExceptions()
+    {
+        $unserializeableValue = new NotSerializable();
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with($unserializeableValue, [])->twice()->andReturn('body');
+
+        $field->filter($unserializeableValue);
+        $field->filter($unserializeableValue);
+    }
+
+    /** @test */
+    public function resetsCacheWhenFiltersChange()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->twice()->andReturn('body');
+
+        $field->filter(' body ');
+        $field->addFilter('trim');
+        $field->filter(' body ');
+    }
 }
