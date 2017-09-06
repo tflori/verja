@@ -84,4 +84,14 @@ class GetDataTest extends TestCase
 
         self::assertSame('john', $username);
     }
+
+    /** @test */
+    public function returnsNullWhenFieldIsNotDefined()
+    {
+        $gate = new Gate();
+
+        $result = $gate->getData('unknown');
+
+        self::assertNull($result);
+    }
 }

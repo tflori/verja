@@ -29,9 +29,10 @@ class Replace extends Filter
      * Filter $value
      *
      * @param mixed $value
+     * @param array $context
      * @return mixed
      */
-    public function filter($value)
+    public function filter($value, array $context = [])
     {
         return str_replace($this->search, $this->replace, $value);
     }

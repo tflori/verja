@@ -6,6 +6,8 @@ use Verja\Exception\FilterNotFound;
 
 abstract class Filter implements FilterInterface
 {
+    use WithAssignedField;
+
     /** @var string[] */
     protected static $namespaces = [ '\\Verja\\Filter' ];
 

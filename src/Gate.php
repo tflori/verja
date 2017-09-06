@@ -145,9 +145,9 @@ class Gate
             $fields = [$key => $this->fields[$key]];
         } else {
             $fields = $this->fields;
-            $result  = [];
         }
 
+        $result  = [];
         foreach ($fields as $k => $field) {
             $filtered = $field->filter(isset($this->rawData[$k]) ? $this->rawData[$k] : null, $this->rawData);
 

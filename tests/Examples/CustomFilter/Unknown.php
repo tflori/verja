@@ -12,7 +12,7 @@ class Unknown extends Filter
      * @param mixed $value
      * @return mixed
      */
-    public function filter($value)
+    public function filter($value, array $context = [])
     {
         return $value;
     }

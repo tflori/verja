@@ -7,6 +7,8 @@ use Verja\Validator\Not;
 
 abstract class Validator implements ValidatorInterface
 {
+    use WithAssignedField;
+
     /** @var string[] */
     protected static $namespaces = [ '\\Verja\\Validator' ];
 

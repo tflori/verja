@@ -25,9 +25,10 @@ class Trim extends Filter
      * If $value is not a string it is not touched.
      *
      * @param mixed $value
+     * @param array $context
      * @return mixed
      */
-    public function filter($value)
+    public function filter($value, array $context = [])
     {
         return is_string($value) ? trim($value, $this->characterMask) : $value;
     }

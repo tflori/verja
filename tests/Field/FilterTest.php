@@ -42,6 +42,16 @@ class FilterTest extends TestCase
         self::assertSame('body', $field->filter('/body/'));
     }
 
+    /** @test */
+    public function assignsTheField()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $filter->shouldReceive('assign')->with($field)->once()->andReturnSelf();
+
+        $field->addFilter($filter);
+    }
+
 //    /** @test */
 //    public function storesFilteredValue()
 //    {

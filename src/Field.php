@@ -79,9 +79,9 @@ class Field
         }
 
         if ($prepend) {
-            array_unshift($this->filters, $filter);
+            array_unshift($this->filters, $filter->assign($this));
         } else {
-            array_push($this->filters, $filter);
+            array_push($this->filters, $filter->assign($this));
         }
 
         return $this;
@@ -152,9 +152,9 @@ class Field
         }
 
         if ($prepend) {
-            array_unshift($this->validators, $validator);
+            array_unshift($this->validators, $validator->assign($this));
         } else {
-            array_push($this->validators, $validator);
+            array_push($this->validators, $validator->assign($this));
         }
         return $this;
     }
@@ -194,7 +194,7 @@ class Field
     public function filter($value, array $context = [])
     {
         foreach ($this->filters as $filter) {
-            $value = $filter->filter($value);
+            $value = $filter->filter($value, $context);
         }
         return $value;
     }
@@ -212,7 +212,7 @@ class Field
     {
         $valid = true;
         foreach ($this->validators as $validator) {
-            if (!$validator->validate($value)) {
+            if (!$validator->validate($value, $context)) {
                 $valid = false;
             }
         }

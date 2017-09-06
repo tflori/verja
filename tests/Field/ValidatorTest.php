@@ -49,14 +49,14 @@ class ValidatorTest extends TestCase
     /** @test */
     public function executesInOrder()
     {
-        $v1 = \Mockery::mock(NotEmpty::class);
-        $v2 = \Mockery::mock(StrLen::class);
+        $v1 = \Mockery::mock(NotEmpty::class)->makePartial();
+        $v2 = \Mockery::mock(StrLen::class)->makePartial();
         $field = new Field();
         $field->appendValidator($v2);
         $field->prependValidator($v1);
 
-        $v1->shouldReceive('validate')->with('str')->globally()->once()->ordered();
-        $v2->shouldReceive('validate')->with('str')->globally()->once()->ordered();
+        $v1->shouldReceive('validate')->with('str', [])->globally()->once()->ordered();
+        $v2->shouldReceive('validate')->with('str', [])->globally()->once()->ordered();
 
         $field->validate('str');
     }
@@ -69,5 +69,15 @@ class ValidatorTest extends TestCase
         $field->appendValidator('notEmpty');
 
         self::assertFalse($field->validate(''));
+    }
+
+    /** @test */
+    public function assignsTheField()
+    {
+        $field = new Field();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $validator->shouldReceive('assign')->with($field)->once()->andReturnSelf();
+
+        $field->addValidator($validator);
     }
 }

@@ -29,9 +29,10 @@ class StrLen extends Validator
      * Validate $value
      *
      * @param mixed $value
+     * @param array $context
      * @return bool
      */
-    public function validate($value): bool
+    public function validate($value, array $context = []): bool
     {
         $strlen = strlen($value);
         return $strlen >= $this->min && ($this->max === 0 || $strlen <= $this->max);
