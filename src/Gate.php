@@ -132,17 +132,34 @@ class Gate
      * Get all data or the value for $key
      *
      * @param string $key
+     * @param bool   $validate
      * @return array|mixed
+     * @throws InvalidValue When value is invalid
      */
-    public function getData(string $key = null)
+    public function getData(string $key = null, $validate = true)
     {
-        if ($key) {
-            return $this->getFieldValue($key);
+        if ($key !== null) {
+            if (!isset($this->fields[$key])) {
+                return null;
+            }
+            $fields = [$key => $this->fields[$key]];
+        } else {
+            $fields = $this->fields;
+            $result  = [];
         }
 
-        $result  = [];
-        foreach (array_keys($this->fields) as $key) {
-            $result[$key] = $this->getFieldValue($key);
+        foreach ($fields as $k => $field) {
+            $filtered = $field->filter(isset($this->rawData[$k]) ? $this->rawData[$k] : null, $this->rawData);
+
+            if ($validate && !$field->validate($filtered, $this->rawData)) {
+                throw new InvalidValue(sprintf('The value for field \'%s\' is invalid', $k));
+            }
+
+            if ($key !== null) {
+                return $filtered;
+            }
+
+            $result[$k] = $filtered;
         }
 
         return $result;
@@ -171,29 +188,22 @@ class Gate
      */
     public function __get(string $key)
     {
-        return $this->getFieldValue($key);
+        return $this->getData($key);
     }
 
-    /**
-     * Get the value of field $key
-     *
-     * @param string $key
-     * @return mixed
-     * @throws InvalidValue When filtered value is invalid
-     */
-    protected function getFieldValue(string $key)
+    public function validate(array $data = null)
     {
-        if (!isset($this->fields[$key])) {
-            return null;
+        if ($data) {
+            $this->setData($data);
         }
 
-        $field = $this->fields[$key];
-        $rawData = $this->rawData;
-        $filtered = $field->filter(isset($rawData[$key]) ? $rawData[$key] : null, $rawData);
-        if (!$field->validate($filtered, $rawData)) {
-            throw new InvalidValue(sprintf('The value for field \'%s\' is invalid', $key));
+        $valid = true;
+        $filtered = $this->getData(null, false);
+        foreach ($this->fields as $key => $field) {
+            if (!$field->validate($filtered[$key], $this->rawData)) {
+                $valid = false;
+            }
         }
-
-        return $filtered;
+        return $valid;
     }
 }
