@@ -1,10 +1,10 @@
 # tflori/verja
 
-[![Build Status](https://travis-ci.org/tfloir/verja.svg?branch=master)](https://travis-ci.org/tfloir/verja)
-[![Coverage Status](https://coveralls.io/repos/github/tfloir/verja/badge.svg?branch=master)](https://coveralls.io/github/tfloir/verja?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/tfloir/verja/v/stable.svg)](https://packagist.org/packages/tfloir/verja) 
-[![Total Downloads](https://poser.pugx.org/tfloir/verja/downloads.svg)](https://packagist.org/packages/tfloir/verja) 
-[![License](https://poser.pugx.org/tfloir/verja/license.svg)](https://packagist.org/packages/tfloir/verja)
+[![Build Status](https://travis-ci.org/tflori/verja.svg?branch=master)](https://travis-ci.org/tflori/verja)
+[![Coverage Status](https://coveralls.io/repos/github/tflori/verja/badge.svg?branch=master)](https://coveralls.io/github/tflori/verja?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/tflori/verja/v/stable.svg)](https://packagist.org/packages/tflori/verja) 
+[![Total Downloads](https://poser.pugx.org/tflori/verja/downloads.svg)](https://packagist.org/packages/tflori/verja) 
+[![License](https://poser.pugx.org/tflori/verja/license.svg)](https://packagist.org/packages/tflori/verja)
 
 TL;DR An validation tool for arrays filled by foreign input like forms, json data, query parameters etc. The name is
 from Old Norse language and means defender.
