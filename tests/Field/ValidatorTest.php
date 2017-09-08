@@ -73,6 +73,18 @@ class ValidatorTest extends TestCase
     }
 
     /** @test */
+    public function acceptsFunctionForFilters()
+    {
+        $field = new Field();
+
+        $field->addValidator(function () {
+            return false;
+        });
+
+        self::assertFalse($field->validate('value'));
+    }
+
+    /** @test */
     public function assignsTheField()
     {
         $field = new Field();

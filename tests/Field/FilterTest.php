@@ -44,6 +44,18 @@ class FilterTest extends TestCase
     }
 
     /** @test */
+    public function acceptsFunctionForFilters()
+    {
+        $field = new Field();
+
+        $field->addFilter(function () {
+            return 'filtered';
+        });
+
+        self::assertSame('filtered', $field->filter('value'));
+    }
+
+    /** @test */
     public function assignsTheField()
     {
         $field = new Field();

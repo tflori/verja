@@ -83,6 +83,10 @@ class Field
             $filter = Filter::fromString($filter);
         }
 
+        if (is_callable($filter)) {
+            $filter = new Filter\Callback($filter);
+        }
+
         if (!$filter instanceof FilterInterface) {
             return $this;
         }
@@ -158,6 +162,10 @@ class Field
     {
         if (is_string($validator)) {
             $validator = Validator::fromString($validator);
+        }
+
+        if (is_callable($validator)) {
+            $validator = new Validator\Callback($validator);
         }
 
         if (!$validator instanceof ValidatorInterface) {
