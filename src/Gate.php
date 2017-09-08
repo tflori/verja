@@ -18,6 +18,9 @@ class Gate
     /** @var array */
     protected $filteredData = [];
 
+    /** @var array */
+    protected $errors = [];
+
     public function __construct(array $data = null)
     {
         if ($data) {
@@ -152,7 +155,11 @@ class Gate
             $filtered = $field->filter(isset($this->rawData[$k]) ? $this->rawData[$k] : null, $this->rawData);
 
             if ($validate && !$field->validate($filtered, $this->rawData)) {
-                throw new InvalidValue(sprintf('The value for field \'%s\' is invalid', $k));
+                $errors = $field->getErrors();
+                if (count($errors) > 0) {
+                    throw new InvalidValue(sprintf('Invalid %s: %s', $k, $errors[0]['message']));
+                }
+                throw new InvalidValue(sprintf('The value %s is not valid for %s', json_encode($filtered), $k));
             }
 
             if ($key !== null) {
@@ -198,12 +205,25 @@ class Gate
         }
 
         $valid = true;
+        $this->errors = [];
         $filtered = $this->getData(null, false);
         foreach ($this->fields as $key => $field) {
             if (!$field->validate($filtered[$key], $this->rawData)) {
                 $valid = false;
+                $this->errors[$key] = $field->getErrors();
             }
         }
         return $valid;
+    }
+
+    /**
+     * Get all reported errors
+     *
+     * @return array
+     * @codeCoverageIgnore trivial
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

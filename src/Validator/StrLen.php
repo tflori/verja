@@ -25,16 +25,28 @@ class StrLen extends Validator
     }
 
 
-    /**
-     * Validate $value
-     *
-     * @param mixed $value
-     * @param array $context
-     * @return bool
-     */
+    /** {@inheritdoc} */
     public function validate($value, array $context = []): bool
     {
-        $strlen = strlen($value);
-        return $strlen >= $this->min && ($this->max === 0 || $strlen <= $this->max);
+        $strLen = strlen($value);
+        if ($strLen < $this->min) {
+            $this->error = $this->buildError(
+                'STRLEN_TOO_SHORT',
+                $value,
+                ['min' => $this->min, 'max' => $this->max],
+                sprintf('%s should be at least %d characters long', json_encode($value), $this->min)
+            );
+            return false;
+        } elseif ($this->max > 0 && $strLen > $this->max) {
+            $this->error = $this->buildError(
+                'STRLEN_TOO_LONG',
+                $value,
+                ['min' => $this->min, 'max' => $this->max],
+                sprintf('%s should be maximal %d characters long', json_encode($value), $this->max)
+            );
+            return false;
+        }
+
+        return true;
     }
 }

@@ -33,6 +33,12 @@ class StrLenTest extends TestCase
         $result = $validator->validate('long');
 
         self::assertFalse($result);
+        self::assertSame([
+            'key' => 'STRLEN_TOO_LONG',
+            'value' => 'long',
+            'parameters' => ['min' => 0, 'max' => 2],
+            'message' => '"long" should be maximal 2 characters long'
+        ], $validator->getError());
     }
 
     /** @test */
@@ -43,6 +49,12 @@ class StrLenTest extends TestCase
         $result = $validator->validate('short');
 
         self::assertFalse($result);
+        self::assertSame([
+            'key' => 'STRLEN_TOO_SHORT',
+            'value' => 'short',
+            'parameters' => ['min' => 6, 'max' => 0],
+            'message' => '"short" should be at least 6 characters long'
+        ], $validator->getError());
     }
 
     /** @test */

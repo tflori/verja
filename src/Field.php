@@ -20,6 +20,9 @@ class Field
     /** @var array */
     protected $validationCache = [];
 
+    /** @var array */
+    protected $errors;
+
     /**
      * Field constructor.
      *
@@ -84,7 +87,9 @@ class Field
             return $this;
         }
 
-        $this->filterCache = [];
+        if (count($this->filterCache) > 0) {
+            $this->filterCache = [];
+        }
 
         if ($prepend) {
             array_unshift($this->filters, $filter->assign($this));
@@ -159,7 +164,9 @@ class Field
             return $this;
         }
 
-        $this->validationCache = [];
+        if (count($this->validationCache) > 0) {
+            $this->validationCache = [];
+        }
 
         if ($prepend) {
             array_unshift($this->validators, $validator->assign($this));
@@ -242,9 +249,13 @@ class Field
 
 
         $valid = true;
+        $this->errors = [];
         foreach ($this->validators as $validator) {
             if (!$validator->validate($value, $context)) {
                 $valid = false;
+                if ($error = $validator->getError()) {
+                    $this->errors[] = $error;
+                }
             }
         }
 
@@ -252,5 +263,13 @@ class Field
             $this->validationCache[$hash] = $valid;
         }
         return $valid;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

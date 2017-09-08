@@ -54,4 +54,33 @@ class NotEmptyTest extends TestCase
             [ null ], // null
         ];
     }
+
+    /** @test */
+    public function setsNotEmptyError()
+    {
+        $validator = new NotEmpty();
+        $validator->validate(0);
+
+        $result = $validator->getError();
+
+        self::assertSame([
+            'key' => 'IS_EMPTY',
+            'value' => 0,
+            'message' => '0 should not be empty'
+        ], $result);
+    }
+
+    /** @test */
+    public function returnsInverseError()
+    {
+        $validator = new NotEmpty();
+
+        $result = $validator->getInverseError('value');
+
+        self::assertSame([
+            'key' => 'IS_NOT_EMPTY',
+            'value' => 'value',
+            'message' => '"value" should be empty'
+        ], $result);
+    }
 }

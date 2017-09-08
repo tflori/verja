@@ -29,17 +29,20 @@ class ContainsTest extends TestCase
         ];
     }
 
-    /** @dataProvider provideNotContainedStrings
-     * @param $subString
-     * @param $value
-     * @test */
-    public function returnsFalseForNotContainedStrings($subString, $value)
+    /** @test */
+    public function returnsFalseForNotContainedStrings()
     {
-        $validator = new Contains($subString);
+        $validator = new Contains(' ');
 
-        $result = $validator->validate($value);
+        $result = $validator->validate('noSpaces');
 
         self::assertFalse($result);
+        self::assertSame([
+            'key' => 'NOT_CONTAINS',
+            'value' => 'noSpaces',
+            'parameters' => ['subString' => ' '],
+            'message' => '"noSpaces" should contain " "'
+        ], $validator->getError());
     }
 
     public function provideNotContainedStrings()
@@ -47,5 +50,20 @@ class ContainsTest extends TestCase
         return [
             [' ', 'noSpaces'],
         ];
+    }
+
+    /** @test */
+    public function returnsContainsError()
+    {
+        $validator = new Contains(' ');
+
+        $result = $validator->getInverseError('with space');
+
+        self::assertSame([
+            'key' => 'CONTAINS',
+            'value' => 'with space',
+            'parameters' => ['subString' => ' '],
+            'message' => '"with space" should not contain " "'
+        ], $result);
     }
 }

@@ -23,14 +23,13 @@ Initialize a container, set the input data, define filters and validators, valid
 
 ```php
 $container = new Verja\Gate();
-$container->setData($_POST);
 $container->addFields([
     'username' => ['notEmpty', 'strLen(3, 20)'],
     'password' => ['notEmpty', 'strLen(8)'],
     'email' => ['notEmpty', 'email'],
 ]);
 
-if ($container->validate()) {
+if ($container->validate($_POST)) {
   // how ever your orm works..
   $user = new User($container->getData());
   $user->save();

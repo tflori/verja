@@ -12,6 +12,9 @@ abstract class Validator implements ValidatorInterface
     /** @var string[] */
     protected static $namespaces = [ '\\Verja\\Validator' ];
 
+    /** @var array */
+    protected $error;
+
     /**
      * Create a Validator from $str
      *
@@ -63,5 +66,53 @@ abstract class Validator implements ValidatorInterface
     public static function resetNamespaces()
     {
         self::$namespaces = [ '\\Verja\\Validator' ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @codeCoverageIgnore trivial
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * The inverse error is not required to implement
+     *
+     * @param mixed $value
+     * @return null
+     * @codeCoverageIgnore trivial
+     */
+    public function getInverseError($value)
+    {
+        return null;
+    }
+
+    /**
+     * @param string      $key
+     * @param             $value
+     * @param array|null  $parameters
+     * @param string|null $message
+     * @return array
+     */
+    public static function buildError(string $key, $value, array $parameters = null, string $message = null)
+    {
+        $error = [
+            'key' => $key,
+            'value' => $value,
+        ];
+
+        if ($parameters !== null) {
+            $error['parameters'] = $parameters;
+        }
+
+        if ($message !== null) {
+            $error['message'] = $message;
+        } else {
+            $error['message'] = sprintf('%s %s', json_encode($value), $key);
+        }
+
+        return $error;
     }
 }

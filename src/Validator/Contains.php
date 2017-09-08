@@ -19,15 +19,30 @@ class Contains extends Validator
         $this->subString = $subString;
     }
 
-    /**
-     * Validate $value
-     *
-     * @param mixed $value
-     * @param array $context
-     * @return bool
-     */
+    /** {@inheritdoc} */
     public function validate($value, array $context = []): bool
     {
-        return strpos($value, $this->subString) !== false;
+        if (strpos($value, $this->subString) === false) {
+            $this->error = $this->buildError(
+                'NOT_CONTAINS',
+                $value,
+                ['subString' => $this->subString],
+                sprintf('%s should contain %s', json_encode($value), json_encode($this->subString))
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /** {@inheritdoc} */
+    public function getInverseError($value)
+    {
+        return $this->buildError(
+            'CONTAINS',
+            $value,
+            ['subString' => $this->subString],
+            sprintf('%s should not contain %s', json_encode($value), json_encode($this->subString))
+        );
     }
 }

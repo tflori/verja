@@ -36,8 +36,7 @@ h5 small {
 }
 
 
-pre.highlight, .highlight pre,
-pre {
+pre.highlight, .highlight pre {
     padding: 8px 15px;
     background: #222;
     border-radius: 3px;

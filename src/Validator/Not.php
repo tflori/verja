@@ -33,6 +33,11 @@ class Not extends Validator
      */
     public function validate($value, array $context = []): bool
     {
-        return !$this->validator->validate($value);
+        if ($this->validator->validate($value)) {
+            $this->error = $this->validator->getInverseError($value);
+            return false;
+        }
+
+        return true;
     }
 }

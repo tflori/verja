@@ -60,13 +60,31 @@ class GetDataTest extends TestCase
     /** @test */
     public function throwsWhenDataIsInvalid()
     {
-        $gate = new Gate([ 'username' => 'john@example']);
+        $gate = new Gate([ 'username' => 'john']);
         $field = \Mockery::mock(Field::class)->makePartial();
-        $field->shouldReceive('filter')->andReturn('john');
         $field->shouldReceive('validate')->andReturn(false);
+        $field->shouldReceive('getErrors')->andReturn([]);
         $gate->addField('username', $field);
 
         self::expectException(InvalidValue::class);
+        self::expectExceptionMessage('The value "john" is not valid for username');
+
+        $gate->getData();
+    }
+
+    /** @test */
+    public function throwsWithMessageFromValidator()
+    {
+        $gate = new Gate([ 'username' => 'john']);
+        $field = \Mockery::mock(Field::class)->makePartial();
+        $field->shouldReceive('validate')->andReturn(false);
+        $field->shouldReceive('getErrors')->once()->andReturn([
+            ['key' => 'WHAT_EVER', 'value' => 'john', 'message' => 'error message from first validator']
+        ]);
+        $gate->addField('username', $field);
+
+        self::expectException(InvalidValue::class);
+        self::expectExceptionMessage('Invalid username: error message from first validator');
 
         $gate->getData();
     }
