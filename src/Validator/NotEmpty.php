@@ -14,7 +14,7 @@ class NotEmpty extends Validator
                 'IS_EMPTY',
                 $value,
                 null,
-                sprintf('%s should not be empty', json_encode($value))
+                'value should not be empty'
             );
             return false;
         }
@@ -29,7 +29,7 @@ class NotEmpty extends Validator
             'IS_NOT_EMPTY',
             $value,
             null,
-            sprintf('%s should be empty', json_encode($value))
+            'value should be empty'
         );
     }
 }

@@ -37,7 +37,7 @@ class StrLenTest extends TestCase
             'key' => 'STRLEN_TOO_LONG',
             'value' => 'long',
             'parameters' => ['min' => 0, 'max' => 2],
-            'message' => '"long" should be maximal 2 characters long'
+            'message' => 'value should be maximal 2 characters long'
         ], $validator->getError());
     }
 
@@ -53,7 +53,7 @@ class StrLenTest extends TestCase
             'key' => 'STRLEN_TOO_SHORT',
             'value' => 'short',
             'parameters' => ['min' => 6, 'max' => 0],
-            'message' => '"short" should be at least 6 characters long'
+            'message' => 'value should be at least 6 characters long'
         ], $validator->getError());
     }
 

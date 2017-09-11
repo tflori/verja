@@ -155,11 +155,15 @@ class Gate
             $filtered = $field->filter(isset($this->rawData[$k]) ? $this->rawData[$k] : null, $this->rawData);
 
             if ($validate && !$field->validate($filtered, $this->rawData)) {
-                $errors = $field->getErrors();
-                if (count($errors) > 0) {
-                    throw new InvalidValue(sprintf('Invalid %s: %s', $k, $errors[0]['message']));
+                if ($field->isRequired()) {
+                    $errors = $field->getErrors();
+                    if (count($errors) > 0) {
+                        throw new InvalidValue(sprintf('Invalid %s: %s', $k, $errors[0]['message']));
+                    }
+                    throw new InvalidValue(sprintf('The value %s is not valid for %s', json_encode($filtered), $k));
+                } else {
+                    $filtered = null;
                 }
-                throw new InvalidValue(sprintf('The value %s is not valid for %s', json_encode($filtered), $k));
             }
 
             if ($key !== null) {
@@ -208,6 +212,10 @@ class Gate
         $this->errors = [];
         $filtered = $this->getData(null, false);
         foreach ($this->fields as $key => $field) {
+            if (empty($filtered[$key]) && !$field->isRequired()) {
+                continue;
+            }
+
             if (!$field->validate($filtered[$key], $this->rawData)) {
                 $valid = false;
                 $this->errors[$key] = $field->getErrors();

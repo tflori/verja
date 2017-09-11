@@ -27,7 +27,7 @@ class Contains extends Validator
                 'NOT_CONTAINS',
                 $value,
                 ['subString' => $this->subString],
-                sprintf('%s should contain %s', json_encode($value), json_encode($this->subString))
+                sprintf('value should contain "%s"', $this->subString)
             );
             return false;
         }
@@ -42,7 +42,7 @@ class Contains extends Validator
             'CONTAINS',
             $value,
             ['subString' => $this->subString],
-            sprintf('%s should not contain %s', json_encode($value), json_encode($this->subString))
+            sprintf('value should not contain "%s"', $this->subString)
         );
     }
 }

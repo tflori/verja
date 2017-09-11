@@ -23,6 +23,9 @@ class Field
     /** @var array */
     protected $errors;
 
+    /** @var bool */
+    protected $required = false;
+
     /**
      * Field constructor.
      *
@@ -33,6 +36,12 @@ class Field
      */
     public function __construct(array $definitions = [])
     {
+        $p = array_search('required', $definitions);
+        if ($p !== false) {
+            array_splice($definitions, $p, 1);
+            $this->required();
+        }
+
         $notFound = array_intersect(
             $this->addFiltersFromArray($definitions),
             $this->addValidatorsFromArray($definitions)
@@ -44,6 +53,26 @@ class Field
                 reset($notFound)
             ));
         }
+    }
+
+    /**
+     * Set required flag
+     *
+     * @param bool $required
+     * @return $this
+     */
+    public function required($required = true)
+    {
+        $this->required = $required;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return $this->required;
     }
 
     /**

@@ -34,7 +34,7 @@ class StrLen extends Validator
                 'STRLEN_TOO_SHORT',
                 $value,
                 ['min' => $this->min, 'max' => $this->max],
-                sprintf('%s should be at least %d characters long', json_encode($value), $this->min)
+                sprintf('value should be at least %d characters long', $this->min)
             );
             return false;
         } elseif ($this->max > 0 && $strLen > $this->max) {
@@ -42,7 +42,7 @@ class StrLen extends Validator
                 'STRLEN_TOO_LONG',
                 $value,
                 ['min' => $this->min, 'max' => $this->max],
-                sprintf('%s should be maximal %d characters long', json_encode($value), $this->max)
+                sprintf('value should be maximal %d characters long', $this->max)
             );
             return false;
         }

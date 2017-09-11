@@ -47,4 +47,12 @@ class FromArrayTest extends TestCase
         self::expectExceptionMessage('No filter or validator named \'Unknown\' found');
         new Field(['unknown:42']);
     }
+
+    /** @test */
+    public function acceptsRequired()
+    {
+        $field = new Field(['required']);
+
+        self::assertTrue($field->isRequired());
+    }
 }

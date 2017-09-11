@@ -9,11 +9,41 @@ use Verja\Test\TestCase;
 class ValidateTest extends TestCase
 {
     /** @test */
+    public function doesNotValidateEmptyOptionals()
+    {
+        $field = \Mockery::mock(Field::class)->makePartial();
+        $field->shouldNotReceive('validate');
+
+        $gate = new Gate([ 'f1' => '' ]);
+        $gate->addField('f1', $field);
+
+        $gate->validate();
+    }
+
+    /** @test */
+    public function validatesEmptyRequired()
+    {
+        $field = \Mockery::mock(Field::class)->makePartial();
+        $field->required();
+        $field->shouldReceive('validate')->with('', [ 'f1' => '' ])->once()->andReturn(true);
+
+        $gate = new Gate([ 'f1' => '' ]);
+        $gate->addField('f1', $field);
+
+        $result = $gate->validate();
+
+        // ATTENTION: it is still valid, cause the validators (none) allow empty values
+        self::assertTrue($result);
+    }
+
+    /** @test */
     public function validatesEachField()
     {
         $field1 = \Mockery::mock(Field::class)->makePartial();
+        $field1->required();
         $field1->shouldReceive('validate')->with('value1', [ 'f1' => 'value1' ])->once()->andReturn(false);
         $field2 = \Mockery::mock(Field::class)->makePartial();
+        $field2->required();
         $field2->shouldReceive('validate')->with(null, [ 'f1' => 'value1' ])->once()->andReturn(true);
 
         $gate = new Gate([ 'f1' => 'value1' ]);

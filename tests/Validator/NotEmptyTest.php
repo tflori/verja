@@ -66,7 +66,7 @@ class NotEmptyTest extends TestCase
         self::assertSame([
             'key' => 'IS_EMPTY',
             'value' => 0,
-            'message' => '0 should not be empty'
+            'message' => 'value should not be empty'
         ], $result);
     }
 
@@ -80,7 +80,7 @@ class NotEmptyTest extends TestCase
         self::assertSame([
             'key' => 'IS_NOT_EMPTY',
             'value' => 'value',
-            'message' => '"value" should be empty'
+            'message' => 'value should be empty'
         ], $result);
     }
 }

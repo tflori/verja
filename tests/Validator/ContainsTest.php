@@ -41,7 +41,7 @@ class ContainsTest extends TestCase
             'key' => 'NOT_CONTAINS',
             'value' => 'noSpaces',
             'parameters' => ['subString' => ' '],
-            'message' => '"noSpaces" should contain " "'
+            'message' => 'value should contain " "'
         ], $validator->getError());
     }
 
@@ -63,7 +63,7 @@ class ContainsTest extends TestCase
             'key' => 'CONTAINS',
             'value' => 'with space',
             'parameters' => ['subString' => ' '],
-            'message' => '"with space" should not contain " "'
+            'message' => 'value should not contain " "'
         ], $result);
     }
 }
