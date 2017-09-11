@@ -24,13 +24,7 @@ class Equals extends Validator
         $this->jsonEncode = $jsonEncode;
     }
 
-    /**
-     * Validate $value
-     *
-     * @param mixed $value
-     * @param array $context
-     * @return bool
-     */
+    /** {@inheritdoc} */
     public function validate($value, array $context = []): bool
     {
         $opposite = isset($context[$this->opposite]) ? $context[$this->opposite] : null;
@@ -58,6 +52,7 @@ class Equals extends Validator
         return false;
     }
 
+    /** {@inheritdoc} */
     public function getInverseError($value)
     {
         return $this->buildError(
