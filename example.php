@@ -25,8 +25,9 @@ function controller()
     /** @var Gate $verja */
     $verja = DI::get('verja');
     $verja->addFields([
-        'username' => ['trim','strLen:3:20','!contains:fourtytwo'],
-        'password' => ['strLen:8'],
+        'username'   => ['required', 'trim','strLen:3:20','!contains:fourtytwo'],
+        'password'   => ['required', 'strLen:8'],
+        'password_c' => ['required', 'equals:password'],
     ]);
     if (!empty($_POST) && $verja->validate($_POST)) {
         $v['success'] = true;
@@ -67,6 +68,11 @@ controller();
             <div class="input-field">
               <input type="password" name="password" id="password" />
               <label for="password">Password</label>
+            </div>
+
+            <div class="input-field">
+              <input type="password" name="password_c" id="password_c" />
+              <label for="password_c">Repeat password</label>
             </div>
 
             <button type="submit" class="waves-effect waves-light btn">register</button>
