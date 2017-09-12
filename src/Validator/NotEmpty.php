@@ -13,7 +13,6 @@ class NotEmpty extends Validator
             $this->error = $this->buildError(
                 'IS_EMPTY',
                 $value,
-                null,
                 'value should not be empty'
             );
             return false;
@@ -28,7 +27,6 @@ class NotEmpty extends Validator
         return $this->buildError(
             'IS_NOT_EMPTY',
             $value,
-            null,
             'value should be empty'
         );
     }

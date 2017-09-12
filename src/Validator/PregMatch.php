@@ -29,8 +29,8 @@ class PregMatch extends Validator
         $this->error = $this->buildError(
             'NO_MATCH',
             $value,
-            ['pattern' => $this->pattern],
-            sprintf('value should match "%s"', $this->pattern)
+            sprintf('value should match "%s"', $this->pattern),
+            [ 'pattern' => $this->pattern ]
         );
         return false;
     }
@@ -41,8 +41,8 @@ class PregMatch extends Validator
         return $this->buildError(
             'MATCHES',
             $value,
-            ['pattern' => $this->pattern],
-            sprintf('value should not match "%s"', $this->pattern)
+            sprintf('value should not match "%s"', $this->pattern),
+            [ 'pattern' => $this->pattern ]
         );
     }
 }

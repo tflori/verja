@@ -46,8 +46,8 @@ class Equals extends Validator
         $this->error = $this->buildError(
             'NOT_EQUAL',
             $value,
-            ['opposite' => $this->opposite, 'jsonEncode' => $this->jsonEncode],
-            sprintf('value should be equal to contexts %s', $this->opposite)
+            sprintf('value should be equal to contexts %s', $this->opposite),
+            [ 'opposite' => $this->opposite, 'jsonEncode' => $this->jsonEncode ]
         );
         return false;
     }
@@ -58,8 +58,8 @@ class Equals extends Validator
         return $this->buildError(
             'EQUALS',
             $value,
-            ['opposite' => $this->opposite, 'jsonEncode' => $this->jsonEncode],
-            sprintf('value should not be equal to contexts %s', $this->opposite)
+            sprintf('value should not be equal to contexts %s', $this->opposite),
+            [ 'opposite' => $this->opposite, 'jsonEncode' => $this->jsonEncode ]
         );
     }
 }

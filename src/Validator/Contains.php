@@ -26,8 +26,8 @@ class Contains extends Validator
             $this->error = $this->buildError(
                 'NOT_CONTAINS',
                 $value,
-                ['subString' => $this->subString],
-                sprintf('value should contain "%s"', $this->subString)
+                sprintf('value should contain "%s"', $this->subString),
+                [ 'subString' => $this->subString ]
             );
             return false;
         }
@@ -41,8 +41,8 @@ class Contains extends Validator
         return $this->buildError(
             'CONTAINS',
             $value,
-            ['subString' => $this->subString],
-            sprintf('value should not contain "%s"', $this->subString)
+            sprintf('value should not contain "%s"', $this->subString),
+            [ 'subString' => $this->subString ]
         );
     }
 }

@@ -91,12 +91,12 @@ abstract class Validator implements ValidatorInterface
 
     /**
      * @param string      $key
-     * @param             $value
-     * @param array|null  $parameters
+     * @param mixed       $value
      * @param string|null $message
+     * @param array|null  $parameters
      * @return array
      */
-    public static function buildError(string $key, $value, array $parameters = null, string $message = null)
+    public static function buildError(string $key, $value, string $message = null, array $parameters = null)
     {
         $error = [
             'key' => $key,
