@@ -22,26 +22,29 @@ composer require tflori/verja
 Initialize a container, set the input data, define filters and validators, validate the data, get the data.
 
 ```php
-$container = new Verja\Gate();
-$container->addFields([
+<?php
+$gate = new Verja\Gate();
+$gate->addFields([
     'username' => ['notEmpty', 'strLen(3, 20)'],
     'password' => ['notEmpty', 'strLen(8)'],
     'email' => ['notEmpty', 'email'],
 ]);
 
-if ($container->validate($_POST)) {
+if ($gate->validate($_POST)) {
   // how ever your orm works..
-  $user = new User($container->getData());
+  $user = new User($gate->getData());
   $user->save();
 } else {
-  $errors = $container->getErrors();
+  $errors = $gate->getErrors();
 }
 ```
 
 If you prefer auto completion you can of course pass objects:
 
 ```php
-$container->addFields([
+
+<?php
+$gate->addFields([
     'username' => (new Field())
         ->addValidator(new Validator\NotEmpty())
         ->addValidator(new Validator\StringLength(3, 20)),
