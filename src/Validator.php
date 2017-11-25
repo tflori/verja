@@ -88,31 +88,4 @@ abstract class Validator implements ValidatorInterface
     {
         return null;
     }
-
-    /**
-     * @param string      $key
-     * @param mixed       $value
-     * @param string|null $message
-     * @param array|null  $parameters
-     * @return array
-     */
-    public static function buildError(string $key, $value, string $message = null, array $parameters = null)
-    {
-        $error = [
-            'key' => $key,
-            'value' => $value,
-        ];
-
-        if ($parameters !== null) {
-            $error['parameters'] = $parameters;
-        }
-
-        if ($message !== null) {
-            $error['message'] = $message;
-        } else {
-            $error['message'] = sprintf('%s %s', json_encode($value), $key);
-        }
-
-        return $error;
-    }
 }

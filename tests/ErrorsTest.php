@@ -34,19 +34,4 @@ class ErrorsTest extends TestCase
 
         $field->validate('value');
     }
-
-    /** @test */
-    public function buildErrorGeneratesMessage()
-    {
-        $validator = new GeneratedMessage();
-        $validator->validate('value');
-
-        $result = $validator->getError();
-
-        self::assertSame([
-            'key' => 'GENERATED_MESSAGE',
-            'value' => 'value',
-            'message' => '"value" GENERATED_MESSAGE'
-        ], $result);
-    }
 }
