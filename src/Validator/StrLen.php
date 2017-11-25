@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class StrLen extends Validator
@@ -30,7 +31,7 @@ class StrLen extends Validator
     {
         $strLen = strlen($value);
         if ($strLen < $this->min) {
-            $this->error = $this->buildError(
+            $this->error = new Error(
                 'STRLEN_TOO_SHORT',
                 $value,
                 sprintf('value should be at least %d characters long', $this->min),
@@ -38,7 +39,7 @@ class StrLen extends Validator
             );
             return false;
         } elseif ($this->max > 0 && $strLen > $this->max) {
-            $this->error = $this->buildError(
+            $this->error = new Error(
                 'STRLEN_TOO_LONG',
                 $value,
                 sprintf('value should be maximal %d characters long', $this->max),

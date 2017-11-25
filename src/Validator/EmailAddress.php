@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class EmailAddress extends Validator
@@ -13,7 +14,7 @@ class EmailAddress extends Validator
     public function validate($value, array $context = []): bool
     {
         if (!preg_match('/^' . self::LOCAL_PART_PATTERN . '@' . self::DOMAIN_PART_PATTERN . '$/', $value)) {
-            $this->error = $this::buildError(
+            $this->error = new Error(
                 'NO_EMAIL_ADDRESS',
                 $value,
                 'value should be a valid email address',
@@ -28,7 +29,7 @@ class EmailAddress extends Validator
     /** {@inheritdoc} */
     public function getInverseError($value)
     {
-        return $this::buildError(
+        return new Error(
             'EMAIL_ADDRESS',
             $value,
             'value should not be an email address',

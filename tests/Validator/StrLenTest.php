@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\StrLen;
 
@@ -33,12 +34,10 @@ class StrLenTest extends TestCase
         $result = $validator->validate('long');
 
         self::assertFalse($result);
-        self::assertSame([
-            'key' => 'STRLEN_TOO_LONG',
-            'value' => 'long',
-            'parameters' => ['min' => 0, 'max' => 2],
-            'message' => 'value should be maximal 2 characters long'
-        ], $validator->getError());
+        self::assertEquals(
+            new Error('STRLEN_TOO_LONG', 'long', 'value should be maximal 2 characters long', ['min' => 0, 'max' => 2]),
+            $validator->getError()
+        );
     }
 
     /** @test */
@@ -49,12 +48,15 @@ class StrLenTest extends TestCase
         $result = $validator->validate('short');
 
         self::assertFalse($result);
-        self::assertSame([
-            'key' => 'STRLEN_TOO_SHORT',
-            'value' => 'short',
-            'parameters' => ['min' => 6, 'max' => 0],
-            'message' => 'value should be at least 6 characters long'
-        ], $validator->getError());
+        self::assertEquals(
+            new Error(
+                'STRLEN_TOO_SHORT',
+                'short',
+                'value should be at least 6 characters long',
+                ['min' => 6, 'max' => 0]
+            ),
+            $validator->getError()
+        );
     }
 
     /** @test */

@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class NotEmpty extends Validator
@@ -10,7 +11,7 @@ class NotEmpty extends Validator
     public function validate($value, array $context = []): bool
     {
         if (empty($value)) {
-            $this->error = $this->buildError(
+            $this->error = new Error(
                 'IS_EMPTY',
                 $value,
                 'value should not be empty'
@@ -24,7 +25,7 @@ class NotEmpty extends Validator
     /** {@inheritdoc} */
     public function getInverseError($value)
     {
-        return $this->buildError(
+        return new Error(
             'IS_NOT_EMPTY',
             $value,
             'value should be empty'

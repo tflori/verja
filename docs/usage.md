@@ -163,16 +163,8 @@ $gate->getData(); // throws "Invalid pw: value should be equal to contexts pw_co
 
 ### Show Errors
 
-The `Validator` may contain an error in the following format after validating an invalid value: 
-
-```php?start_inline=true
-return [
-    'key' => 'NOT_CONTAINS', // a key that can be used for translation
-    'value' => 'any string', // the value that got validated
-    'message' => 'value should contain "bar"', // OPTIONAL - a default error message (used for exceptions)
-    'parameters' => [ 'subString' => 'bar' ], // OPTIONAL - parameters used for validation
-];
-```
+The `Validator` may contain an `Verja\Error` after validating an invalid value that you can retrieve with
+`Validator::getError()`.
 
 The `Field` contains an array of all errors occurred during `Field::validate()` and the `Gate` contains an array with
 all arrays of errors from the fields. The method `Gate::getErrors()` may return something like this:

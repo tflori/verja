@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class Equals extends Validator
@@ -43,7 +44,7 @@ class Equals extends Validator
             }
         }
 
-        $this->error = $this->buildError(
+        $this->error = new Error(
             'NOT_EQUAL',
             $value,
             sprintf('value should be equal to contexts %s', $this->opposite),
@@ -55,7 +56,7 @@ class Equals extends Validator
     /** {@inheritdoc} */
     public function getInverseError($value)
     {
-        return $this->buildError(
+        return new Error(
             'EQUALS',
             $value,
             sprintf('value should not be equal to contexts %s', $this->opposite),

@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\PregMatch;
 
@@ -25,12 +26,10 @@ class PregMatchTest extends TestCase
         $result = $validator->validate('bar');
 
         self::assertFalse($result);
-        self::assertSame([
-            'key' => 'NO_MATCH',
-            'value' => 'bar',
-            'parameters' => ['pattern' => '#foo#'],
-            'message' => 'value should match "#foo#"'
-        ], $validator->getError());
+        self::assertEquals(
+            new Error('NO_MATCH', 'bar', 'value should match "#foo#"', ['pattern' => '#foo#']),
+            $validator->getError()
+        );
     }
 
     /** @test */
@@ -38,11 +37,9 @@ class PregMatchTest extends TestCase
     {
         $validator = new PregMatch('#foo#');
 
-        self::assertSame([
-            'key' => 'MATCHES',
-            'value' => 'some foo for you',
-            'parameters' => ['pattern' => '#foo#'],
-            'message' => 'value should not match "#foo#"'
-        ], $validator->getInverseError('some foo for you'));
+        self::assertEquals(
+            new Error('MATCHES', 'some foo for you', 'value should not match "#foo#"', ['pattern' => '#foo#']),
+            $validator->getInverseError('some foo for you')
+        );
     }
 }

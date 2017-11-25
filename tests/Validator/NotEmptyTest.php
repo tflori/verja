@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\NotEmpty;
 
@@ -63,11 +64,10 @@ class NotEmptyTest extends TestCase
 
         $result = $validator->getError();
 
-        self::assertSame([
-            'key' => 'IS_EMPTY',
-            'value' => 0,
-            'message' => 'value should not be empty'
-        ], $result);
+        self::assertEquals(
+            new Error('IS_EMPTY', 0, 'value should not be empty'),
+            $result
+        );
     }
 
     /** @test */
@@ -77,10 +77,9 @@ class NotEmptyTest extends TestCase
 
         $result = $validator->getInverseError('value');
 
-        self::assertSame([
-            'key' => 'IS_NOT_EMPTY',
-            'value' => 'value',
-            'message' => 'value should be empty'
-        ], $result);
+        self::assertEquals(
+            new Error('IS_NOT_EMPTY', 'value', 'value should be empty'),
+            $result
+        );
     }
 }

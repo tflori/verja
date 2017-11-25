@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class Callback extends Validator
@@ -24,7 +25,7 @@ class Callback extends Validator
     {
         $result = call_user_func($this->callback, $value, $context);
 
-        if (is_array($result) && isset($result['key']) && isset($result['value']) && isset($result['message'])) {
+        if ($result instanceof Error) {
             $this->error = $result;
             return false;
         }

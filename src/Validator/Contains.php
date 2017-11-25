@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class Contains extends Validator
@@ -23,7 +24,7 @@ class Contains extends Validator
     public function validate($value, array $context = []): bool
     {
         if (strpos($value, $this->subString) === false) {
-            $this->error = $this->buildError(
+            $this->error = new Error(
                 'NOT_CONTAINS',
                 $value,
                 sprintf('value should contain "%s"', $this->subString),
@@ -38,7 +39,7 @@ class Contains extends Validator
     /** {@inheritdoc} */
     public function getInverseError($value)
     {
-        return $this->buildError(
+        return new Error(
             'CONTAINS',
             $value,
             sprintf('value should not contain "%s"', $this->subString),
