@@ -172,28 +172,65 @@ all arrays of errors from the fields. The method `Gate::getErrors()` may return 
 ```php?start_inline=true
 return [
     'foo' => [
-        [
-           'key' => 'NOT_CONTAINS',
-           'value' => 'any string',
-           'message' => 'value should contain "bar"',
-           'parameters' => [ 'subString' => 'bar' ],
-        ]
+        new \Verja\Error(
+            'NOT_CONTAINS',
+            'any string',
+            'value should contain "bar"',
+            [ 'subString' => 'bar' ]
+        )
     ],
     'pw' => [
-        [
-            'key' => 'STRLEN_TOO_SHORT',
-            'value' => 'abc123',
-            'message' => 'value should be at least 8 characters long',
-            'parameters' => [ 'min' => 8, 'max' => 0 ],
-        ],
-        [
-            'key' => 'NOT_EQUAL',
-            'value' => 'abc123',
-            'message' => 'value should be equal to contexts pw_conf',
-            'parameters' => [ 'opposite' => 'pw_conf', 'jsonEncode' => true ]
-        ]
+        new \Verja\Error(
+            'STRLEN_TOO_SHORT',
+            'abc123',
+            'value should be at least 8 characters long',
+            [ 'min' => 8, 'max' => 0 ]
+        ),
+        new \Verja\Error(
+            'NOT_EQUAL',
+            'abc123',
+            'value should be equal to contexts pw_conf',
+            [ 'opposite' => 'pw_conf', 'jsonEncode' => true ]
+        )
     ],
 ];
+```
+
+You can then serialize this data to this json:
+
+```json
+{
+   "foo": [
+       {
+           "key": "NOT_CONTAINS",
+           "message": "value should contain \"bar\"",
+           "parameters": {
+               "subString": "bar",
+               "value": "any string"
+           }
+       }
+   ],
+   "pw": [
+       {
+           "key": "STRLEN_TOO_SHORT",
+           "message": "value should be at least 8 characters long",
+           "parameters": {
+               "min": 8,
+               "max": 0,
+               "value": "abc123"
+           }
+       },
+       {
+           "key": "NOT_EQUAL",
+           "message": "value should be equal to contexts pw_conf",
+           "parameters": {
+               "opposite": "pw_conf",
+               "jsonEncode": true,
+               "value": "abc123"
+           }
+       }
+   ]
+}
 ``` 
 
 ### Example

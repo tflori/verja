@@ -7,9 +7,6 @@ class Error
     /** @var string */
     public $key;
 
-    /** @var mixed */
-    public $value;
-
     /** @var  string */
     public $message;
 
@@ -27,7 +24,6 @@ class Error
     public function __construct(string $key, $value, string $message = null, array $parameters = null)
     {
         $this->key   = $key;
-        $this->value = $value;
 
         if ($message !== null) {
             $this->message = $message;
