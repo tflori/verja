@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Gate;
 
+use Verja\Error;
 use Verja\Exception\InvalidValue;
 use Verja\Field;
 use Verja\Gate;
@@ -94,7 +95,7 @@ class GetDataTest extends TestCase
         $field->required();
         $field->shouldReceive('validate')->andReturn(false);
         $field->shouldReceive('getErrors')->once()->andReturn([
-            ['key' => 'WHAT_EVER', 'value' => 'john', 'message' => 'error message from first validator']
+            new Error('WHAT_EVER', 'john', 'error message from first validator')
         ]);
         $gate->addField('username', $field);
 
