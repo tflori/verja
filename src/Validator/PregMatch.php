@@ -2,6 +2,7 @@
 
 namespace Verja\Validator;
 
+use Verja\Error;
 use Verja\Validator;
 
 class PregMatch extends Validator
@@ -26,7 +27,7 @@ class PregMatch extends Validator
             return true;
         }
 
-        $this->error = $this->buildError(
+        $this->error = new Error(
             'NO_MATCH',
             $value,
             sprintf('value should match "%s"', $this->pattern),
@@ -38,7 +39,7 @@ class PregMatch extends Validator
     /** {@inheritdoc} */
     public function getInverseError($value)
     {
-        return $this->buildError(
+        return new Error(
             'MATCHES',
             $value,
             sprintf('value should not match "%s"', $this->pattern),

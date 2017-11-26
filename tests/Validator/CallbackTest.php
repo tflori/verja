@@ -2,8 +2,8 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
-use Verja\Validator;
 use Verja\Validator\Callback;
 
 class CallbackTest extends TestCase
@@ -28,16 +28,12 @@ class CallbackTest extends TestCase
     public function usesArrayReturnValueAsError()
     {
         $validator = new Callback(function ($value) {
-            return Validator::buildError('KEY', $value);
+            return new Error('KEY', $value);
         });
 
         $validator->validate('value');
 
-        self::assertSame([
-            'key' => 'KEY',
-            'value' => 'value',
-            'message' => '"value" KEY'
-        ], $validator->getError());
+        self::assertEquals(new Error('KEY', 'value', '"value" KEY'), $validator->getError());
     }
 
     /** @test */

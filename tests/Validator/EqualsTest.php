@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\Equals;
 
@@ -62,12 +63,15 @@ class EqualsTest extends TestCase
         $result = $validator->validate(['foo' => 'bar'], ['opposite' => (object) ['foo' => 'bar']]);
 
         self::assertFalse($result);
-        self::assertSame([
-            'key' => 'NOT_EQUAL',
-            'value' => ['foo' => 'bar'],
-            'parameters' => ['opposite' => 'opposite', 'jsonEncode' => false],
-            'message' => 'value should be equal to contexts opposite'
-        ], $validator->getError());
+        self::assertEquals(
+            new Error(
+                'NOT_EQUAL',
+                ['foo' => 'bar'],
+                'value should be equal to contexts opposite',
+                ['opposite' => 'opposite', 'jsonEncode' => false]
+            ),
+            $validator->getError()
+        );
     }
 
     /** @test */
@@ -77,11 +81,14 @@ class EqualsTest extends TestCase
 
         $result = $validator->getInverseError('value');
 
-        self::assertSame([
-            'key' => 'EQUALS',
-            'value' => 'value',
-            'parameters' => ['opposite' => 'opposite', 'jsonEncode' => true],
-            'message' => 'value should not be equal to contexts opposite'
-        ], $result);
+        self::assertEquals(
+            new Error(
+                'EQUALS',
+                'value',
+                'value should not be equal to contexts opposite',
+                ['opposite' => 'opposite', 'jsonEncode' => true]
+            ),
+            $result
+        );
     }
 }

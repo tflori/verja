@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\Contains;
 
@@ -37,12 +38,10 @@ class ContainsTest extends TestCase
         $result = $validator->validate('noSpaces');
 
         self::assertFalse($result);
-        self::assertSame([
-            'key' => 'NOT_CONTAINS',
-            'value' => 'noSpaces',
-            'parameters' => ['subString' => ' '],
-            'message' => 'value should contain " "'
-        ], $validator->getError());
+        self::assertEquals(
+            new Error('NOT_CONTAINS', 'noSpaces', 'value should contain " "', ['subString' => ' ']),
+            $validator->getError()
+        );
     }
 
     public function provideNotContainedStrings()
@@ -59,11 +58,9 @@ class ContainsTest extends TestCase
 
         $result = $validator->getInverseError('with space');
 
-        self::assertSame([
-            'key' => 'CONTAINS',
-            'value' => 'with space',
-            'parameters' => ['subString' => ' '],
-            'message' => 'value should not contain " "'
-        ], $result);
+        self::assertEquals(
+            new Error('CONTAINS', 'with space', 'value should not contain " "', ['subString' => ' ']),
+            $result
+        );
     }
 }

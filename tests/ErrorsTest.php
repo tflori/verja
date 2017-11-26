@@ -2,6 +2,7 @@
 
 namespace Verja\Test;
 
+use Verja\Error;
 use Verja\Field;
 use Verja\Gate;
 use Verja\Test\Examples\CustomValidator\GeneratedMessage;
@@ -36,17 +37,39 @@ class ErrorsTest extends TestCase
     }
 
     /** @test */
-    public function buildErrorGeneratesMessage()
+    public function errorsCanBeSerialized()
     {
-        $validator = new GeneratedMessage();
-        $validator->validate('value');
+        $error = new Error('ERROR_KEY', 'validated value', 'Error message from validator');
 
-        $result = $validator->getError();
+        $serialized = serialize($error);
 
-        self::assertSame([
-            'key' => 'GENERATED_MESSAGE',
-            'value' => 'value',
-            'message' => '"value" GENERATED_MESSAGE'
-        ], $result);
+        self::assertContains('ERROR_KEY', $serialized);
+        self::assertContains('validated value', $serialized);
+        self::assertContains('Error message from validator', $serialized);
+    }
+
+    /** @test */
+    public function errorsCanBeUnserialized()
+    {
+        $error = new Error('ERROR_KEY', 'validated value', 'Error message from validator');
+        $serialized = serialize($error);
+
+        $result = unserialize($serialized);
+
+        self::assertEquals($error, $result);
+    }
+
+    /** @test */
+    public function errorsCanBeJsonEncoded()
+    {
+        $error = new Error('ERROR_KEY', 'validated value', 'Error message from validator');
+
+        $json = json_encode($error);
+
+        self::assertSame(json_encode([
+            'key' => 'ERROR_KEY',
+            'message' => 'Error message from validator',
+            'parameters' => ['value' => 'validated value'],
+        ]), $json);
     }
 }

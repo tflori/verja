@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\EmailAddress;
 
@@ -39,11 +40,10 @@ class EmailAddressTest extends TestCase
         $validator = new EmailAddress();
 
         self::assertFalse($validator->validate('@'));
-        self::assertSame([
-            'key' => 'NO_EMAIL_ADDRESS',
-            'value' => '@',
-            'message' => 'value should be a valid email address',
-        ], $validator->getError());
+        self::assertEquals(
+            new Error('NO_EMAIL_ADDRESS', '@', 'value should be a valid email address'),
+            $validator->getError()
+        );
     }
 
     /** @test */
@@ -51,10 +51,9 @@ class EmailAddressTest extends TestCase
     {
         $validator = new EmailAddress();
 
-        self::assertSame([
-            'key' => 'EMAIL_ADDRESS',
-            'value' => 'john.doe@example.com',
-            'message' => 'value should not be an email address'
-        ], $validator->getInverseError('john.doe@example.com'));
+        self::assertEquals(
+            new Error('EMAIL_ADDRESS', 'john.doe@example.com', 'value should not be an email address'),
+            $validator->getInverseError('john.doe@example.com')
+        );
     }
 }
