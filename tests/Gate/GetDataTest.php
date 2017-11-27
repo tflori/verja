@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Gate;
 
+use Mockery\Mock;
 use Verja\Error;
 use Verja\Exception\InvalidValue;
 use Verja\Field;
@@ -103,6 +104,27 @@ class GetDataTest extends TestCase
         self::expectExceptionMessage('Invalid username: error message from first validator');
 
         $gate->getData();
+    }
+
+    /** @test */
+    public function exceptionsContainTheErrors()
+    {
+        $gate = new Gate([ 'username' => 'john']);
+        $error = new Error('WHAT_EVER', 'john', 'error message from first validator');
+        /** @var Mock|Field $field */
+        $field = \Mockery::mock(Field::class)->makePartial();
+        $field->required();
+        $field->shouldReceive('validate')->andReturn(false);
+        $field->shouldReceive('getErrors')->once()->andReturn([$error]);
+        $gate->addField('username', $field);
+
+        self::expectException(InvalidValue::class);
+        try {
+            $gate->getData();
+        } catch (InvalidValue $exception) {
+            self::assertContains($error, $exception->errors);
+            throw $exception;
+        }
     }
 
     /** @test */
