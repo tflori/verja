@@ -240,6 +240,7 @@ This is a basic real world example:
 ```php?start_inline=true
 use Verja\Gate;
 use Verja\Validator;
+use Verja\Error;
 
 // imagine a class that persists somewhere somehow (maybe ORM\Entity from tflori\orm?)
 use App\Model\User;
@@ -251,7 +252,8 @@ $gate = new Gate();
 $gate->accepts([
     'username' => [ 'required', 'trim', 'strLen:3:20', new Validator\Callback(function ($value) {
         return DI::get('em')->fetch(User::class)->where('username', $value)->count() ?
-            Validator::buildError('USERNAME_TAKEN', $value, 'value should be unique in user.username') : true;
+            new Error('USERNAME_TAKEN', $value, 'value should be unique in user.username') : 
+            true;
     })],
     'password' => [ 'required', 'strLen:8', 'equals:password_confirmation' ],
     'email'    => [ 'required', 'trim', 'emailAddress' ],
