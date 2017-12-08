@@ -26,7 +26,7 @@ class NotEmpty extends Validator
     public function getInverseError($value)
     {
         return new Error(
-            'IS_NOT_EMPTY',
+            'NOT_EMPTY',
             $value,
             'value should be empty'
         );

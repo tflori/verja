@@ -78,7 +78,7 @@ class NotEmptyTest extends TestCase
         $result = $validator->getInverseError('value');
 
         self::assertEquals(
-            new Error('IS_NOT_EMPTY', 'value', 'value should be empty'),
+            new Error('NOT_EMPTY', 'value', 'value should be empty'),
             $result
         );
     }

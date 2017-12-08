@@ -23,7 +23,7 @@ class Contains extends Validator
     /** {@inheritdoc} */
     public function validate($value, array $context = []): bool
     {
-        if (strpos($value, $this->subString) === false) {
+        if (!is_string($value) || strpos($value, $this->subString) === false) {
             $this->error = new Error(
                 'NOT_CONTAINS',
                 $value,

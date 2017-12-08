@@ -52,7 +52,7 @@ class EmailAddressTest extends TestCase
         $validator = new EmailAddress();
 
         self::assertEquals(
-            new Error('EMAIL_ADDRESS', 'john.doe@example.com', 'value should not be an email address'),
+            new Error('IS_EMAIL_ADDRESS', 'john.doe@example.com', 'value should not be an email address'),
             $validator->getInverseError('john.doe@example.com')
         );
     }

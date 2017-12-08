@@ -24,6 +24,11 @@ abstract class Filter implements FilterInterface
      */
     public static function fromString(string $str): FilterInterface
     {
+        // we check for a basic filter when the validator is negated
+        if (strlen($str) > 0 && $str[0] === '!') {
+            $str = substr($str, 1);
+        }
+
         list($shortName, $parameters) = Parser::parseClassNameWithParameters($str);
 
         foreach (self::$namespaces as $namespace) {

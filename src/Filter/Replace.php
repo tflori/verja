@@ -34,6 +34,6 @@ class Replace extends Filter
      */
     public function filter($value, array $context = [])
     {
-        return str_replace($this->search, $this->replace, $value);
+        return is_string($value) ? str_replace($this->search, $this->replace, $value) : $value;
     }
 }

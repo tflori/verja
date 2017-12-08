@@ -30,7 +30,7 @@ class EmailAddress extends Validator
     public function getInverseError($value)
     {
         return new Error(
-            'EMAIL_ADDRESS',
+            'IS_EMAIL_ADDRESS',
             $value,
             'value should not be an email address',
             null
