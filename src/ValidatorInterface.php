@@ -24,14 +24,9 @@ interface ValidatorInterface
     /**
      * Get the error for the last validation
      *
-     * Returns an array with:
+     * Returns an Error object
      *
-     *  - `key` The message key for translation
-     *  - `message` A simple error message in english (optional)
-     *  - `value` The value that got validated
-     *  - `parameters` An array of parameters for validation (optional)
-     *
-     * @return array
+     * @return Error
      */
     public function getError();
 

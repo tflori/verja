@@ -17,7 +17,6 @@ class Numeric extends Filter
     public function __construct(string $decimalPoint = '.')
     {
         $this->decimalPoint = $decimalPoint;
-        $this->setValidatedBy(new \Verja\Validator\Numeric($decimalPoint));
     }
 
     /**
@@ -29,7 +28,9 @@ class Numeric extends Filter
      */
     public function filter($value, array $context = [])
     {
-        if ($this->decimalPoint !== '.') {
+        $this->validate(new \Verja\Validator\Numeric($this->decimalPoint), $value);
+
+        if ($this->decimalPoint !== '.' && is_string($value)) {
             $value = str_replace($this->decimalPoint, '.', $value);
         }
 

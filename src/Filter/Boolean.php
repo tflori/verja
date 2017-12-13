@@ -24,7 +24,6 @@ class Boolean extends Filter
     ) {
         $this->stringTrue  = $stringTrue;
         $this->stringFalse = $stringFalse;
-        $this->setValidatedBy(new \Verja\Validator\Boolean($stringTrue, $stringFalse));
     }
 
     /**
@@ -36,6 +35,7 @@ class Boolean extends Filter
      */
     public function filter($value, array $context = [])
     {
+        $this->validate(new \Verja\Validator\Boolean($this->stringTrue, $this->stringFalse), $value);
         switch (gettype($value)) {
             case 'boolean':
                 return $value;

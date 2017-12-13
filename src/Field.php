@@ -3,6 +3,7 @@
 namespace Verja;
 
 use Verja\Exception\FilterNotFound;
+use Verja\Exception\InvalidValue;
 use Verja\Exception\NotFound;
 use Verja\Exception\ValidatorNotFound;
 
@@ -262,16 +263,13 @@ class Field
 
         $this->filterFailed = false;
         foreach ($this->filters as $filter) {
-            if ($filter instanceof Filter && $validator = $filter->getValidatedBy()) {
-                if (!$validator->validate($value)) {
-                    $this->filterFailed = true;
-                    if ($error = $validator->getError()) {
-                        $this->errors[] = $error;
-                    }
-                    return $value;
-                }
+            try {
+                $value = $filter->filter($value, $context);
+            } catch(InvalidValue $e) {
+                $this->filterFailed = true;
+                $this->errors = $e->errors;
+                return $value;
             }
-            $value = $filter->filter($value, $context);
         }
 
         if (isset($hash)) {
@@ -323,7 +321,7 @@ class Field
     }
 
     /**
-     * @return array
+     * @return Error[]
      */
     public function getErrors()
     {

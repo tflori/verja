@@ -118,8 +118,9 @@ $field->addValidator(function ($value) { // validate that the email is unknown
 
 For validating types (integer, boolean or even classes) often it is required to validate first and then filter. For
 example a numeric value: `$number = is_numeric($_POST['alpha']) ? (double)$_POST['alpha'] : 1;`. To allow this a filter
-can set `$validatedBy` to the validator he needs before. This causes the validator to be executed before the filter
-is used. If the validation fails no other filters or validators are executed cause the value could not be filtered.
+can throw a `InvalidValue` exception or use the defined method `validate` to do so. This method executes the validator
+and throws if the value is not valid. The exception will be caught and no other filters or validators are executed 
+because the value could not be filtered.
 
 For example you could write a filter for getting a `User` object:
 
@@ -127,13 +128,9 @@ For example you could write a filter for getting a `User` object:
 use Verja\Filter;
 use App\User; // a user entity class
 
-class UserFilter extends Filter
-{
-    public function __construct() {
-        $this->setValidatedBy('integer'); // this ensures the $value is an integer
-    }
-    
+class UserFilter extends Filter {
     public function filter($value, array $context = []) {
+        $this->validate('integer', $value); // this ensures the $value is an integer
         return User::findOrFail($value);
     }
 }

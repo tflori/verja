@@ -6,11 +6,6 @@ use Verja\Filter;
 
 class Integer extends Filter
 {
-    public function __construct()
-    {
-        $this->setValidatedBy(new \Verja\Validator\Integer());
-    }
-
     /**
      * Filter $value
      *
@@ -20,6 +15,7 @@ class Integer extends Filter
      */
     public function filter($value, array $context = [])
     {
+        $this->validate(new \Verja\Validator\Integer(), $value);
         return (!is_numeric($value) || (int)$value != (double)$value) ? $value : (int)$value;
     }
 }
