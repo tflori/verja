@@ -50,7 +50,7 @@ class AddFiltersFromArrayTest extends TestCase
 
         $result = $field->addFiltersFromArray(['trim', 'unknownFilter:42']);
 
-        self::assertSame(['UnknownFilter'], $result);
+        self::assertSame(['UnknownFilter' => 'unknownFilter:42'], $result);
         self::assertEquals((new Field)->addFilter('trim'), $field);
     }
 

@@ -16,6 +16,27 @@ abstract class Validator implements ValidatorInterface
     protected $error;
 
     /**
+     * Get a validator instance
+     *
+     * @param string|callable|ValidatorInterface $validator
+     * @return ValidatorInterface
+     */
+    public static function getValidator($validator)
+    {
+        if (is_string($validator)) {
+            $validator = static::fromString($validator);
+        } elseif (is_callable($validator)) {
+            $validator = new Validator\Callback($validator);
+        }
+
+        if (!$validator instanceof ValidatorInterface) {
+            throw new \InvalidArgumentException('$validator has to be an instance of ValidatorInterface');
+        }
+
+        return $validator;
+    }
+
+    /**
      * Create a Validator from $str
      *
      * This method uses Parser::parseClassNameWIthParameters. This method has some limitations for parameters - look

@@ -7,6 +7,26 @@ use Verja\Validator;
 
 class Boolean extends Validator
 {
+    /** @var string[] */
+    protected $stringTrue;
+
+    /** @var string[] */
+    protected $stringFalse;
+
+    /**
+     * Boolean constructor.
+     *
+     * @param string[] $stringTrue
+     * @param string[] $stringFalse
+     */
+    public function __construct(
+        array $stringTrue = ['1', 'true', 't', 'yes', 'y'],
+        array $stringFalse = ['0', 'false', 'f', 'no', 'n']
+    ) {
+        $this->stringTrue  = $stringTrue;
+        $this->stringFalse = $stringFalse;
+    }
+
     /**
      * Validate $value
      *
@@ -16,7 +36,9 @@ class Boolean extends Validator
      */
     public function validate($value, array $context = []): bool
     {
-        if (!is_bool($value)) {
+        if (!is_bool($value) && !is_int($value) && !is_double($value) &&
+            (!is_string($value) || !in_array($value, $this->stringTrue) && !in_array($value, $this->stringFalse))
+        ) {
             $this->error = new Error('NOT_BOOLEAN', $value, 'value should be a boolean');
             return false;
         }

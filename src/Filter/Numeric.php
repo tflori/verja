@@ -17,6 +17,7 @@ class Numeric extends Filter
     public function __construct(string $decimalPoint = '.')
     {
         $this->decimalPoint = $decimalPoint;
+        $this->setValidatedBy(new \Verja\Validator\Numeric($decimalPoint));
     }
 
     /**

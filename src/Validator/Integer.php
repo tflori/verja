@@ -16,7 +16,7 @@ class Integer extends Validator
      */
     public function validate($value, array $context = []): bool
     {
-        if (!is_int($value)) {
+        if (!is_int($value) && (!is_numeric($value) || (int)$value != (double)$value)) {
             $this->error = new Error('NO_INTEGER', $value, 'value should be an integer');
             return false;
         }

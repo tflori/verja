@@ -11,6 +11,30 @@ abstract class Filter implements FilterInterface
     /** @var string[] */
     protected static $namespaces = [ '\\Verja\\Filter' ];
 
+    /** @var ValidatorInterface */
+    protected $validatedBy;
+
+    /**
+     * Get a filter instance
+     *
+     * @param string|callable|FilterInterface $filter
+     * @return Filter\Callback|FilterInterface
+     */
+    public static function getFilter($filter)
+    {
+        if (is_string($filter)) {
+            $filter = Filter::fromString($filter);
+        } elseif (is_callable($filter)) {
+            $filter = new Filter\Callback($filter);
+        }
+
+        if (!$filter instanceof FilterInterface) {
+            throw new \InvalidArgumentException('$filter has to be an instance of FilterInterface');
+        }
+
+        return $filter;
+    }
+
     /**
      * Create a Filter from $str
      *
@@ -39,6 +63,25 @@ abstract class Filter implements FilterInterface
         }
 
         throw new FilterNotFound($shortName);
+    }
+
+    /**
+     * @return ValidatorInterface
+     */
+    public function getValidatedBy()
+    {
+        return $this->validatedBy;
+    }
+
+    /**
+     * Set the validator for this filter
+     *
+     * @param ValidatorInterface|string|callable $validator
+     * @throws \InvalidArgumentException
+     */
+    protected function setValidatedBy($validator)
+    {
+        $this->validatedBy = Validator::getValidator($validator);
     }
 
     /**

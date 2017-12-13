@@ -24,6 +24,7 @@ class Boolean extends Filter
     ) {
         $this->stringTrue  = $stringTrue;
         $this->stringFalse = $stringFalse;
+        $this->setValidatedBy(new \Verja\Validator\Boolean($stringTrue, $stringFalse));
     }
 
     /**
@@ -41,7 +42,7 @@ class Boolean extends Filter
 
             case 'double':
             case 'integer':
-                return $value > 0; // different to (bool)-1 this will return false
+                return (bool)$value;
 
             case 'string':
                 return in_array(strtolower($value), $this->stringTrue) ?:

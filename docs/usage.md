@@ -114,6 +114,33 @@ $field->addValidator(function ($value) { // validate that the email is unknown
 });
 ```
 
+#### Type Validation And Filtering
+
+For validating types (integer, boolean or even classes) often it is required to validate first and then filter. For
+example a numeric value: `$number = is_numeric($_POST['alpha']) ? (double)$_POST['alpha'] : 1;`. To allow this a filter
+can set `$validatedBy` to the validator he needs before. This causes the validator to be executed before the filter
+is used. If the validation fails no other filters or validators are executed cause the value could not be filtered.
+
+For example you could write a filter for getting a `User` object:
+
+```php
+<?php
+
+use Verja\Filter;
+use App\User; // a user entity class
+
+class UserFilter extends Filter
+{
+    public function __construct() {
+        $this->setValidatedBy('integer'); // this ensures the $value is an integer
+    }
+    
+    public function filter($value, array $context = []) {
+        return User::findOrFail($value);
+    }
+}
+```
+
 #### Required Fields
 
 Fields can be required which means that an error leads to an exception when you try to get data for this field and the
@@ -257,6 +284,7 @@ $gate->accepts([
     })],
     'password' => [ 'required', 'strLen:8', 'equals:password_confirmation' ],
     'email'    => [ 'required', 'trim', 'emailAddress' ],
+    'age'      => [ 'integer' ],
 ]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'post' && $gate->validate($_POST)) {
@@ -264,6 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'post' && $gate->validate($_POST)) {
     $user->username = $gate->get('username');
     $user->password = password_hash($gate->get('password'), PASSWORD_BCRYPT);
     $user->email    = $gate->get('email');
+    $user->age      = $gate->get('age');
     $user->save();
 }
 ```

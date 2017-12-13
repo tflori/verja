@@ -26,13 +26,15 @@ class Field
     /** @var bool */
     protected $required = false;
 
+    /** @var bool */
+    protected $filterFailed = false;
+
     /**
      * Field constructor.
      *
      * Adds filters and validators given in $definitions in the exact order.
      *
      * @param array $definitions
-     * @throws NotFound
      */
     public function __construct(array $definitions = [])
     {
@@ -42,16 +44,8 @@ class Field
             $this->required();
         }
 
-        $notFound = array_intersect(
-            $this->addFiltersFromArray($definitions),
-            $this->addValidatorsFromArray($definitions)
-        );
-
-        if (count($notFound) > 0) {
-            throw new NotFound(sprintf(
-                'No filter or validator named \'%s\' found',
-                reset($notFound)
-            ));
+        foreach ($definitions as $definition) {
+            $this->addFilterOrValidator($definition);
         }
     }
 
@@ -108,17 +102,7 @@ class Field
      */
     public function addFilter($filter, $prepend = false)
     {
-        if (is_string($filter)) {
-            $filter = Filter::fromString($filter);
-        }
-
-        if (is_callable($filter)) {
-            $filter = new Filter\Callback($filter);
-        }
-
-        if (!$filter instanceof FilterInterface) {
-            return $this;
-        }
+        $filter = Filter::getFilter($filter);
 
         if (count($this->filterCache) > 0) {
             $this->filterCache = [];
@@ -149,7 +133,7 @@ class Field
             try {
                 $this->addFilter($filterDefinition);
             } catch (FilterNotFound $exception) {
-                $notFound[] = $exception->getFilter();
+                $notFound[$exception->getFilter()] = $filterDefinition;
             }
         }
 
@@ -183,23 +167,13 @@ class Field
      *
      * Appends by default prepends when $prepend == true
      *
-     * @param ValidatorInterface|string $validator
-     * @param bool $prepend
+     * @param ValidatorInterface|string|callable $validator
+     * @param bool                               $prepend
      * @return $this
      */
     public function addValidator($validator, $prepend = false)
     {
-        if (is_string($validator)) {
-            $validator = Validator::fromString($validator);
-        }
-
-        if (is_callable($validator)) {
-            $validator = new Validator\Callback($validator);
-        }
-
-        if (!$validator instanceof ValidatorInterface) {
-            return $this;
-        }
+        $validator = Validator::getValidator($validator);
 
         if (count($this->validationCache) > 0) {
             $this->validationCache = [];
@@ -229,11 +203,42 @@ class Field
             try {
                 $this->addValidator($validatorDefinition, false);
             } catch (ValidatorNotFound $exception) {
-                $notFound[] = $exception->getValidator();
+                $notFound[$exception->getValidator()] = $validatorDefinition;
             }
         }
 
         return $notFound;
+    }
+
+    /**
+     * Add a filter or validator
+     *
+     * @param FilterInterface|ValidatorInterface|string $definition
+     * @return $this
+     * @throws NotFound
+     */
+    public function addFilterOrValidator($definition)
+    {
+        if ($definition instanceof FilterInterface) {
+            $this->addFilter($definition);
+        } elseif ($definition instanceof ValidatorInterface) {
+            $this->addValidator($definition);
+        } else {
+            try {
+                $this->addFilter($definition);
+            } catch (FilterNotFound $exception) {
+                try {
+                    $this->addValidator($definition);
+                } catch (ValidatorNotFound $exception) {
+                    throw new NotFound(sprintf(
+                        'No filter or validator named \'%s\' found',
+                        $exception->getValidator()
+                    ));
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -255,7 +260,17 @@ class Field
         } catch (\Exception $exception) {
         }
 
+        $this->filterFailed = false;
         foreach ($this->filters as $filter) {
+            if ($filter instanceof Filter && $validator = $filter->getValidatedBy()) {
+                if (!$validator->validate($value)) {
+                    $this->filterFailed = true;
+                    if ($error = $validator->getError()) {
+                        $this->errors[] = $error;
+                    }
+                    return $value;
+                }
+            }
             $value = $filter->filter($value, $context);
         }
 
@@ -276,12 +291,17 @@ class Field
      */
     public function validate($value, array $context = [])
     {
+        if ($this->filterFailed) {
+            return false;
+        }
+
         try {
             $hash = md5(serialize([$value, $context]));
             if (isset($this->validationCache[$hash])) {
                 return $this->validationCache[$hash];
             }
         } catch (\Exception $exception) {
+            // we catch the exception when the value or context can not be serialized
         }
 
 

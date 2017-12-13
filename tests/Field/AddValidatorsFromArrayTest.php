@@ -51,7 +51,7 @@ class AddValidatorsFromArrayTest extends TestCase
 
         $result = $field->addValidatorsFromArray(['notEmpty', '!unknownValidator:42']);
 
-        self::assertSame(['UnknownValidator'], $result);
+        self::assertSame(['UnknownValidator' => '!unknownValidator:42'], $result);
         self::assertEquals((new Field)->addValidator('notEmpty'), $field);
     }
 
