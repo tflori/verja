@@ -123,9 +123,7 @@ is used. If the validation fails no other filters or validators are executed cau
 
 For example you could write a filter for getting a `User` object:
 
-```php
-<?php
-
+```php?start_inline=true
 use Verja\Filter;
 use App\User; // a user entity class
 
