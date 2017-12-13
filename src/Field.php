@@ -265,7 +265,7 @@ class Field
         foreach ($this->filters as $filter) {
             try {
                 $value = $filter->filter($value, $context);
-            } catch(InvalidValue $e) {
+            } catch (InvalidValue $e) {
                 $this->filterFailed = true;
                 $this->errors = $e->errors;
                 return $value;
