@@ -4,6 +4,7 @@ namespace Verja\Test\Field;
 
 use Verja\Field;
 use Verja\Filter\Trim;
+use Verja\Gate;
 use Verja\Test\Examples\NotSerializable;
 use Verja\Test\TestCase;
 
@@ -53,6 +54,17 @@ class FilterTest extends TestCase
         });
 
         self::assertSame('filtered', $field->filter('value'));
+    }
+
+    /** @test */
+    public function throwsWhenNoFilterGiven()
+    {
+        $field = new Field();
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('$filter has to be an instance of FilterInterface');
+
+        $field->addFilter(new Gate()); // something that is not a filter
     }
 
     /** @test */

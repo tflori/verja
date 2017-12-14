@@ -4,6 +4,7 @@ namespace Verja\Test\Field;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Verja\Field;
+use Verja\Gate;
 use Verja\Test\Examples\NotSerializable;
 use Verja\Test\TestCase;
 use Verja\Validator\NotEmpty;
@@ -63,7 +64,7 @@ class ValidatorTest extends TestCase
     }
 
     /** @test */
-    public function allowsStringForFilters()
+    public function allowsStringForValidators()
     {
         $field = new Field();
 
@@ -73,7 +74,7 @@ class ValidatorTest extends TestCase
     }
 
     /** @test */
-    public function acceptsFunctionForFilters()
+    public function acceptsFunctionForValidators()
     {
         $field = new Field();
 
@@ -82,6 +83,17 @@ class ValidatorTest extends TestCase
         });
 
         self::assertFalse($field->validate('value'));
+    }
+
+    /** @test */
+    public function throwsWhenNoValidatorGiven()
+    {
+        $field = new Field();
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('$validator has to be an instance of ValidatorInterface');
+
+        $field->addValidator(new Gate()); // something that is not a filter
     }
 
     /** @test */
