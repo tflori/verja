@@ -3,6 +3,7 @@
 namespace Verja\Filter;
 
 use Verja\Filter;
+use Verja\Validator;
 
 class Integer extends Filter
 {
@@ -15,7 +16,7 @@ class Integer extends Filter
      */
     public function filter($value, array $context = [])
     {
-        $this->validate(new \Verja\Validator\Integer(), $value);
+        Validator::assert(new Validator\Integer(), $value);
         return (!is_numeric($value) || (int)$value != (double)$value) ? $value : (int)$value;
     }
 }

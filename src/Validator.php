@@ -2,6 +2,7 @@
 
 namespace Verja;
 
+use Verja\Exception\InvalidValue;
 use Verja\Exception\ValidatorNotFound;
 use Verja\Validator\Not;
 
@@ -14,6 +15,36 @@ abstract class Validator implements ValidatorInterface
 
     /** @var array */
     protected $error;
+
+    /**
+     * Assert that $validator validates $value within $context
+     *
+     * If not an InvalidValue exception is thrown.
+     *
+     * @param string|callable|ValidatorInterface $validator
+     * @param mixed                              $value
+     * @param array                              $context
+     * @return mixed
+     * @throws InvalidValue
+     */
+    public static function assert($validator, $value, array $context = [])
+    {
+        $validator = self::getValidator($validator);
+        if (!$validator->validate($value, $context)) {
+            if ($error = $validator->getError()) {
+                throw new InvalidValue(sprintf('Assertion failed: %s', $error->message), 0, null, $error);
+            } else {
+                $validatorReflection = new \ReflectionClass($validator);
+                throw new InvalidValue(sprintf(
+                    'Failed asserting that %s is %s',
+                    json_encode($value),
+                    $validatorReflection->getShortName()
+                ));
+            }
+        }
+
+        return $value;
+    }
 
     /**
      * Get a validator instance

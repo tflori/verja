@@ -126,11 +126,12 @@ For example you could write a filter for getting a `User` object:
 
 ```php?start_inline=true
 use Verja\Filter;
+use Verja\Validator;
 use App\User; // a user entity class
 
 class UserFilter extends Filter {
     public function filter($value, array $context = []) {
-        $this->validate('integer', $value); // this ensures the $value is an integer
+        Validator::assert('integer', $value); // this ensures the $value is an integer
         return User::findOrFail($value);
     }
 }
@@ -181,6 +182,17 @@ var_dump($gate->validate()); // false (no pw given, foo does not contain bar)
 var_dump($gate->validate(['foo' => 'bar', 'pw' => 'abc', 'pw_conf' => 'abc'])); // true
 $gate->setData(['foo' => 'bar', 'pw' => '123', 'pw_conf' => 'abc']);
 $gate->getData(); // throws "Invalid pw: value should be equal to contexts pw_conf"
+```
+
+#### Assert Valid Values
+
+You can also directly assert that a value is valid against a specific validator with the static `Validator::assert()`
+method. This is also used in filters that require specific value. It throws an `InvalidValue` exception if the value
+is not valid. Example:
+
+```php?start_inline=true
+use Verja\Validator;
+$id = (int)Validator::assert('integer', $_GET['id']);
 ```
 
 ### Show Errors

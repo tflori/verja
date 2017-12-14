@@ -30,6 +30,7 @@ class Numeric extends Validator
     public function validate($value, array $context = []): bool
     {
         if ($this->decimalPoint !== '.' && is_string($value)) {
+            $value = str_replace('.', '', $value);
             $value = str_replace($this->decimalPoint, '.', $value);
         }
 

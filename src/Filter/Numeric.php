@@ -3,6 +3,7 @@
 namespace Verja\Filter;
 
 use Verja\Filter;
+use Verja\Validator;
 
 class Numeric extends Filter
 {
@@ -28,9 +29,10 @@ class Numeric extends Filter
      */
     public function filter($value, array $context = [])
     {
-        $this->validate(new \Verja\Validator\Numeric($this->decimalPoint), $value);
+        Validator::assert(new Validator\Numeric($this->decimalPoint), $value);
 
         if ($this->decimalPoint !== '.' && is_string($value)) {
+            $value = str_replace('.', '', $value);
             $value = str_replace($this->decimalPoint, '.', $value);
         }
 

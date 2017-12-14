@@ -75,31 +75,6 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param ValidatorInterface|string|callable $validator
-     * @param mixed $value
-     * @throws InvalidValue
-     */
-    protected function validate($validator, $value)
-    {
-        $validator = Validator::getValidator($validator);
-        if (!$validator->validate($value)) {
-            $filterReflection = new \ReflectionClass($this);
-            if ($error = $validator->getError()) {
-                throw new InvalidValue(
-                    sprintf('Invalid %s: %s', $filterReflection->getShortName(), $error->message),
-                    0,
-                    null,
-                    $error
-                );
-            } else {
-                throw new InvalidValue(
-                    sprintf('The value %s is not valid for %s', json_encode($value), static::class)
-                );
-            }
-        }
-    }
-
-    /**
      * Set the validator for this filter
      *
      * @param ValidatorInterface|string|callable $validator
