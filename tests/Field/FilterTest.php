@@ -2,6 +2,8 @@
 
 namespace Verja\Test\Field;
 
+use Verja\Error;
+use Verja\Exception\InvalidValue;
 use Verja\Field;
 use Verja\Filter\Trim;
 use Verja\Gate;
@@ -126,5 +128,47 @@ class FilterTest extends TestCase
         $field->filter(' body ');
         $field->addFilter('trim');
         $field->filter(' body ');
+    }
+
+    /** @test */
+    public function catchesInvalidValueException()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->once()
+            ->andThrow(new InvalidValue('does not matter'));
+
+        $result = $field->filter(' body ');
+
+        self::assertSame(' body ', $result);
+    }
+
+    /** @test */
+    public function invalidatesWithoutValidators()
+    {
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->once()
+            ->andThrow(new InvalidValue('does not matter'));
+        $field->filter(' body ');
+
+        self::assertFalse($field->validate(' body '));
+    }
+
+    /** @test */
+    public function storesErrorsFromException()
+    {
+        $error = new Error('A_ERROR', ' body ');
+        $field = new Field();
+        $filter = \Mockery::mock(Trim::class)->makePartial();
+        $field->addFilter($filter);
+        $filter->shouldReceive('filter')->with(' body ', [])->once()
+            ->andThrow(new InvalidValue('does not matter', 0, null, $error));
+
+        $field->filter(' body ');
+
+        self::assertSame([$error], $field->getErrors());
     }
 }
