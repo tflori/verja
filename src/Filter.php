@@ -67,25 +67,6 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return ValidatorInterface
-     */
-    public function getValidatedBy()
-    {
-        return $this->validatedBy;
-    }
-
-    /**
-     * Set the validator for this filter
-     *
-     * @param ValidatorInterface|string|callable $validator
-     * @throws \InvalidArgumentException
-     */
-    protected function setValidatedBy($validator)
-    {
-        $this->validatedBy = Validator::getValidator($validator);
-    }
-
-    /**
      * Register an additional namespace
      *
      * @param string $namespace

@@ -32,7 +32,7 @@ abstract class Validator implements ValidatorInterface
         $validator = self::getValidator($validator);
         if (!$validator->validate($value, $context)) {
             if ($error = $validator->getError()) {
-                throw new InvalidValue(sprintf('Assertion failed: %s', $error->message), 0, null, $error);
+                throw new InvalidValue(sprintf('Assertion failed: %s', $error->message), $error);
             } else {
                 $validatorReflection = new \ReflectionClass($validator);
                 throw new InvalidValue(sprintf(

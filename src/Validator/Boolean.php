@@ -36,7 +36,7 @@ class Boolean extends Validator
      */
     public function validate($value, array $context = []): bool
     {
-        if (!is_bool($value) && !is_int($value) && !is_double($value) &&
+        if (!is_bool($value) && !is_int($value) &&
             (!is_string($value) || !in_array($value, $this->stringTrue) && !in_array($value, $this->stringFalse))
         ) {
             $this->error = new Error('NOT_BOOLEAN', $value, 'value should be a boolean');

@@ -165,7 +165,7 @@ class FilterTest extends TestCase
         $filter = \Mockery::mock(Trim::class)->makePartial();
         $field->addFilter($filter);
         $filter->shouldReceive('filter')->with(' body ', [])->once()
-            ->andThrow(new InvalidValue('does not matter', 0, null, $error));
+            ->andThrow(new InvalidValue('does not matter', $error));
 
         $field->filter(' body ');
 

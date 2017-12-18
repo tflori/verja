@@ -11,9 +11,9 @@ class InvalidValue extends Exception
     /** @var Error[] */
     public $errors = [];
 
-    public function __construct($message = "", $code = 0, Throwable $previous = null, Error ...$errors)
+    public function __construct($message = "", Error ...$errors)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message);
 
         $this->errors = $errors;
     }
