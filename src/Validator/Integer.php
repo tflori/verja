@@ -16,6 +16,12 @@ class Integer extends Validator
      */
     public function validate($value, array $context = []): bool
     {
+        // php7 backward compatibility
+        if (PHP_VERSION_ID < 70100 &&
+            is_string($value) && is_numeric($value) && preg_match('/^([\d.]+)e(\d+)$/i', $value, $matches)) {
+            $value = (double)$matches[1] * pow(10, $matches[2]);
+        }
+
         if (!is_int($value) && (!is_numeric($value) || (int)$value != (double)$value)) {
             $this->error = new Error('NO_INTEGER', $value, 'value should be an integer');
             return false;
