@@ -22,11 +22,10 @@ composer require tflori/verja
 Initialize a container, set the input data, define filters and validators, validate the data, get the data.
 
 ```php
-<?php
 $gate = new Verja\Gate();
-$gate->addFields([
-    'username' => ['notEmpty', 'strLen(3, 20)'],
-    'password' => ['notEmpty', 'strLen(8)'],
+$gate->accepts([
+    'username' => ['notEmpty', 'strLen:3:20'],
+    'password' => ['notEmpty', 'strLen:8'],
     'email' => ['notEmpty', 'email'],
 ]);
 
@@ -42,13 +41,13 @@ if ($gate->validate($_POST)) {
 If you prefer auto completion you can of course pass objects:
 
 ```php
+use Verja\Validator;
 
-<?php
-$gate->addFields([
+$gate->accepts([
     'username' => (new Field())
         ->addValidator(new Validator\NotEmpty())
-        ->addValidator(new Validator\StringLength(3, 20)),
-    'password' => [new Validator\NotEmpty(), new Validator\StringLength(8)],
+        ->addValidator(new Validator\StrLen(3, 20)),
+    'password' => [new Validator\NotEmpty(), new Validator\StrLen(8)],
     'email' => ['notEmpty', new App\Validator\DomainEmail('my-domain.com')]
 ]);
 ```
