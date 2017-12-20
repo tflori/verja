@@ -36,6 +36,6 @@ class Numeric extends Filter
             $value = str_replace($this->decimalPoint, '.', $value);
         }
 
-        return !is_numeric($value) ? $value : ((int)$value == (double)$value ? (int)$value : (double)$value);
+        return (double)$value === round((double)$value) ? (int)((double)$value) : (double)$value;
     }
 }

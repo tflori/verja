@@ -37,22 +37,12 @@ class Boolean extends Filter
     public function filter($value, array $context = [])
     {
         Validator::assert(new Validator\Boolean($this->stringTrue, $this->stringFalse), $value);
-        switch (gettype($value)) {
-            case 'boolean':
-                return $value;
 
-            case 'double':
-            case 'integer':
-                return (bool)$value;
-
-            case 'string':
-                return in_array(strtolower($value), $this->stringTrue) ?:
-                       ( in_array(strtolower($value), $this->stringFalse) ? false :
-                         $value
-                       );
-
-            default:
-                return $value;
+        // the validator says it's either true or false string
+        if (is_string($value)) {
+            return in_array(strtolower($value), $this->stringTrue);
         }
+
+        return (bool)$value;
     }
 }

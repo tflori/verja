@@ -17,6 +17,7 @@ class Integer extends Filter
     public function filter($value, array $context = [])
     {
         Validator::assert(new Validator\Integer(), $value);
-        return (!is_numeric($value) || (int)$value != (double)$value) ? $value : (int)$value;
+
+        return (int)((double)$value);
     }
 }
