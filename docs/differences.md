@@ -11,8 +11,7 @@ none of the existing was what I was looking for. Ok, of course I did not check a
 Here I want to show 3 libraries with typical code and why I prefer verja over them. To use everywhere the same code
 here is the example using Verja:
 
-```php
-<?php
+```php?start_inline=true
 
 $gate = new Verja\Gate();
 $gate->accepts([
@@ -48,15 +47,13 @@ exists since February 2013 and is still actively maintained.
 
 **Example:**
 
-```php
-<?php
-
-$v = Valitron\Validator($_POST);
+```php?start_inline=true
+$v = Valitron\Validator();
 $v->rule('required', 'name');
 $v->rule('lengthBetween', 'name', 3, 20);
 $v->rule('integer', 'age');
 
-if ($v->validate()) {
+if ($v->withData($_POST)->validate()) {
     echo 'Please welcome ' . $_POST['name'] . '!';
     if (!empty($_POST['age']) && (int)$_POST['age'] === 18) { 
         echo 'He just get 18 and wants to be a millionaire.';
@@ -74,7 +71,6 @@ if ($v->validate()) {
 ```
 
 **Round-Up:**
-
 - It's even more simple from the first view but notice that you don't get the values from the validation (you can get
   what you input but it's 1:1 the same).
 - The errors are already translated but you have to provide the translations in the syntax the library expects and they
@@ -84,20 +80,19 @@ if ($v->validate()) {
   generated - I'm unsure if this is testable.
 
 **Pros:**
-
 - Simple to use
+- Easy to test
 - A lot of validations out of the box
 - Custom validations by closures with names
 
 **Cons:**
-- Hard to test
 - Custom validations have to be given through static `addRule` method
 - No error keys and parameters
 - No filtering
 - Documentation only in readme and not as descriptive as needed
 - No auto completion possible for validation rules
 - Unusual namings of methods `$v->mapFieldsRules($rules);` is similar to `addFields()`
-- Messages have to be given after the validator
+- Messages have to be given after the validator every time where needed
 - Unclear source code in a huge one for all class
 
 ### wixel/gump
