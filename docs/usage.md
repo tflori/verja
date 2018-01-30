@@ -151,6 +151,43 @@ use Verja\Field;
 $field = new Field([ 'required', 'notEmpty' ]);
 ```
 
+#### Alternative declaration
+
+Filters and validators can be defined in three different ways:
+
+1. As string to `new Field()` or explicit `Filter::fromString()` and `Validator::fromString()`
+2. With keyword `new` directly
+3. With magic `__callStatic()` method
+
+The shortest way to write is as string - however it does not allow auto completion and can not be intuitive. Especially
+new developers will find it hard to find out how the filter or validator is called. Also you might be wondering when
+defining a new field and get a filter instead of a validator what happens when they have the same name.
+
+The most understandable way is to create the objects by yourself - it's also the fastest script as it is the most strait
+forward way. But you can't call directly method on the object. Instead you have to surround it with parenthesis and so
+on. Also it is the the longest way to write.
+
+Another approach are the magic methods. We can type hint these and then they allow auto completion. But it's harder to
+get auto completion for custom validators and filters.
+
+Here is a very short example with all three methods:
+
+```php?start_inline=true
+use Verja\Field;
+use Verja\Validator;
+use Verja\Filter;
+
+// use strings
+$field = new Field(['trim', 'notEmpty']);
+$field->addValidator('numeric'); // explicit a validator
+
+// use keyword new
+$field = new Field([new Filter\Trim(), new Validator\NotEmpty(), new Validator\Numeric()]);
+
+// use magic method
+$field = new Field([Filter::trim(), Validator::notEmpty(), Validator::numeric()]);
+```  
+
 ### Filter And Validate
 
 As there is no magic you can use filters and validators directly or directly use a field for combined filters and
