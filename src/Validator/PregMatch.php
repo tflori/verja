@@ -15,7 +15,7 @@ class PregMatch extends Validator
      *
      * @param string $pattern
      */
-    public function __construct($pattern)
+    public function __construct(string $pattern)
     {
         $this->pattern = $pattern;
     }

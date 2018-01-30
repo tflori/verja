@@ -103,4 +103,14 @@ class FromStringTest extends TestCase
 
         self::assertInstanceOf(CustomValidator\NotEmpty::class, $validator);
     }
+
+    /** @test */
+    public function throwsWhenValidatorIsNotAValidator()
+    {
+        Validator::registerNamespace(CustomValidator::class);
+
+        self::expectException(ValidatorNotFound::class);
+
+        Validator::noValidator();
+    }
 }

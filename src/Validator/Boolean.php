@@ -8,23 +8,27 @@ use Verja\Validator;
 class Boolean extends Validator
 {
     /** @var string[] */
-    protected $stringTrue;
+    protected $stringTrue = ['1', 'true', 't', 'yes', 'y'];
 
     /** @var string[] */
-    protected $stringFalse;
+    protected $stringFalse = ['0', 'false', 'f', 'no', 'n'];
 
     /**
      * Boolean constructor.
      *
      * @param string[] $stringTrue
      * @param string[] $stringFalse
+     * @param bool     $overwrite   Overwrite the arrays instead of merging
      */
-    public function __construct(
-        array $stringTrue = ['1', 'true', 't', 'yes', 'y'],
-        array $stringFalse = ['0', 'false', 'f', 'no', 'n']
-    ) {
-        $this->stringTrue  = $stringTrue;
-        $this->stringFalse = $stringFalse;
+    public function __construct(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
+    {
+        if ($overwrite) {
+            $this->stringTrue = $stringTrue;
+            $this->stringFalse = $stringFalse;
+        } else {
+            $this->stringTrue  = array_merge($this->stringTrue, $stringTrue);
+            $this->stringFalse = array_merge($this->stringFalse, $stringFalse);
+        }
     }
 
     /**

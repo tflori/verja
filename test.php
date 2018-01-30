@@ -7,6 +7,9 @@ require_once 'vendor/autoload.php';
 $gate = new Gate();
 $gate->accept('test', ['required', 'ipAddress:v6:public,unreserved']);
 
+var_dump(\Verja\Validator::boolean('@'));
+die();
+
 if ($gate->validate(['test' => $_SERVER['argv'][1]])) {
     $data = $gate->getData();
     var_dump(isset($data['test']), $data);

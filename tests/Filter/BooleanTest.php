@@ -46,4 +46,45 @@ class BooleanTest extends TestCase
 
         $filter->filter(0.1);
     }
+
+    /** @dataProvider provideAdditionaltrings
+     * @test */
+    public function acceptsDefinedStrings($true, $false, $value, $expected)
+    {
+        $filter = new Boolean([$true], [$false]);
+
+        $result = $filter->filter($value);
+
+        self::assertSame($expected, $result);
+    }
+
+    public function provideAdditionaltrings()
+    {
+        return [
+            ['ja', 'nein', 'ja', true],
+            ['ja', 'nein', 'nein', false],
+            ['ja', 'nein', 'y', true],
+            ['ja', 'nein', 'n', false],
+        ];
+    }
+
+    /** @dataProvider provideNewStrings
+     * @test */
+    public function acceptsOnlyDefinedStrings($true, $false, $value)
+    {
+        $filter = new Boolean([$true], [$false], true);
+
+        self::expectException(InvalidValue::class);
+        self::expectExceptionMessage('Assertion failed: value should be a boolean');
+
+        $filter->filter($value);
+    }
+
+    public function provideNewStrings()
+    {
+        return [
+            ['ja', 'nein', 'y'],
+            ['ja', 'nein', 'n'],
+        ];
+    }
 }

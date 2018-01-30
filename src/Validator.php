@@ -6,6 +6,26 @@ use Verja\Exception\InvalidValue;
 use Verja\Exception\ValidatorNotFound;
 use Verja\Validator\Not;
 
+/**
+ * Class Validator
+ *
+ * @package Verja
+ * @author  Thomas Flori <thflori@gmail.com>
+ *
+ * @method static Validator\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
+ * @method static Validator\Callback callback(\Closure $callback)
+ * @method static Validator\Contains contains(string $subString)
+ * @method static Validator\EmailAddress emailAddress()
+ * @method static Validator\Equals equals(string $opposite, bool $jsonEncode = true)
+ * @method static Validator\Integer integer()
+ * @method static Validator\IpAddress ipAddress(string $version = 'any', string $range = 'any')
+ * @method static Validator\Not not($validator)
+ * @method static Validator\NotEmpty notEmpty()
+ * @method static Validator\Numeric numeric(string $decimalPoint = '.')
+ * @method static Validator\PregMatch pregMatch(string $pattern)
+ * @method static Validator\StrLen strLen(int $min, int $max = 0)
+ * @method static Validator\Truthful truthful()
+ */
 abstract class Validator implements ValidatorInterface
 {
     use WithAssignedField;
@@ -75,7 +95,6 @@ abstract class Validator implements ValidatorInterface
      *
      * @param string $definition
      * @return ValidatorInterface
-     * @throws ValidatorNotFound
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
      */
     public static function fromString(string $definition): ValidatorInterface
@@ -84,12 +103,41 @@ abstract class Validator implements ValidatorInterface
             return new Not(substr($definition, 1));
         }
 
-        list($shortName, $parameters) = Parser::parseClassNameWithParameters($definition);
+        return static::create(...Parser::parseClassNameWithParameters($definition));
+    }
+
+    /**
+     * Create a validator dynamically
+     *
+     * @param string $name
+     * @param array  $arguments
+     * @return ValidatorInterface
+     */
+    public static function __callStatic($name, array $arguments)
+    {
+        return static::create(ucfirst($name), $arguments);
+    }
+
+    /**
+     * Create a validator dynamically
+     *
+     * @param string $shortName
+     * @param array  $parameters
+     * @return ValidatorInterface
+     * @throws ValidatorNotFound
+     */
+    public static function create(string $shortName, array $parameters = []): ValidatorInterface
+    {
         foreach (self::$namespaces as $namespace) {
             $class = $namespace . '\\' . $shortName;
-            if (class_exists($class)) {
-                return new $class(...$parameters);
+            if (!class_exists($class)) {
+                continue;
             }
+            $validator = new $class(...$parameters);
+            if (!$validator instanceof ValidatorInterface) {
+                continue;
+            }
+            return $validator;
         }
 
         throw new ValidatorNotFound($shortName);

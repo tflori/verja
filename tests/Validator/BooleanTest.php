@@ -96,4 +96,13 @@ class BooleanTest extends TestCase
         self::assertTrue($validator->validate('ja'));
         self::assertTrue($validator->validate('nein'));
     }
+
+    /** @test */
+    public function acceptsOnlyDefinedStrings()
+    {
+        $validator = new Boolean(['ja'], ['nein'], true);
+
+        self::assertFalse($validator->validate('yes'));
+        self::assertFalse($validator->validate('no'));
+    }
 }

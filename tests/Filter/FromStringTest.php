@@ -123,4 +123,14 @@ class FromStringTest extends TestCase
 
         self::assertInstanceOf(CustomFilter\Trim::class, $filter);
     }
+
+    /** @test */
+    public function throwsWhenFilterIsNotAFilter()
+    {
+        Filter::registerNamespace(CustomFilter::class);
+
+        self::expectException(FilterNotFound::class);
+
+        Filter::noFilter();
+    }
 }
