@@ -53,3 +53,33 @@ $gate->accepts([
 ```
 
 For more information check the documentation on [github.io/verja](https://tflori.github.io/verja/). 
+
+## Predefined Validators
+
+In this library the following validators are included:
+
+- `Boolean`: Value must be boolean
+- `Contains`: Value must contain `$subString`
+- `EmailAddress`: Value must be a valid email address
+- `Equals`: Field must match field `$opposide`
+- `Integer`: Value must be integer
+- `IpAddress`: Value must be a valid IP address of `$version`
+- `IsArray`: Value must be an array
+- `NotEmpty`: Value must not be empty
+- `Numeric`: Value must be numeric
+- `PregMatch`: Value must match regular expression `$pattern`
+- `StrLen`: String length from value must be between `$min` and `$max`
+- `Truthful`: Converted to boolean the value must be true
+
+Planned:
+
+- `InArray`: Value must exist in `$array`
+- `Between`: Value must be between `$min` and `$max`
+- `Url`: Value must be a valid URL
+- `Alpha`: Value must contain only alphabetic characters
+- `AlphaNumeric`: Value must contain only alphabetic and numeric characters
+- `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
+- `Date`: Value must be a valid date in `$format`
+- `DateBefore`: Value must be a date before `$date` 
+- `DateAfter`: Value must be a date before `$date`
+- `CreditCard`: Value must be a valid credit card number

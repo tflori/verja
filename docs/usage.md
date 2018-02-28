@@ -141,7 +141,7 @@ class UserFilter extends Filter {
 
 Fields can be required which means that an error leads to an exception when you try to get data for this field and the
 value is validated even if it is empty. On the other hand it means that a required field is ok to be empty if no
-no validator is defined.
+validator is defined.
 
 The required attribute can be set via `Field::required()` or the string `'required'` in the array of definitions.
 

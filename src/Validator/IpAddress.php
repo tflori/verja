@@ -7,6 +7,15 @@ use Verja\Validator;
 
 class IpAddress extends Validator
 {
+    const VERSION_ANY = 'any';
+    const VERSION_4 = 'v4';
+    const VERSION_6 = 'v6';
+
+    const RANGE_ANY = 'any';
+    const RANGE_PUBLIC = 'public';
+    const RANGE_UNRESERVED = 'unreserved';
+    const RANGE_PRIVATE = 'private';
+
     /** @var string */
     protected $version;
 
@@ -19,7 +28,7 @@ class IpAddress extends Validator
      * @param string $version 'any' (default), 'v4' or 'v6'
      * @param string $range 'any' (default), 'public', 'public,unreserved' or 'private'
      */
-    public function __construct(string $version = 'any', string $range = 'any')
+    public function __construct(string $version = self::VERSION_ANY, string $range = self::RANGE_ANY)
     {
         $this->version = $version;
         $this->range = $range;
@@ -37,10 +46,10 @@ class IpAddress extends Validator
         $flags = 0;
 
         $ipName = 'ip address';
-        if ($this->version === 'v6') {
+        if ($this->version === self::VERSION_6) {
             $flags = $flags | FILTER_FLAG_IPV6;
             $ipName = 'ip-v6 address';
-        } elseif ($this->version === 'v4') {
+        } elseif ($this->version === self::VERSION_4) {
             $flags = $flags | FILTER_FLAG_IPV4;
             $ipName = 'ip-v4 address';
         }
@@ -61,8 +70,8 @@ class IpAddress extends Validator
             return false;
         }
 
-        if ($this->range !== 'any') {
-            if (strpos($this->range, 'public') !== false) {
+        if ($this->range !== self::RANGE_ANY) {
+            if (strpos($this->range, self::RANGE_PUBLIC) !== false) {
                 $flags = $flags | FILTER_FLAG_NO_PRIV_RANGE;
                 if (!filter_var($value, FILTER_VALIDATE_IP, $flags)) {
                     // not a public ip address
@@ -73,7 +82,7 @@ class IpAddress extends Validator
                         $parameters
                     );
                     return false;
-                } elseif (strpos($this->range, 'unreserved') !== false) {
+                } elseif (strpos($this->range, self::RANGE_UNRESERVED) !== false) {
                     $flags = $flags | FILTER_FLAG_NO_RES_RANGE;
                     if (!filter_var($value, FILTER_VALIDATE_IP, $flags)) {
                         // reserved ip address
@@ -88,7 +97,7 @@ class IpAddress extends Validator
                 }
             }
 
-            if ($this->range === 'private') {
+            if ($this->range === self::RANGE_PRIVATE) {
                 $flags = $flags | FILTER_FLAG_NO_PRIV_RANGE;
                 if (filter_var($value, FILTER_VALIDATE_IP, $flags)) {
                     // public ip address

@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Validator;
 
+use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\IpAddress;
 
@@ -21,10 +22,10 @@ class IpAddressTest extends TestCase
     public function provideValidIpAddresses()
     {
         return [
-            ['any', '0.0.0.0'],
-            ['any', '::'],
-            ['v4', '127.0.0.1'],
-            ['v6', '::1'],
+            [IpAddress::VERSION_ANY, '0.0.0.0'],
+            [IpAddress::VERSION_ANY, '::'],
+            [IpAddress::VERSION_4, '127.0.0.1'],
+            [IpAddress::VERSION_6, '::1'],
         ];
     }
 
@@ -42,9 +43,9 @@ class IpAddressTest extends TestCase
     public function provideInvalidIpAddresses()
     {
         return [
-            ['v4', '::'],
-            ['v6', '0.0.0.0'],
-            ['any', '0.0::1']
+            [IpAddress::VERSION_4, '::'],
+            [IpAddress::VERSION_6, '0.0.0.0'],
+            [IpAddress::VERSION_ANY, '0.0::1']
         ];
     }
 
@@ -62,14 +63,46 @@ class IpAddressTest extends TestCase
     public function provideInvalidRange()
     {
         return [
-            ['private', '87.23.12.41'],
-            ['public', '192.168.0.1'],
-            ['public', '10.10.10.1'],
-            ['public', 'fd00::1'],
-            ['public,unreserved', '172.31.255.255'],
-            ['public,unreserved', '240.0.0.1'],
-            ['public,unreserved', '127.0.0.1'],
-            ['public,unreserved', '::1'],
+            [IpAddress::RANGE_PRIVATE, '87.23.12.41'],
+            [IpAddress::RANGE_PUBLIC, '192.168.0.1'],
+            [IpAddress::RANGE_PUBLIC, '10.10.10.1'],
+            [IpAddress::RANGE_PUBLIC, 'fd00::1'],
+            [IpAddress::RANGE_PUBLIC . ',' . IpAddress::RANGE_UNRESERVED, '172.31.255.255'],
+            [IpAddress::RANGE_PUBLIC . ',' . IpAddress::RANGE_UNRESERVED, '240.0.0.1'],
+            [IpAddress::RANGE_PUBLIC . ',' . IpAddress::RANGE_UNRESERVED, '127.0.0.1'],
+            [IpAddress::RANGE_PUBLIC . ',' . IpAddress::RANGE_UNRESERVED, '::1'],
+        ];
+    }
+
+    /** @dataProvider provideErroneousIpAddresses
+     * @test */
+    public function storesErrors($version, $range, $ip, $eKey, $eMessage)
+    {
+        $validator = new IpAddress($version, $range);
+
+        $validator->validate($ip);
+
+        self::assertEquals(new Error($eKey, $ip, $eMessage, [
+            'version' => $version,
+            'range' => $range,
+        ]), $validator->getError());
+    }
+
+    public function provideErroneousIpAddresses()
+    {
+        return [
+            ['any', 'any', 'anything', 'NO_IP_ADDRESS', 'value should be an ip address'],
+            ['v4', 'any', '::1', 'NO_IP_ADDRESS', 'value should be an ip-v4 address'],
+            ['v6', 'any', '127.0.0.1', 'NO_IP_ADDRESS', 'value should be an ip-v6 address'],
+            ['any', 'private', '87.23.12.41', 'IS_PUBLIC_IP_ADDRESS', 'value should not be a public ip address'],
+            ['any', 'public', '192.168.0.1', 'NO_PUBLIC_IP_ADDRESS', 'value should be a public ip address'],
+            [
+                'any',
+                'public,unreserved',
+                '240.0.0.1',
+                'IS_RESERVED_IP_ADDRESS',
+                'value should not be a reserved ip address'
+            ],
         ];
     }
 }
