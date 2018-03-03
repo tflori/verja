@@ -47,6 +47,8 @@ class InArrayTest extends TestCase
     }
 
     /** @dataProvider provideInvalidValues
+     * @param $array
+     * @param $value
      * @test */
     public function rejectsValuesNotInArray($array, $value)
     {
@@ -58,6 +60,8 @@ class InArrayTest extends TestCase
     }
 
     /** @dataProvider provideInvalidValues
+     * @param $array
+     * @param $value
      * @test */
     public function storesErrors($array, $value)
     {
@@ -82,5 +86,19 @@ class InArrayTest extends TestCase
             ['foo', ''],
             [',foo,bar', 'baz'],
         ];
+    }
+
+    /** @test */
+    public function storesAnError()
+    {
+        $traversable = new \ArrayObject(['a']);
+        $validator = new InArray($traversable);
+
+        $validator->validate('b');
+
+        self::assertEquals(
+            new Error('NOT_IN_ARRAY', 'b', 'value should be in array', ['array' => $traversable]),
+            $validator->getError()
+        );
     }
 }

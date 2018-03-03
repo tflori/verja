@@ -4,7 +4,6 @@ namespace Verja\Test\Field;
 
 use Verja\Field;
 use Verja\Test\TestCase;
-use Verja\Validator\Contains;
 use Verja\Validator\NotEmpty;
 
 class AddValidatorsFromArrayTest extends TestCase

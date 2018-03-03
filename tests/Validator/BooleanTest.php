@@ -25,6 +25,7 @@ class BooleanTest extends TestCase
     }
 
     /** @dataProvider provideBasicBooleanStrings
+     * @param $string
      * @test */
     public function allowsBooleanStringsByDefault($string)
     {
@@ -50,6 +51,7 @@ class BooleanTest extends TestCase
     }
 
     /** @dataProvider provideInvalidBooleans
+     * @param $value
      * @test */
     public function rejectsOtherValues($value)
     {

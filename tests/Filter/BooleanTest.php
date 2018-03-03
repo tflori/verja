@@ -9,6 +9,8 @@ use Verja\Test\TestCase;
 class BooleanTest extends TestCase
 {
     /** @dataProvider provideBooleanValues
+     * @param $value
+     * @param $expected
      * @test */
     public function returnsBooleanWhenPossible($value, $expected)
     {
@@ -48,6 +50,10 @@ class BooleanTest extends TestCase
     }
 
     /** @dataProvider provideAdditionaltrings
+     * @param $true
+     * @param $false
+     * @param $value
+     * @param $expected
      * @test */
     public function acceptsDefinedStrings($true, $false, $value, $expected)
     {
@@ -69,6 +75,9 @@ class BooleanTest extends TestCase
     }
 
     /** @dataProvider provideNewStrings
+     * @param $true
+     * @param $false
+     * @param $value
      * @test */
     public function acceptsOnlyDefinedStrings($true, $false, $value)
     {

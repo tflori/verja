@@ -76,6 +76,7 @@ class GetDataTest extends TestCase
     public function throwsWhenDataIsInvalidButRequired()
     {
         $gate = new Gate([ 'username' => 'john']);
+        /** @var Mock|Field $field */
         $field = \Mockery::mock(Field::class)->makePartial();
         $field->required();
         $field->shouldReceive('validate')->andReturn(false);
@@ -92,6 +93,7 @@ class GetDataTest extends TestCase
     public function throwsWithMessageFromValidator()
     {
         $gate = new Gate([ 'username' => 'john']);
+        /** @var Mock|Field $field */
         $field = \Mockery::mock(Field::class)->makePartial();
         $field->required();
         $field->shouldReceive('validate')->andReturn(false);
@@ -106,7 +108,8 @@ class GetDataTest extends TestCase
         $gate->getData();
     }
 
-    /** @test */
+    /** @test
+     * @throws InvalidValue */
     public function exceptionsContainTheErrors()
     {
         $gate = new Gate([ 'username' => 'john']);
@@ -131,6 +134,7 @@ class GetDataTest extends TestCase
     public function returnsSingleField()
     {
         $gate = new Gate([ 'username' => 'john@example' ]);
+        /** @var Mock|Field $field */
         $field = \Mockery::mock(Field::class)->makePartial();
         $field->shouldReceive('filter')->andReturn('john');
         $field->shouldReceive('validate')->andReturn(true);

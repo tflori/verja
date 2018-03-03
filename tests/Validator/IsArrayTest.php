@@ -9,6 +9,8 @@ use Verja\Validator\IsArray;
 class IsArrayTest extends TestCase
 {
     /** @dataProvider provideValidArrays
+     * @param $type
+     * @param $array
      * @test */
     public function acceptsTypesOfArray($type, $array)
     {
@@ -30,6 +32,8 @@ class IsArrayTest extends TestCase
     }
 
     /** @dataProvider provideInvalidArrays
+     * @param $type
+     * @param $array
      * @test */
     public function rejectsInvalidArrays($type, $array)
     {
@@ -55,6 +59,10 @@ class IsArrayTest extends TestCase
     }
 
     /** @dataProvider provideErroneousArrays
+     * @param $type
+     * @param $array
+     * @param $eKey
+     * @param $eMessage
      * @test */
     public function storesErrors($type, $array, $eKey, $eMessage)
     {

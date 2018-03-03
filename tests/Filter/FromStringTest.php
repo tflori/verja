@@ -109,7 +109,8 @@ class FromStringTest extends TestCase
     {
         Filter::registerNamespace(CustomFilter::class);
 
-        $filter = Filter::fromString('unknown');
+        /** @noinspection PhpUndefinedMethodInspection */
+        $filter = Filter::unknown();
 
         self::assertInstanceOf(CustomFilter\Unknown::class, $filter);
     }
@@ -131,6 +132,6 @@ class FromStringTest extends TestCase
 
         self::expectException(FilterNotFound::class);
 
-        Filter::noFilter();
+        Filter::fromString('noFilter');
     }
 }

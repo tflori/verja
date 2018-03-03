@@ -62,6 +62,7 @@ In this library the following validators are included:
 - `Contains`: Value must contain `$subString`
 - `EmailAddress`: Value must be a valid email address
 - `Equals`: Field must match field `$opposide`
+- `InArray`: Value must exist in `$array`
 - `Integer`: Value must be integer
 - `IpAddress`: Value must be a valid IP address of `$version`
 - `IsArray`: Value must be an array
@@ -73,7 +74,6 @@ In this library the following validators are included:
 
 Planned:
 
-- `InArray`: Value must exist in `$array`
 - `Between`: Value must be between `$min` and `$max`
 - `Url`: Value must be a valid URL
 - `Alpha`: Value must contain only alphabetic characters
@@ -83,3 +83,21 @@ Planned:
 - `DateBefore`: Value must be a date before `$date` 
 - `DateAfter`: Value must be a date before `$date`
 - `CreditCard`: Value must be a valid credit card number
+
+# Predefined Filters
+
+The following filters are included in this library:
+
+- `Boolean`: Converts integer and string values to boolean
+- `Escape`: Escape special characters for usage in html
+- `Integer`: Converts string values to integer
+- `Numeric`: Converts string values to float or integer
+- `Replace`: Replaces `$search` in values with `$replace`
+- `Trim`: Trims `$charcterMask` from values
+
+Planned:
+
+- `ConvertCase`: Converts case to `$mode` (upper, lower or title)
+- `HtmlEntities`: ...
+- `DateTime`: Converts string from `$format` in `DateTime` object
+- `PregReplace`: ...

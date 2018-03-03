@@ -89,7 +89,8 @@ class FromStringTest extends TestCase
     {
         Validator::registerNamespace(CustomValidator::class);
 
-        $validator = Validator::fromString('unknown');
+        /** @noinspection PhpUndefinedMethodInspection */
+        $validator = Validator::unknown();
 
         self::assertInstanceOf(CustomValidator\Unknown::class, $validator);
     }
@@ -111,6 +112,6 @@ class FromStringTest extends TestCase
 
         self::expectException(ValidatorNotFound::class);
 
-        Validator::noValidator();
+        Validator::fromString('noValidator');
     }
 }

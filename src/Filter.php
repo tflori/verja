@@ -3,7 +3,6 @@
 namespace Verja;
 
 use Verja\Exception\FilterNotFound;
-use Verja\Exception\InvalidValue;
 
 /**
  * Class Filter
@@ -61,11 +60,6 @@ abstract class Filter implements FilterInterface
      */
     public static function fromString(string $definition): FilterInterface
     {
-        // we check for a basic filter when the validator is negated
-        if (strlen($definition) > 0 && $definition[0] === '!') {
-            $definition = substr($definition, 1);
-        }
-
         return static::create(...Parser::parseClassNameWithParameters($definition));
     }
 

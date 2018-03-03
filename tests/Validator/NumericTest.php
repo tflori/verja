@@ -25,6 +25,8 @@ class NumericTest extends TestCase
     }
 
     /** @dataProvider provideValidStrings
+     * @param $decimalPoint
+     * @param $string
      * @test */
     public function allowsNumericStrings($decimalPoint, $string)
     {

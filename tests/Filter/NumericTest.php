@@ -9,6 +9,9 @@ use Verja\Test\TestCase;
 class NumericTest extends TestCase
 {
     /** @dataProvider provideNumerics
+     * @param $value
+     * @param $decimalPoint
+     * @param $expected
      * @test */
     public function returnsNumeric($value, $decimalPoint, $expected)
     {

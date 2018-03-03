@@ -31,6 +31,7 @@ class TrimTest extends TestCase
     }
 
     /** @dataProvider provideStringsWithChars
+     * @param string $chars
      * @param string $value
      * @param string $expected
      * @test */

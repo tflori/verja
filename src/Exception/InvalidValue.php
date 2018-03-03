@@ -2,7 +2,6 @@
 
 namespace Verja\Exception;
 
-use Throwable;
 use Verja\Error;
 use Verja\Exception;
 

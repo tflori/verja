@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Gate;
 
+use Mockery\Mock;
 use Verja\Field;
 use Verja\Gate;
 use Verja\Test\TestCase;
@@ -23,6 +24,7 @@ class ValidateTest extends TestCase
     /** @test */
     public function validatesEmptyRequired()
     {
+        /** @var Mock|Field $field */
         $field = \Mockery::mock(Field::class)->makePartial();
         $field->required();
         $field->shouldReceive('validate')->with('', [ 'f1' => '' ])->once()->andReturn(true);
@@ -39,9 +41,11 @@ class ValidateTest extends TestCase
     /** @test */
     public function validatesEachField()
     {
+        /** @var Mock|Field $field1 */
         $field1 = \Mockery::mock(Field::class)->makePartial();
         $field1->required();
         $field1->shouldReceive('validate')->with('value1', [ 'f1' => 'value1' ])->once()->andReturn(false);
+        /** @var Mock|Field $field2 */
         $field2 = \Mockery::mock(Field::class)->makePartial();
         $field2->required();
         $field2->shouldReceive('validate')->with(null, [ 'f1' => 'value1' ])->once()->andReturn(true);

@@ -9,6 +9,7 @@ use Verja\Validator\Truthful;
 class TruthfulTest extends TestCase
 {
     /** @dataProvider provideTruthfulValues
+     * @param $value
      * @test */
     public function allowsTruthfulValues($value)
     {
@@ -30,6 +31,7 @@ class TruthfulTest extends TestCase
     }
 
     /** @dataProvider provideNonTruthfulValues
+     * @param $value
      * @test */
     public function failsWithNonTruthfulValues($value)
     {

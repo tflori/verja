@@ -9,6 +9,8 @@ use Verja\Validator\IpAddress;
 class IpAddressTest extends TestCase
 {
     /** @dataProvider provideValidIpAddresses
+     * @param $version
+     * @param $ipAddress
      * @test */
     public function acceptsSpecificTypeofIpAddress($version, $ipAddress)
     {
@@ -30,6 +32,8 @@ class IpAddressTest extends TestCase
     }
 
     /** @dataProvider provideInvalidIpAddresses
+     * @param $version
+     * @param $ipAddress
      * @test */
     public function acceptsOnlySpecificIpAddress($version, $ipAddress)
     {
@@ -50,6 +54,8 @@ class IpAddressTest extends TestCase
     }
 
     /** @dataProvider provideInvalidRange
+     * @param $range
+     * @param $ipAddress
      * @test */
     public function acceptsOnlySpecificRange($range, $ipAddress)
     {
@@ -75,6 +81,11 @@ class IpAddressTest extends TestCase
     }
 
     /** @dataProvider provideErroneousIpAddresses
+     * @param $version
+     * @param $range
+     * @param $ip
+     * @param $eKey
+     * @param $eMessage
      * @test */
     public function storesErrors($version, $range, $ip, $eKey, $eMessage)
     {

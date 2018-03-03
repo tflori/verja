@@ -17,6 +17,7 @@ class IntegerTest extends TestCase
     }
 
     /** @dataProvider provideValidStrings
+     * @param $string
      * @test */
     public function allowsIntegerStrings($string)
     {
