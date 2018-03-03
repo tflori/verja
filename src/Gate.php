@@ -120,6 +120,64 @@ class Gate
     }
 
     /**
+     * Quick assertion with filters and validators
+     *
+     * Asserts that $value in $context can be filtered and validated by $field.
+     *
+     * If not an InvalidValue exception is thrown.
+     *
+     * Field can be defined as for addField.
+     *
+     * @param mixed $field
+     * @param mixed $value
+     * @param array $context
+     * @return mixed
+     * @throws InvalidValue
+     * @see Gate::addField()
+     */
+    public static function assert($field, $value, array $context = [])
+    {
+        if (!$field instanceof Field) {
+            $definitions = [];
+            if (is_array($field)) {
+                $definitions = $field;
+            } elseif (is_string($field) ||
+                      $field instanceof ValidatorInterface ||
+                      $field instanceof FilterInterface ||
+                      is_callable($field)
+            ) {
+                $definitions = [$field];
+            }
+            $field = new Field($definitions);
+        }
+
+        $filtered = $field->filter($value, $context);
+        if (!$field->validate($filtered, $context)) {
+            $errors = $field->getErrors();
+            if (count($errors) === 1) {
+                throw new InvalidValue(sprintf('Assertion failed: %s', $errors[0]->message), ...$errors);
+            } elseif (count($errors) > 1) {
+                // Ignoring coverage because of error in coverage analysis
+                // @codeCoverageIgnoreStart
+                throw new InvalidValue(sprintf(
+                    'Assertion failed: %s',
+                    implode('; ', array_map(function (Error $error) {
+                        return $error->message;
+                    }, $errors))
+                ), ...$errors);
+                // @codeCoverageIgnoreEnd
+            } else {
+                throw new InvalidValue(sprintf(
+                    'Failed asserting that %s is valid (unknown error)',
+                    json_encode($value)
+                ));
+            }
+        }
+
+        return $filtered;
+    }
+
+    /**
      * Set the data that should be covered (the context)
      *
      * @param array $data

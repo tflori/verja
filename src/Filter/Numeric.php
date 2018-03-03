@@ -3,6 +3,7 @@
 namespace Verja\Filter;
 
 use Verja\Filter;
+use Verja\Gate;
 use Verja\Validator;
 
 class Numeric extends Filter
@@ -29,7 +30,7 @@ class Numeric extends Filter
      */
     public function filter($value, array $context = [])
     {
-        Validator::assert(new Validator\Numeric($this->decimalPoint), $value);
+        Gate::assert(new Validator\Numeric($this->decimalPoint), $value);
 
         if ($this->decimalPoint !== '.' && is_string($value)) {
             $value = str_replace('.', '', $value);

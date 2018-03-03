@@ -3,6 +3,7 @@
 namespace Verja\Filter;
 
 use Verja\Filter;
+use Verja\Gate;
 use Verja\Validator;
 
 class Boolean extends Filter
@@ -40,7 +41,7 @@ class Boolean extends Filter
      */
     public function filter($value, array $context = [])
     {
-        Validator::assert(new Validator\Boolean($this->stringTrue, $this->stringFalse, true), $value);
+        Gate::assert(new Validator\Boolean($this->stringTrue, $this->stringFalse, true), $value);
 
         // the validator says it's either true or false string
         if (is_string($value)) {

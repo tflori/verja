@@ -3,6 +3,7 @@
 namespace Verja\Filter;
 
 use Verja\Filter;
+use Verja\Gate;
 use Verja\Validator;
 
 class Integer extends Filter
@@ -16,7 +17,7 @@ class Integer extends Filter
      */
     public function filter($value, array $context = [])
     {
-        Validator::assert(new Validator\Integer(), $value);
+        Gate::assert(new Validator\Integer(), $value);
 
         return (int)((double)$value);
     }

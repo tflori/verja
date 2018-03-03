@@ -224,6 +224,8 @@ class Field
             $this->addFilter($definition);
         } elseif ($definition instanceof ValidatorInterface) {
             $this->addValidator($definition);
+        } elseif (is_callable($definition) && !is_string($definition)) {
+            $this->addValidator($definition);
         } else {
             try {
                 $this->addFilter($definition);
