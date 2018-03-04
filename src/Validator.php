@@ -13,11 +13,12 @@ use Verja\Validator\Not;
  * @author  Thomas Flori <thflori@gmail.com>
  *
  * @method static Validator\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
+ * @method static Validator\Between between($min = null, $max = null)
  * @method static Validator\Callback callback(\Closure $callback)
  * @method static Validator\Contains contains(string $subString)
  * @method static Validator\EmailAddress emailAddress()
  * @method static Validator\Equals equals(string $opposite, bool $jsonEncode = true)
- * @method static Validator\InArray inArray(mixed $array)
+ * @method static Validator\InArray inArray($array)
  * @method static Validator\Integer integer()
  * @method static Validator\IpAddress ipAddress(string $version = 'any', string $range = 'any')
  * @method static Validator\IsArray isArray(string $type)

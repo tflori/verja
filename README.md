@@ -59,6 +59,7 @@ For more information check the documentation on [github.io/verja](https://tflori
 In this library the following validators are included:
 
 - `Boolean`: Value must be boolean
+- `Between`: Value must be between `$min` and `$max`
 - `Contains`: Value must contain `$subString`
 - `EmailAddress`: Value must be a valid email address
 - `Equals`: Field must match field `$opposide`
@@ -74,7 +75,6 @@ In this library the following validators are included:
 
 Planned:
 
-- `Between`: Value must be between `$min` and `$max`
 - `Url`: Value must be a valid URL
 - `Alpha`: Value must contain only alphabetic characters
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
@@ -98,6 +98,5 @@ The following filters are included in this library:
 Planned:
 
 - `ConvertCase`: Converts case to `$mode` (upper, lower or title)
-- `HtmlEntities`: ...
 - `DateTime`: Converts string from `$format` in `DateTime` object
-- `PregReplace`: ...
+- `PregReplace`: Replaces `$pattern` with `$replace` (replace can also be a callback)
