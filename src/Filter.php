@@ -12,6 +12,7 @@ use Verja\Exception\FilterNotFound;
  *
  * @method static Filter\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
  * @method static Filter\Callback callback($filter)
+ * @method static Filter\Escape escape(bool $doubleEncode, bool $specialChars)
  * @method static Filter\Integer integer()
  * @method static Filter\Numeric numeric(string $decimalPoint = '.')
  * @method static Filter\Replace replace($search, $replace)
