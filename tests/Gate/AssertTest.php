@@ -37,7 +37,8 @@ class AssertTest extends TestCase
     }
 
     /** @test */
-    public function exceptionListsAllErrors() {
+    public function exceptionListsAllErrors()
+    {
         self::expectException(InvalidValue::class);
         self::expectExceptionMessage('Assertion failed: value should not be empty; value should be in array');
 
