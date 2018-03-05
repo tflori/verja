@@ -30,6 +30,16 @@ class DateTest extends TestCase
         self::assertEquals(new Error('NO_DATE', 'foo bar', 'value should be a valid date'), $validator->getError());
     }
 
+    /** @test */
+    public function dateTimeObjectIsValid()
+    {
+        $validator = new Date('dS of F Y');
+
+        $result = $validator->validate(new \DateTime('first day of next month'));
+
+        self::assertTrue($result);
+    }
+
     /** @dataProvider provideFormattedDates
      * @param $format
      * @param $strict

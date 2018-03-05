@@ -39,6 +39,10 @@ class Date extends Validator
      */
     public function validate($value, array $context = []): bool
     {
+        if ($value instanceof \DateTime) {
+            return true;
+        }
+
         if (is_null($this->format) && strtotime($value) === false) {
             $this->error = new Error('NO_DATE', $value, 'value should be a valid date');
             return false;
