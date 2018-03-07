@@ -61,7 +61,7 @@ In this library the following validators are included:
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
 - `Contains`: Value must contain `$subString`
-- `Date`: Value must be a valid date in `$format`
+- `DateTime`: Value must be a valid date in `$format`
 - `EmailAddress`: Value must be a valid email address
 - `Equals`: Field must match field `$opposide`
 - `InArray`: Value must exist in `$array`

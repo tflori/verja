@@ -4,16 +4,16 @@ namespace Verja\Test\Validator;
 
 use Verja\Error;
 use Verja\Test\TestCase;
-use Verja\Validator\Date;
+use Verja\Validator\DateTime;
 
-class DateTest extends TestCase
+class DateTimeTest extends TestCase
 {
     /** @dataProvider provideValidDates
      * @param $date
      * @test */
     public function anyStringConvertableToDateTimeIsValid($date)
     {
-        $validator = new Date();
+        $validator = new DateTime();
 
         $result = $validator->validate($date);
 
@@ -23,7 +23,7 @@ class DateTest extends TestCase
     /** @test */
     public function storesAnErrorWhenInvalid()
     {
-        $validator = new Date();
+        $validator = new DateTime();
 
         $validator->validate('foo bar');
 
@@ -33,7 +33,7 @@ class DateTest extends TestCase
     /** @test */
     public function dateTimeObjectIsValid()
     {
-        $validator = new Date('dS of F Y');
+        $validator = new DateTime('dS of F Y');
 
         $result = $validator->validate(new \DateTime('first day of next month'));
 
@@ -48,7 +48,7 @@ class DateTest extends TestCase
      * @test */
     public function restrictsToFormat($format, $strict, $date, $valid)
     {
-        $validator = new Date($format, $strict);
+        $validator = new DateTime($format, $strict);
 
         $result = $validator->validate($date);
 
@@ -58,7 +58,7 @@ class DateTest extends TestCase
     /** @test */
     public function storesAnErrorWithFormat()
     {
-        $validator = new Date('Y-m-d', true);
+        $validator = new DateTime('Y-m-d', true);
 
         $validator->validate('2016-21-01');
 
@@ -76,7 +76,7 @@ class DateTest extends TestCase
     /** @test */
     public function providesAnInverseError()
     {
-        $validator = new Date();
+        $validator = new DateTime();
 
         $error = $validator->getInverseError('next month');
 
@@ -86,7 +86,7 @@ class DateTest extends TestCase
     /** @test */
     public function providesAnInverseErrorWithFormat()
     {
-        $validator = new Date('Y-m-d');
+        $validator = new DateTime('Y-m-d');
 
         $error = $validator->getInverseError('2016-21-01');
 

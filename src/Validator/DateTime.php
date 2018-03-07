@@ -5,7 +5,7 @@ namespace Verja\Validator;
 use Verja\Error;
 use Verja\Validator;
 
-class Date extends Validator
+class DateTime extends Validator
 {
     /** @var string */
     protected $format;
@@ -14,7 +14,7 @@ class Date extends Validator
     protected $strict;
 
     /**
-     * Date constructor.
+     * DateTime constructor.
      *
      * When strict is set to true the resulting date will be formatted back using the given format and the value
      * has to equal this value. This is helpful to prevent month and day interchanges but will fail for some natural
