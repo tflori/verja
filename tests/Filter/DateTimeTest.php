@@ -86,8 +86,8 @@ class DateTimeTest extends TestCase
             ['Y-m-d H:i:s', $utcNow->getTimezone(), $utcNow->format('Y-m-d H:i:s'), $now->getTimestamp()],
             ['Y-m-d H:i:s', $colomboNow->getTimezone(), $colomboNow->format('Y-m-d H:i:s'), $now->getTimestamp()],
             ['Y-m-d H:i:s', $now->format('e'), $now->format('Y-m-d H:i:s'), $now->getTimestamp()],
-            [null, null, '+2 Hours', $now->getTimestamp()+7200],
-            [null, $colomboNow->getTimezone(), '+2 Hours', $now->getTimestamp()+7200],
+            [null, null, '+2 Hours', Carbon::now()->getTimestamp()+7200],
+            [null, $colomboNow->getTimezone(), '+2 Hours', Carbon::now()->getTimestamp()+7200],
             [
                 null,
                 $colomboNow->getTimezone(),
