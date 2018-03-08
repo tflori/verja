@@ -66,7 +66,7 @@ class DateTimeTest extends TestCase
             new Error(
                 'NO_FORMATTED_DATE',
                 '2016-21-01',
-                'value is not a valid date in format Y-m-d',
+                'value should be a valid date in format Y-m-d',
                 [ 'format' => 'Y-m-d', 'strict' => true ]
             ),
             $validator->getError()

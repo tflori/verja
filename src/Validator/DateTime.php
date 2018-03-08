@@ -43,18 +43,18 @@ class DateTime extends Validator
             return true;
         }
 
-        if (is_null($this->format) && strtotime($value) === false) {
+        if (empty($this->format) && strtotime($value) === false) {
             $this->error = new Error('NO_DATE', $value, 'value should be a valid date');
             return false;
         }
 
-        if (!is_null($this->format)) {
+        if (!empty($this->format)) {
             $date = date_create_from_format($this->format, $value);
             if ($date === false || $this->strict && $date->format($this->format) !== $value) {
                 $this->error = new Error(
                     'NO_FORMATTED_DATE',
                     $value,
-                    sprintf('value is not a valid date in format %s', $this->format),
+                    sprintf('value should be a valid date in format %s', $this->format),
                     [ 'format' => $this->format, 'strict' => $this->strict ]
                 );
                 return false;

@@ -10,7 +10,8 @@
     "phpunit/phpunit": "^6.0",
     "mockery/mockery": "^0.9",
     "squizlabs/php_codesniffer": "^2.7",
-    "tflori/dependency-injector": "^1.3"
+    "tflori/dependency-injector": "^1.3",
+    "nesbot/carbon": "^1.23"
   },
   "autoload": {
     "psr-4": {
