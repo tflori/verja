@@ -71,28 +71,31 @@ class DateTimeTest extends TestCase
         $result = $filter->filter($value);
 
         self::assertInstanceOf(\DateTime::class, $result);
-        self::assertSame($expected, $result->getTimestamp());
+        self::assertSame(
+            $expected instanceof Carbon ? $expected->getTimestamp() : Carbon::now()->getTimestamp() + $expected,
+            $result->getTimestamp()
+        );
     }
 
     public function provideValidDates()
     {
         date_default_timezone_set('Europe/Berlin');
         $now = Carbon::now();
-        $utcNow = (clone $now)->setTimezone('UTC');
-        $colomboNow = (clone $utcNow)->setTimezone('Asia/Colombo');
+        $utc = (clone $now)->setTimezone('UTC');
+        $colombo = (clone $utc)->setTimezone('Asia/Colombo');
 
         return [
-            ['Y-m-d H:i:s', null, $now->format('Y-m-d H:i:s'), $now->getTimestamp()],
-            ['Y-m-d H:i:s', $utcNow->getTimezone(), $utcNow->format('Y-m-d H:i:s'), $now->getTimestamp()],
-            ['Y-m-d H:i:s', $colomboNow->getTimezone(), $colomboNow->format('Y-m-d H:i:s'), $now->getTimestamp()],
-            ['Y-m-d H:i:s', $now->format('e'), $now->format('Y-m-d H:i:s'), $now->getTimestamp()],
-            [null, null, '+2 Hours', Carbon::now()->getTimestamp()+7200],
-            [null, $colomboNow->getTimezone(), '+2 Hours', Carbon::now()->getTimestamp()+7200],
+            ['Y-m-d H:i:s', null, $now->format('Y-m-d H:i:s'), $now],
+            ['Y-m-d H:i:s', $utc->getTimezone(), $utc->format('Y-m-d H:i:s'), $now],
+            ['Y-m-d H:i:s', $colombo->getTimezone(), $colombo->format('Y-m-d H:i:s'), $now],
+            ['Y-m-d H:i:s', $now->format('e'), $now->format('Y-m-d H:i:s'), $now],
+            [null, null, '+2 Hours', 7200],
+            [null, $colombo->getTimezone(), '+2 Hours', 7200],
             [
-                null,
-                $colomboNow->getTimezone(),
-                $utcNow->format('Y-m-d H:i:s'),
-                $now->getTimestamp() - $colomboNow->getOffset()
+                'Y-m-d H:i:s',
+                $colombo->getTimezone(),
+                $utc->format('Y-m-d H:i:s'),
+                (clone $now)->addSeconds(-$colombo->getOffset())
             ],
         ];
     }
