@@ -58,6 +58,7 @@ For more information check the documentation on [github.io/verja](https://tflori
 
 In this library the following validators are included:
 
+- `Alpha`: Value must contain only alphabetical characters
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
 - `Contains`: Value must contain `$subString`
@@ -77,7 +78,6 @@ In this library the following validators are included:
 Planned:
 
 - `Url`: Value must be a valid URL
-- `Alpha`: Value must contain only alphabetic characters
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
 - `DateBefore`: Value must be a date before `$date` 

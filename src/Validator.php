@@ -2,7 +2,6 @@
 
 namespace Verja;
 
-use Verja\Exception\InvalidValue;
 use Verja\Exception\ValidatorNotFound;
 use Verja\Validator\Not;
 
@@ -12,6 +11,7 @@ use Verja\Validator\Not;
  * @package Verja
  * @author  Thomas Flori <thflori@gmail.com>
  *
+ * @method static Validator\Alpha alpha(bool $allowSpaces = false)
  * @method static Validator\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
  * @method static Validator\Between between($min = null, $max = null)
  * @method static Validator\Callback callback(\Closure $callback)
@@ -45,6 +45,7 @@ abstract class Validator implements ValidatorInterface
      *
      * @param string|callable|ValidatorInterface $validator
      * @return ValidatorInterface
+     * @throws ValidatorNotFound
      */
     public static function getValidator($validator)
     {
@@ -70,6 +71,7 @@ abstract class Validator implements ValidatorInterface
      * @param string $definition
      * @return ValidatorInterface
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
+     * @throws ValidatorNotFound
      */
     public static function fromString(string $definition): ValidatorInterface
     {
@@ -86,6 +88,7 @@ abstract class Validator implements ValidatorInterface
      * @param string $name
      * @param array  $arguments
      * @return ValidatorInterface
+     * @throws ValidatorNotFound
      */
     public static function __callStatic($name, array $arguments)
     {
