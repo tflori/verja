@@ -3,5 +3,8 @@ composer.phar
 /composer.lock
 /vendor/
 
+# ide settings
+/.idea*
+
 # rendered documentation
 /docs/_site
