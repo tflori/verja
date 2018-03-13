@@ -58,6 +58,7 @@ For more information check the documentation on [github.io/verja](https://tflori
 
 In this library the following validators are included:
 
+- `After`: Value must be a date time after `$dateTime`
 - `Alpha`: Value must contain only alphabetical characters
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
@@ -80,8 +81,7 @@ Planned:
 - `Url`: Value must be a valid URL
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
-- `DateBefore`: Value must be a date before `$date` 
-- `DateAfter`: Value must be a date before `$date`
+- `DateBefore`: Value must be a date before `$date`
 - `CreditCard`: Value must be a valid credit card number
 
 # Predefined Filters

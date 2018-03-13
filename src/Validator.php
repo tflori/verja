@@ -11,6 +11,7 @@ use Verja\Validator\Not;
  * @package Verja
  * @author  Thomas Flori <thflori@gmail.com>
  *
+ * @method static Validator\After after($dateTime)
  * @method static Validator\Alpha alpha(bool $allowSpaces = false)
  * @method static Validator\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
  * @method static Validator\Between between($min = null, $max = null)
