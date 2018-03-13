@@ -2,6 +2,8 @@
 
 namespace Verja\Test\Validator;
 
+use Carbon\Carbon;
+use PHPUnit\Framework\Error\Warning;
 use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\After;
@@ -11,8 +13,14 @@ class AfterTest extends TestCase
     /** @test */
     public function requiresDateTimeParameter()
     {
-        self::expectException('ArgumentCountError');
+        if (PHP_VERSION_ID < 70100) {
+            self::expectException(Warning::class);
+        } else {
+            // new exception since php 7.1
+            self::expectException(\ArgumentCountError::class);
+        }
 
+        /** @noinspection PhpParamsInspection */
         new After();
     }
 
@@ -120,13 +128,22 @@ class AfterTest extends TestCase
 
     public function provideDateTimeObjects()
     {
-        return [
+        $now = Carbon::now();
+
+        $data = [
             [new \DateTime('+1 hour'), new \DateTime(), true],
             [new \DateTime('-1 hour'), new \DateTime(), false],
-            [new \DateTime(), new \DateTime(), false],
             ['now', 'now', true],
             ['2016-01-21', '1984-01-21', true],
             ['2016-01-21', 'now', false],
+            [$now->format('c'), $now->format('c'), true], // without milliseconds
+            [
+                \DateTime::createFromFormat('U.u', microtime(true)),
+                \DateTime::createFromFormat('U.u', microtime(true)),
+                false
+            ], // with milliseconds
         ];
+
+        return $data;
     }
 }

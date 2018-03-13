@@ -59,7 +59,7 @@ class After extends Validator
         }
 
         if ($value instanceof \DateTime) {
-            if ($this->floatDiff($value, $this->dateTime) > 0) {
+            if ($this->floatDiff($value, $this->dateTime) >= 0) {
                 return true;
             }
             $this->error = new Error(
