@@ -139,7 +139,7 @@ class AfterTest extends TestCase
             [$now->format('c'), $now->format('c'), true], // without milliseconds
             [
                 \DateTime::createFromFormat('U.u', microtime(true)),
-                \DateTime::createFromFormat('U.u', microtime(true)),
+                \DateTime::createFromFormat('U.u', microtime(true)+0.002), // make sure there are 2 milliseconds more
                 false
             ], // with milliseconds
         ];
