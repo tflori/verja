@@ -132,7 +132,6 @@ class BeforeTest extends TestCase
         $data = [
             [new \DateTime('-1 hour'), new \DateTime(), true],
             [new \DateTime('+1 hour'), new \DateTime(), false],
-            ['now', 'now', false],
             ['2016-01-21', '1984-01-21', false],
             ['2016-01-21', 'now', true],
             [$now->format('c'), $now->format('c'), true], // without milliseconds
