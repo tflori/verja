@@ -60,6 +60,7 @@ In this library the following validators are included:
 
 - `After`: Value must be a date time after `$dateTime`
 - `Alpha`: Value must contain only alphabetical characters
+- `Before`: Value must be a date time before `$dateTime`
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
 - `Contains`: Value must contain `$subString`
@@ -81,7 +82,6 @@ Planned:
 - `Url`: Value must be a valid URL
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
-- `DateBefore`: Value must be a date before `$date`
 - `CreditCard`: Value must be a valid credit card number
 
 # Predefined Filters

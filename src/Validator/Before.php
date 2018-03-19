@@ -3,9 +3,9 @@
 namespace Verja\Validator;
 
 /**
- * Validator\After
+ * Validator\Before
  *
- * Validate that a datetime is after the given datetime.
+ * Validate that a datetime is before the given datetime.
  *
  * @WARNING Both values can be strings and will then be parsed by DateTime constructor. Use the DateTime filter before
  *          is highly recommended.
@@ -13,13 +13,13 @@ namespace Verja\Validator;
  * @package Verja\Validator
  * @author  Thomas Flori <thflori@gmail.com>
  */
-class After extends TemporaAbstract
+class Before extends TemporaAbstract
 {
-    protected $errorKey = 'NOT_AFTER';
-    protected $errorMessage = 'value should be after %s';
+    protected $errorKey = 'NOT_BEFORE';
+    protected $errorMessage = 'value should be before %s';
 
     protected function validateDateTime(\DateTime $value)
     {
-        return $this->floatDiff($value, $this->dateTime) >= 0;
+        return $this->floatDiff($value, $this->dateTime) <= 0;
     }
 }
