@@ -1,6 +1,7 @@
 <?php
 
 use Verja\Gate;
+use Verja\Validator;
 use DependencyInjector\DI;
 
 require_once 'vendor/autoload.php';
@@ -28,6 +29,7 @@ function controller()
         'username'   => ['required', 'trim','strLen:3:20','!contains:fourtytwo'],
         'password'   => ['required', 'strLen:8'],
         'password_c' => ['required', 'equals:password'],
+        'birth-date'  => ['dateTime', Validator::before(new DateTime('midnight -18 Years'))],
     ]);
     if (!empty($_POST) && $verja->validate($_POST)) {
         $v['success'] = true;
@@ -75,6 +77,12 @@ controller();
               <label for="password_c">Repeat password</label>
             </div>
 
+            <div class="input-field">
+              <input type="text" class="datepicker" name="birth-date" id="birth-date"
+                     value="<?= @$_POST['birth-date'] ?>" />
+              <label for="birth-date">Birth date</label>
+            </div>
+
             <button type="submit" class="waves-effect waves-light btn">register</button>
           </form>
         </div>
@@ -84,5 +92,15 @@ controller();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="docs/javascripts/custom.js"></script>
     <script src="docs/javascripts/materialize.min.js"></script>
+    <script>
+      $(document).ready(function() {
+          $('.datepicker').pickadate({
+              format: 'dd.mm.yyyy',
+              selectMonth: true,
+              selectYears: 100,
+              closeOnSelect: true,
+          });
+      });
+    </script>
   </body>
 </html>
