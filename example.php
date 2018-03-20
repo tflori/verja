@@ -94,11 +94,10 @@ controller();
     <script src="docs/javascripts/materialize.min.js"></script>
     <script>
       $(document).ready(function() {
-          $('.datepicker').pickadate({
-              format: 'dd.mm.yyyy',
+          $('.datepicker').datepicker({
+              format: 'mm/dd/yyyy',
               selectMonth: true,
-              selectYears: 100,
-              closeOnSelect: true,
+              yearRange: [1940, 2001],
           });
       });
     </script>
