@@ -3,6 +3,7 @@
 namespace Verja\Test\Validator;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Error\Warning;
 use Verja\Error;
 use Verja\Test\TestCase;
 use Verja\Validator\Before;
