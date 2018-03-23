@@ -64,6 +64,7 @@ In this library the following validators are included:
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
 - `Contains`: Value must contain `$subString`
+- `CreditCard`: Value must be a valid credit card number
 - `DateTime`: Value must be a valid date in `$format`
 - `EmailAddress`: Value must be a valid email address
 - `Equals`: Field must match field `$opposide`
@@ -82,7 +83,6 @@ Planned:
 - `Url`: Value must be a valid URL
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
-- `CreditCard`: Value must be a valid credit card number
 
 # Predefined Filters
 

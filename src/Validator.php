@@ -18,6 +18,7 @@ use Verja\Validator\Not;
  * @method static Validator\Between between($min = null, $max = null)
  * @method static Validator\Callback callback(\Closure $callback)
  * @method static Validator\Contains contains(string $subString)
+ * @method static Validator\CreditCard creditCard(string $subString)
  * @method static Validator\DateTime dateTime(string $format = null, bool $strict = false)
  * @method static Validator\EmailAddress emailAddress()
  * @method static Validator\Equals equals(string $opposite, bool $jsonEncode = true)
