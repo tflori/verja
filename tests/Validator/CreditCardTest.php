@@ -112,11 +112,7 @@ class CreditCardTest extends TestCase
 
     public function provideCreditCardTypes()
     {
-        // visa: len 13|16|19, begins with 4
-        // mastercard: len 16, begins with 51-55 or 2221-2720
-        // amex: len 15, begins with 34 or 37
-        // dinersclub: len 14, begins with 30[0-5] or 36[0-9] or 38[0-9]
-        // discover: len 16, begins with 6011 or 65
+        // for a list of credit cards see https://en.wikipedia.org/wiki/Payment_card_number
 
         return [
             // visa tests
@@ -155,6 +151,45 @@ class CreditCardTest extends TestCase
             ['amex', $this->appendChecksum('3834 5678 9012 34'), false],
             ['amex', $this->appendChecksum('3434 5678 9012 3'), false],
             ['amex', $this->appendChecksum('3434 5678 9012 345'), false],
+
+            // maestro check
+            'maestro-a' => ['maestro', $this->appendChecksum('5234 5678 901'), false],
+            'maestro-b' => ['maestro', $this->appendChecksum('6234 5678 901'), true],
+            'maestro-c' => ['maestro', $this->appendChecksum('7234 5678 901'), false],
+            'maestro-d' => ['maestro', $this->appendChecksum('5034 5678 901'), true],
+            'maestro-e' => ['maestro', $this->appendChecksum('5134 5678 901'), false],
+            'maestro-f' => ['maestro', $this->appendChecksum('5534 5678 901'), false],
+            'maestro-g' => ['maestro', $this->appendChecksum('5634 5678 901'), true],
+            'maestro-h' => ['maestro', $this->appendChecksum('5734 5678 901'), true],
+            'maestro-i' => ['maestro', $this->appendChecksum('5834 5678 901'), true],
+            'maestro-j' => ['maestro', $this->appendChecksum('5934 5678 901'), false],
+            'maestro-l' => ['maestro', $this->appendChecksum('5034 5678 9012 3456 78'), true],
+            'maestro-m' => ['maestro', $this->appendChecksum('5034 5678 9012 3456 789'), false],
+
+            // diners club check
+            'diner-a' => ['dinersclub', $this->appendChecksum('3634 5678 9012 '), false],
+            'diner-b' => ['dinersclub', $this->appendChecksum('3634 5678 9012 3'), true],
+            'diner-c' => ['dinersclub', $this->appendChecksum('3634 5678 9012 3456 78'), true],
+            'diner-d' => ['dinersclub', $this->appendChecksum('3634 5678 9012 3456 789'), false],
+            'diner-e' => ['dinersclub', $this->appendChecksum('3834 5678 9012 34'), false],
+            'diner-f' => ['dinersclub', $this->appendChecksum('3834 5678 9012 345'), true],
+            'diner-g' => ['dinersclub', $this->appendChecksum('3934 5678 9012 3456 78'), true],
+            'diner-h' => ['dinersclub', $this->appendChecksum('3934 5678 9012 3456 789'), false],
+            'diner-i' => ['dinersclub', $this->appendChecksum('3004 5678 9012 34'), false],
+            'diner-j' => ['dinersclub', $this->appendChecksum('3004 5678 9012 345'), true],
+            'diner-k' => ['dinersclub', $this->appendChecksum('3014 5678 9012 345'), true],
+            'diner-l' => ['dinersclub', $this->appendChecksum('3044 5678 9012 345'), true],
+            'diner-m' => ['dinersclub', $this->appendChecksum('3054 5678 9012 345'), true],
+            'diner-n' => ['dinersclub', $this->appendChecksum('3064 5678 9012 345'), false],
+            'diner-o' => ['dinersclub', $this->appendChecksum('3054 5678 9012 3456 78'), true],
+            'diner-p' => ['dinersclub', $this->appendChecksum('3054 5678 9012 3456 789'), false],
+            'diner-q' => ['dinersclub', $this->appendChecksum('3095 5678 9012 34'), false],
+            'diner-r' => ['dinersclub', $this->appendChecksum('3095 5678 9012 345'), true],
+            'diner-s' => ['dinersclub', $this->appendChecksum('3095 5678 9012 3456 78'), true],
+            'diner-t' => ['dinersclub', $this->appendChecksum('3095 5678 9012 3456 789'), false],
+            'diner-u' => ['dinersclub', $this->appendChecksum('5434 5678 9012 345'), true],
+            'diner-v' => ['dinersclub', $this->appendChecksum('5534 5678 9012 345'), true],
+            'diner-w' => ['dinersclub', $this->appendChecksum('5434 5678 9012 3456 '), false],
 
             // multiple types allowed
             [['mastercard', 'visa'], '5108 5967 7583 9142', true], // master card

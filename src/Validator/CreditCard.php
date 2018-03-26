@@ -16,9 +16,11 @@ use Verja\Validator;
  */
 class CreditCard extends Validator
 {
-    const TYPE_VISA = 'visa';
-    const TYPE_MASTER_CARD = 'mastercard';
+    const TYPE_VISA             = 'visa';
+    const TYPE_MASTER_CARD      = 'mastercard';
     const TYPE_AMERICAN_EXPRESS = 'amex';
+    const TYPE_MAESTRO          = 'maestro';
+    const TYPE_DINERSCLUB       = 'dinersclub';
 
     /** @var array  */
     protected $types = [];
@@ -83,10 +85,18 @@ class CreditCard extends Validator
 
     protected function validateTypes(string $number): bool
     {
+        // each card has an array of definitions
+        // each definition can be a regular expression or an array of length definition and range definition
+        // length definition can be an array or a fix length
         static $cardTypes = [
             self::TYPE_VISA             => ['/^4\d{12}(\d{3}){0,2}$/'],
             self::TYPE_MASTER_CARD      => [[16, [51, 55]], [16, [2221, 2720]]],
             self::TYPE_AMERICAN_EXPRESS => ['/^3[47]\d{13}$/'],
+            self::TYPE_MAESTRO          => ['/^6\d{11,18}$/', '/^50\d{10,17}$/', [[12, 19], [56, 58]]],
+            self::TYPE_DINERSCLUB       => [
+                '/^36\d{12,17}$/', '/^3095\d{12,15}$/',
+                [[16, 19], [300, 305]], [16, [54, 55]], [[16, 19], [38, 39]]
+            ],
         ];
 
         foreach ($this->types as $type) {
