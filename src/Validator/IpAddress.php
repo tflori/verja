@@ -114,4 +114,9 @@ class IpAddress extends Validator
 
         return true;
     }
+
+    public function getInverseError($value)
+    {
+        return new Error('IS_IP_ADDRESS', $value, 'value should not be an ip address');
+    }
 }

@@ -116,4 +116,16 @@ class IpAddressTest extends TestCase
             ],
         ];
     }
+
+    /** @test */
+    public function returnsAnInverseError()
+    {
+        $validator = new IpAddress();
+
+        self::assertEquals(new Error(
+            'IS_IP_ADDRESS',
+            '192.168.0.1',
+            'value should not be an ip address'
+        ), $validator->getInverseError('192.168.0.1'));
+    }
 }

@@ -50,4 +50,9 @@ class IsArray extends Validator
 
         return true;
     }
+
+    public function getInverseError($value)
+    {
+        return new Error('IS_ARRAY', $value, 'value should not be an array');
+    }
 }

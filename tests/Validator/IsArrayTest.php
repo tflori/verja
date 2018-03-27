@@ -21,16 +21,6 @@ class IsArrayTest extends TestCase
         self::assertTrue($result);
     }
 
-    public function provideValidArrays()
-    {
-        return [
-            [IsArray::TYPE_ANY, ['a','b','c']],
-            [IsArray::TYPE_INDEX, ['a','b','c']],
-            [IsArray::TYPE_ANY, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
-            [IsArray::TYPE_ASSOC, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
-        ];
-    }
-
     /** @dataProvider provideInvalidArrays
      * @param $type
      * @param $array
@@ -42,20 +32,6 @@ class IsArrayTest extends TestCase
         $result = $validator->validate($array);
 
         self::assertFalse($result);
-    }
-
-    public function provideInvalidArrays()
-    {
-        $indexedArray = ['a','b','c'];
-        unset($indexedArray[0]); // now it is not indexed anymore the keys are 1 and 2
-
-        return [
-            [IsArray::TYPE_ASSOC, ['a','b','c']],
-            [IsArray::TYPE_INDEX, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
-            [IsArray::TYPE_INDEX, [2 => 23, 1 => 42]],
-            [IsArray::TYPE_INDEX, $indexedArray], // see above
-            [IsArray::TYPE_ANY, 'a,b,c'],
-        ];
     }
 
     /** @dataProvider provideErroneousArrays
@@ -71,6 +47,42 @@ class IsArrayTest extends TestCase
         $validator->validate($array);
 
         self::assertEquals(new Error($eKey, $array, $eMessage, ['type' => $type]), $validator->getError());
+    }
+
+    /** @test */
+    public function returnsAnInverseError()
+    {
+        $validator = new IsArray();
+
+        self::assertEquals(new Error(
+            'IS_ARRAY',
+            ['foo', 'bar'],
+            'value should not be an array'
+        ), $validator->getInverseError(['foo', 'bar']));
+    }
+
+    public function provideValidArrays()
+    {
+        return [
+            [IsArray::TYPE_ANY, ['a','b','c']],
+            [IsArray::TYPE_INDEX, ['a','b','c']],
+            [IsArray::TYPE_ANY, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
+            [IsArray::TYPE_ASSOC, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
+        ];
+    }
+
+    public function provideInvalidArrays()
+    {
+        $indexedArray = ['a','b','c'];
+        unset($indexedArray[0]); // now it is not indexed anymore the keys are 1 and 2
+
+        return [
+            [IsArray::TYPE_ASSOC, ['a','b','c']],
+            [IsArray::TYPE_INDEX, ['a' => 0.23, 'b' => 0.42, 'c' => 1]],
+            [IsArray::TYPE_INDEX, [2 => 23, 1 => 42]],
+            [IsArray::TYPE_INDEX, $indexedArray], // see above
+            [IsArray::TYPE_ANY, 'a,b,c'],
+        ];
     }
 
     public function provideErroneousArrays()

@@ -67,4 +67,14 @@ class Between extends Validator
 
         return true;
     }
+
+    public function getInverseError($value)
+    {
+        return new Error(
+            'BETWEEN',
+            $value,
+            sprintf('value should not be between %d and %d', $this->min, $this->max),
+            ['min' => $this->min, 'max' => $this->max]
+        );
+    }
 }

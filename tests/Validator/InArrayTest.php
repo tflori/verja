@@ -101,4 +101,17 @@ class InArrayTest extends TestCase
             $validator->getError()
         );
     }
+
+    /** @test */
+    public function returnsAnInverseError()
+    {
+        $validator = new InArray(['foo', 'bar']);
+
+        self::assertEquals(new Error(
+            'IN_ARRAY',
+            'foo',
+            'value should not be in array',
+            ['array' => ['foo', 'bar']]
+        ), $validator->getInverseError('foo'));
+    }
 }

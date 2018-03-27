@@ -42,6 +42,11 @@ class InArray extends Validator
         return true;
     }
 
+    public function getInverseError($value)
+    {
+        return new Error('IN_ARRAY', $value, 'value should not be in array', ['array' => $this->array]);
+    }
+
     protected function inArray($value)
     {
         if (is_array($this->array)) {

@@ -57,10 +57,20 @@ class BetweenTest extends TestCase
             'TOO_BIG',
             666,
             'value should be maximal 42',
-            [
-                'min' => null,
-                'max' => 42,
-            ]
+            ['min' => null, 'max' => 42]
         ), $validator->getError());
+    }
+
+    /** @test */
+    public function returnsAnInverseError()
+    {
+        $validator = new Between(-32, 0);
+
+        self::assertEquals(new Error(
+            'BETWEEN',
+            0,
+            'value should not be between -32 and 0',
+            ['min' => -32, 'max' => 0]
+        ), $validator->getInverseError(0));
     }
 }
