@@ -11,6 +11,8 @@ use Verja\Validator;
  * NOTE: Diners Club enRoute can not be validated with this class. They where not issued since 1992 so no card should
  * be valid anymore.
  *
+ * You can extend these class and overwrite `protected static $cardTypes` to get more or different type validations.
+ *
  * @package Verja\Validator
  * @author  Thomas Flori <thflori@gmail.com>
  */
@@ -25,6 +27,21 @@ class CreditCard extends Validator
     /** @var array  */
     protected $types = [];
 
+    // each card has an array of definitions
+    // each definition can be a regular expression or an array of length definition and range definition
+    // length definition can be an array or a fix length
+    /** @var array */
+    protected static $cardTypes = [
+        self::TYPE_VISA             => ['/^4\d{12}(\d{3}){0,2}$/'],
+        self::TYPE_MASTER_CARD      => [[16, [51, 55]], [16, [2221, 2720]]],
+        self::TYPE_AMERICAN_EXPRESS => ['/^3[47]\d{13}$/'],
+        self::TYPE_MAESTRO          => ['/^6\d{11,18}$/', '/^50\d{10,17}$/', [[12, 19], [56, 58]]],
+        self::TYPE_DINERSCLUB       => [
+            '/^36\d{12,17}$/', '/^3095\d{12,15}$/',
+            [[16, 19], [300, 305]], [16, [54, 55]], [[16, 19], [38, 39]]
+        ],
+    ];
+
     /**
      * CreditCard constructor.
      *
@@ -32,7 +49,7 @@ class CreditCard extends Validator
      */
     public function __construct($types = [])
     {
-        $this->types = is_string($types) ? [$types] : $types;
+        $this->types = is_string($types) ? func_get_args() : $types;
     }
 
 
@@ -70,6 +87,16 @@ class CreditCard extends Validator
         return true;
     }
 
+    public function getInverseError($value)
+    {
+        return new Error(
+            'CREDIT_CARD',
+            $value,
+            sprintf('value should not be a credit card of type %s', implode(' or ', $this->types)),
+            ['types' => $this->types]
+        );
+    }
+
     protected function validateLuhn(string $number): bool
     {
         $sum = '';
@@ -85,28 +112,14 @@ class CreditCard extends Validator
 
     protected function validateTypes(string $number): bool
     {
-        // each card has an array of definitions
-        // each definition can be a regular expression or an array of length definition and range definition
-        // length definition can be an array or a fix length
-        static $cardTypes = [
-            self::TYPE_VISA             => ['/^4\d{12}(\d{3}){0,2}$/'],
-            self::TYPE_MASTER_CARD      => [[16, [51, 55]], [16, [2221, 2720]]],
-            self::TYPE_AMERICAN_EXPRESS => ['/^3[47]\d{13}$/'],
-            self::TYPE_MAESTRO          => ['/^6\d{11,18}$/', '/^50\d{10,17}$/', [[12, 19], [56, 58]]],
-            self::TYPE_DINERSCLUB       => [
-                '/^36\d{12,17}$/', '/^3095\d{12,15}$/',
-                [[16, 19], [300, 305]], [16, [54, 55]], [[16, 19], [38, 39]]
-            ],
-        ];
-
         foreach ($this->types as $type) {
             // types that we can't validate are valid
-            if (!isset($cardTypes[$type])) {
+            if (!isset(static::$cardTypes[$type])) {
                 return true;
             }
 
             // validate each card definition
-            foreach ($cardTypes[$type] as $def) {
+            foreach (static::$cardTypes[$type] as $def) {
                 if (is_string($def) && preg_match($def, $number)) {
                     return true;
                 } elseif (is_array($def)) {
