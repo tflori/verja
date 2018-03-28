@@ -12,6 +12,7 @@ use Verja\Exception\FilterNotFound;
  *
  * @method static Filter\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
  * @method static Filter\Callback callback($filter)
+ * @method static Filter\ConvertCase convertCase($mode)
  * @method static Filter\Escape escape(bool $doubleEncode, bool $specialChars)
  * @method static Filter\Integer integer()
  * @method static Filter\Numeric numeric(string $decimalPoint = '.')
@@ -33,6 +34,7 @@ abstract class Filter implements FilterInterface
      *
      * @param string|callable|FilterInterface $filter
      * @return Filter\Callback|FilterInterface
+     * @throws FilterNotFound
      */
     public static function getFilter($filter)
     {
@@ -57,6 +59,7 @@ abstract class Filter implements FilterInterface
      *
      * @param string $definition
      * @return FilterInterface
+     * @throws FilterNotFound
      * @see Parser::parseClassNameWithParameters() to learn how to pass parameters
      */
     public static function fromString(string $definition): FilterInterface
@@ -70,6 +73,7 @@ abstract class Filter implements FilterInterface
      * @param string $name
      * @param array  $arguments
      * @return FilterInterface
+     * @throws FilterNotFound
      */
     public static function __callStatic($name, array $arguments)
     {

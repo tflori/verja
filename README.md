@@ -89,6 +89,8 @@ Planned:
 The following filters are included in this library:
 
 - `Boolean`: Converts integer and string values to boolean
+- `ConvertCase`: Converts case to `$mode` (upper, lower or title)
+- `DateTime`: Converts string from `$format` in `DateTime` object
 - `Escape`: Escape special characters for usage in html
 - `Integer`: Converts string values to integer
 - `Numeric`: Converts string values to float or integer
@@ -97,6 +99,4 @@ The following filters are included in this library:
 
 Planned:
 
-- `ConvertCase`: Converts case to `$mode` (upper, lower or title)
-- `DateTime`: Converts string from `$format` in `DateTime` object
 - `PregReplace`: Replaces `$pattern` with `$replace` (replace can also be a callback)
