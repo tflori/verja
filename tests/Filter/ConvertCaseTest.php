@@ -2,6 +2,7 @@
 
 namespace Verja\Test\Filter;
 
+use Carbon\Carbon;
 use Verja\Filter\ConvertCase;
 use Verja\Test\TestCase;
 
@@ -19,6 +20,16 @@ class ConvertCaseTest extends TestCase
         $result = $filter->filter($value);
 
         self::assertSame($expected, $result);
+    }
+
+    /** @test */
+    public function doesNotChangeNonStringValue()
+    {
+        $filter = new ConvertCase('lower');
+
+        $result = $filter->filter(Carbon::now());
+
+        self::assertInstanceOf(Carbon::class, $result);
     }
 
     public function provideCaseConverts()

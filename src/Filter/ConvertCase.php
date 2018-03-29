@@ -42,6 +42,10 @@ class ConvertCase extends Filter
      */
     public function filter($value, array $context = [])
     {
+        if (!is_string($value)) {
+            return $value;
+        }
+
         return mb_convert_case($value, $this->mode);
     }
 }
