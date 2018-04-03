@@ -77,10 +77,10 @@ In this library the following validators are included:
 - `PregMatch`: Value must match regular expression `$pattern`
 - `StrLen`: String length from value must be between `$min` and `$max`
 - `Truthful`: Converted to boolean the value must be true
+- `Url`: Value must be a valid URL
 
 Planned:
 
-- `Url`: Value must be a valid URL
 - `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
 
