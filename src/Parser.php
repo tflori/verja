@@ -64,6 +64,19 @@ class Parser
             ) {
                 return substr($parameter, 1, -1);
             }
+
+            if ($parameter === 'false') {
+                return false;
+            }
+
+            if ($parameter === 'true') {
+                return true;
+            }
+
+            if ($parameter === 'null') {
+                return null;
+            }
+
             return $parameter;
         }, $parameters);
     }
