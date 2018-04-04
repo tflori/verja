@@ -94,9 +94,6 @@ The following filters are included in this library:
 - `Escape`: Escape special characters for usage in html
 - `Integer`: Converts string values to integer
 - `Numeric`: Converts string values to float or integer
+- `PregReplace`: Replaces `$pattern` with `$replace` (replace can also be a callback)
 - `Replace`: Replaces `$search` in values with `$replace`
 - `Trim`: Trims `$charcterMask` from values
-
-Planned:
-
-- `PregReplace`: Replaces `$pattern` with `$replace` (replace can also be a callback)

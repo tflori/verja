@@ -16,6 +16,7 @@ use Verja\Exception\FilterNotFound;
  * @method static Filter\Escape escape(bool $doubleEncode, bool $specialChars)
  * @method static Filter\Integer integer()
  * @method static Filter\Numeric numeric(string $decimalPoint = '.')
+ * @method static Filter\PregReplace pregReplace($pattern, $replace)
  * @method static Filter\Replace replace($search, $replace)
  * @method static Filter\Trim trim(string $characterMask = " \t\n\r\0\x0B")
  */
