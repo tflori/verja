@@ -11,7 +11,7 @@ class AlphaNumericTest extends TestCase
     /** @dataProvider provideAlphanumericStrings
      * @param $value
      * @test */
-    public function acceptsStringsWithAlphabeticalCharacters($value)
+    public function acceptsStringsWithAlphanumericCharacters($value)
     {
         $validator = new AlphaNumeric();
 

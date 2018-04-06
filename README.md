@@ -76,13 +76,10 @@ In this library the following validators are included:
 - `NotEmpty`: Value must not be empty
 - `Numeric`: Value must be numeric
 - `PregMatch`: Value must match regular expression `$pattern`
+- `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
 - `StrLen`: String length from value must be between `$min` and `$max`
 - `Truthful`: Converted to boolean the value must be true
 - `Url`: Value must be a valid URL
-
-Planned:
-
-- `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
 
 # Predefined Filters
 

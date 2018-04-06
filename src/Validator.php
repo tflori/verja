@@ -31,6 +31,7 @@ use Verja\Validator\Not;
  * @method static Validator\NotEmpty notEmpty()
  * @method static Validator\Numeric numeric(string $decimalPoint = '.')
  * @method static Validator\PregMatch pregMatch(string $pattern)
+ * @method static Validator\Slug slug()
  * @method static Validator\StrLen strLen(int $min, int $max = 0)
  * @method static Validator\Truthful truthful()
  * @method static Validator\Url url(string $coverage = 'complete', $schemes = ['https', 'http', 'ftp'])

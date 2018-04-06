@@ -29,7 +29,7 @@ class Alpha extends Validator
     public function validate($value, array $context = []): bool
     {
         $regex = '/^[\pL\pM' . ($this->allowSpaces ? ' ' : '') . ']*$/u';
-        if (preg_match_all($regex, $value)) {
+        if (preg_match($regex, $value)) {
             return true;
         }
 

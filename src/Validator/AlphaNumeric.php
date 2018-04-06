@@ -29,7 +29,7 @@ class AlphaNumeric extends Validator
     public function validate($value, array $context = []): bool
     {
         $regex = '/^[\pL\pM\pN' . ($this->allowSpaces ? ' ' : '') . ']*$/u';
-        if (preg_match_all($regex, $value)) {
+        if (preg_match($regex, $value)) {
             return true;
         }
 
