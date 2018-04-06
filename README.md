@@ -60,6 +60,7 @@ In this library the following validators are included:
 
 - `After`: Value must be a date time after `$dateTime`
 - `Alpha`: Value must contain only alphabetical characters
+- `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Before`: Value must be a date time before `$dateTime`
 - `Boolean`: Value must be boolean
 - `Between`: Value must be between `$min` and `$max`
@@ -81,7 +82,6 @@ In this library the following validators are included:
 
 Planned:
 
-- `AlphaNumeric`: Value must contain only alphabetic and numeric characters
 - `Slug`: Value must contain only slug characters (a-z, 0-9, -, _)
 
 # Predefined Filters

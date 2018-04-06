@@ -13,6 +13,7 @@ use Verja\Validator\Not;
  *
  * @method static Validator\After after($dateTime)
  * @method static Validator\Alpha alpha(bool $allowSpaces = false)
+ * @method static Validator\AlphaNumeric alphaNumeric(bool $allowSpaces = false)
  * @method static Validator\Before before($dateTime)
  * @method static Validator\Boolean boolean(array $stringTrue = [], array $stringFalse = [], $overwrite = false)
  * @method static Validator\Between between($min = null, $max = null)

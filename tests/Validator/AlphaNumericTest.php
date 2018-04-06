@@ -4,28 +4,28 @@ namespace Verja\Test\Validator;
 
 use Verja\Error;
 use Verja\Test\TestCase;
-use Verja\Validator\Alpha;
+use Verja\Validator\AlphaNumeric;
 
-class AlphaTest extends TestCase
+class AlphaNumericTest extends TestCase
 {
-    /** @dataProvider provideAlphabeticalStrings
+    /** @dataProvider provideAlphanumericStrings
      * @param $value
      * @test */
     public function acceptsStringsWithAlphabeticalCharacters($value)
     {
-        $validator = new Alpha();
+        $validator = new AlphaNumeric();
 
         $result = $validator->validate($value);
 
         self::assertTrue($result);
     }
 
-    /** @dataProvider provideNonAlphabeticalStrings
+    /** @dataProvider provideNonAlphanumericStrings
      * @param $value
      * @test */
     public function doesNotAcceptOtherCharacters($value)
     {
-        $validator = new Alpha();
+        $validator = new AlphaNumeric();
 
         $result = $validator->validate($value);
 
@@ -35,12 +35,16 @@ class AlphaTest extends TestCase
     /** @test */
     public function storesAnErrorMessage()
     {
-        $validator = new Alpha();
+        $validator = new AlphaNumeric();
 
-        $validator->validate('42');
+        $validator->validate('60%');
 
         self::assertEquals(
-            new Error('CONTAINS_NON_ALPHA', '42', 'value should not contain non alphabetical characters'),
+            new Error(
+                'CONTAINS_NON_ALPHANUMERIC',
+                '60%',
+                'value should not contain non alphanumeric characters'
+            ),
             $validator->getError()
         );
     }
@@ -48,16 +52,18 @@ class AlphaTest extends TestCase
     /** @test */
     public function allowsSpaces()
     {
-        $validator = new Alpha('1'); // works also with 'alpha:t'
+        $validator = new AlphaNumeric(true);
 
-        $result = $validator->validate('string with spaces');
+        $result = $validator->validate('1 string with 4 spaces');
 
         self::assertTrue($result);
     }
 
-    public function provideAlphabeticalStrings()
+    public function provideAlphanumericStrings()
     {
         return [
+            ['42'],
+            ['۴۲'], // Arabic 42
             ['foobar'],
             ['Müller'],
             ['Karīna'],
@@ -67,11 +73,9 @@ class AlphaTest extends TestCase
         ];
     }
 
-    public function provideNonAlphabeticalStrings()
+    public function provideNonAlphanumericStrings()
     {
         return [
-            ['42'],
-            ['۴۲'], // Arabic 42
             ['_special-chars_'],
             ['a`'],
             ['string with space'],
