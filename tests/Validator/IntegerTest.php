@@ -26,6 +26,14 @@ class IntegerTest extends TestCase
         self::assertTrue($validator->validate($string));
     }
 
+    /** @test */
+    public function doesNotAllowNonNumericStrings()
+    {
+        $validator = new Integer();
+
+        self::assertFalse($validator->validate('foo'));
+    }
+
     public function provideValidStrings()
     {
         return [

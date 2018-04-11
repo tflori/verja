@@ -17,7 +17,8 @@ class Integer extends Validator
     public function validate($value, array $context = []): bool
     {
         if (is_int($value) ||
-            (is_string($value) || is_double($value)) && (double)$value === round((double)$value)
+            (is_string($value) && is_numeric($value) || is_double($value)) &&
+            (double)$value === round((double)$value)
         ) {
             return true;
         }
