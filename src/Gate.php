@@ -210,7 +210,7 @@ class Gate
 
         $result  = [];
         foreach ($fields as $k => $field) {
-            $filtered = $field->filter($this->rawData[$k] ?? null);
+            $filtered = $field->filter($this->rawData[$k] ?? null, $this->rawData);
 
             if ($validate && !$field->validate($this->rawData[$k] ?? null, $this->rawData)) {
                 if ($field->isRequired()) {
