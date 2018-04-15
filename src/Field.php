@@ -270,7 +270,7 @@ class Field
             } catch (InvalidValue $e) {
                 $this->filterFailed = true;
                 $this->errors = $e->errors;
-                return $value;
+                break;
             }
         }
 
@@ -291,12 +291,14 @@ class Field
      */
     public function validate($value, array $context = [])
     {
+        $filtered = $this->filter($value, $context);
+
         if ($this->filterFailed) {
             return false;
         }
 
         try {
-            $hash = md5(serialize([$value, $context]));
+            $hash = md5(serialize([$filtered, $context]));
             if (isset($this->validationCache[$hash])) {
                 return $this->validationCache[$hash];
             }
@@ -308,7 +310,7 @@ class Field
         $valid = true;
         $this->errors = [];
         foreach ($this->validators as $validator) {
-            if (!$validator->validate($value, $context)) {
+            if (!$validator->validate($filtered, $context)) {
                 $valid = false;
                 if ($error = $validator->getError()) {
                     $this->errors[] = $error;

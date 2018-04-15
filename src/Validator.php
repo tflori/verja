@@ -57,7 +57,7 @@ abstract class Validator implements ValidatorInterface
     {
         if (is_string($validator)) {
             $validator = static::fromString($validator);
-        } elseif (is_callable($validator)) {
+        } elseif (is_callable($validator) && !$validator instanceof ValidatorInterface) {
             $validator = new Validator\Callback($validator);
         }
 
@@ -99,6 +99,18 @@ abstract class Validator implements ValidatorInterface
     public static function __callStatic($name, array $arguments)
     {
         return static::create(ucfirst($name), $arguments);
+    }
+
+    /**
+     * Call the validator is an alias for validate
+     *
+     * @param mixed $value
+     * @param array $context
+     * @return bool
+     */
+    public function __invoke($value, array $context = []): bool
+    {
+        return $this->validate($value, $context);
     }
 
     /**

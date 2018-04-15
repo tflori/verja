@@ -41,7 +41,7 @@ abstract class Filter implements FilterInterface
     {
         if (is_string($filter)) {
             $filter = Filter::fromString($filter);
-        } elseif (is_callable($filter)) {
+        } elseif (is_callable($filter) && !$filter instanceof FilterInterface) {
             $filter = new Filter\Callback($filter);
         }
 
@@ -80,6 +80,19 @@ abstract class Filter implements FilterInterface
     {
         return static::create(ucfirst($name), $arguments);
     }
+
+    /**
+     * Call the filter is an alias for filter
+     *
+     * @param mixed $value
+     * @param array $context
+     * @return mixed
+     */
+    public function __invoke($value, array $context = [])
+    {
+        return $this->filter($value, $context);
+    }
+
 
     /**
      * Create a filter dynamically

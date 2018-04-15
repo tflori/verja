@@ -59,21 +59,6 @@ class ValidateTest extends TestCase
     }
 
     /** @test */
-    public function usesFilteredValueForValidation()
-    {
-        $field = \Mockery::mock(Field::class)->makePartial();
-        $field->shouldReceive('filter')->with('value', [ 'f' => 'value' ])->once()->andReturn(42);
-        $field->shouldReceive('validate')->with(42, [ 'f' => 'value' ])->once()->andReturn(true);
-
-        $gate = new Gate([ 'f' => 'value' ]);
-        $gate->addField('f', $field);
-
-        $result = $gate->validate();
-
-        self::assertTrue($result);
-    }
-
-    /** @test */
     public function validatesGivenArray()
     {
         $field = \Mockery::mock(Field::class)->makePartial();

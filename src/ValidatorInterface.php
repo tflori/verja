@@ -14,6 +14,15 @@ interface ValidatorInterface
     public function validate($value, array $context = []): bool;
 
     /**
+     * Call the validator is an alias for validate
+     *
+     * @param mixed $value
+     * @param array $context
+     * @return bool
+     */
+    public function __invoke($value, array $context = []): bool;
+
+    /**
      * Assign validator to $field
      *
      * @param Field $field

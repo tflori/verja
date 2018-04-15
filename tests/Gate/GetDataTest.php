@@ -40,7 +40,7 @@ class GetDataTest extends TestCase
         $gate->addField('username', $field);
 
         $field->shouldReceive('filter')->with('john', ['username' => 'john', 'password' => 'abc123'])
-            ->once()->andReturn('john');
+            ->atLeast()->once()->andReturn('john');
 
         $gate->getData();
     }
@@ -50,10 +50,10 @@ class GetDataTest extends TestCase
     {
         $gate = new Gate([ 'username' => 'john@example', 'password' => 'abc123' ]);
         $field = \Mockery::mock(Field::class)->makePartial();
-        $field->shouldReceive('filter')->andReturn('john');
         $gate->addField('username', $field);
 
-        $field->shouldReceive('validate')->with('john', ['username' => 'john@example', 'password' => 'abc123'])
+        $field->shouldReceive('validate')
+            ->with('john@example', ['username' => 'john@example', 'password' => 'abc123'])
             ->once()->andReturn(true);
 
         $gate->getData();
