@@ -40,7 +40,7 @@ class GetDataTest extends TestCase
         $gate->addField('username', $field);
 
         $field->shouldReceive('filter')->with('john', ['username' => 'john', 'password' => 'abc123'])
-            ->once()->andReturn('john');
+            ->atLeast()->once()->andReturn('john');
 
         $gate->getData();
     }
