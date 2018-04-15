@@ -218,11 +218,7 @@ class Gate
                     if (count($errors) > 0) {
                         throw new InvalidValue(sprintf('Invalid %s: %s', $k, $errors[0]->message), ...$errors);
                     }
-                    throw new InvalidValue(sprintf(
-                        'The value %s is not valid for %s',
-                        json_encode($this->rawData[$k] ?? null),
-                        $k
-                    ));
+                    throw new InvalidValue(sprintf('The value %s is not valid for %s', json_encode($filtered), $k));
                 } else {
                     $filtered = null;
                 }
