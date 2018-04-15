@@ -156,4 +156,21 @@ class ValidatorTest extends TestCase
         $field->addValidator('notEmpty');
         $field->validate(' body ');
     }
+
+    /** @test */
+    public function executesFilterBeforeValidation()
+    {
+        $field = \Mockery::mock(Field::class)->makePartial();
+        $validator = \Mockery::mock(NotEmpty::class)->makePartial();
+        $field->addValidator($validator);
+
+        $field->shouldReceive('filter')
+            ->with('value', [])
+            ->once()->andReturn(42);
+        $validator->shouldReceive('validate')
+            ->with(42, [])
+            ->once()->andReturn(true);
+
+        $field->validate('value');
+    }
 }

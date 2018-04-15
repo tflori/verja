@@ -210,15 +210,19 @@ class Gate
 
         $result  = [];
         foreach ($fields as $k => $field) {
-            $filtered = $field->filter(isset($this->rawData[$k]) ? $this->rawData[$k] : null, $this->rawData);
+            $filtered = $field->filter($this->rawData[$k] ?? null);
 
-            if ($validate && !$field->validate($filtered, $this->rawData)) {
+            if ($validate && !$field->validate($this->rawData[$k] ?? null, $this->rawData)) {
                 if ($field->isRequired()) {
                     $errors = $field->getErrors();
                     if (count($errors) > 0) {
                         throw new InvalidValue(sprintf('Invalid %s: %s', $k, $errors[0]->message), ...$errors);
                     }
-                    throw new InvalidValue(sprintf('The value %s is not valid for %s', json_encode($filtered), $k));
+                    throw new InvalidValue(sprintf(
+                        'The value %s is not valid for %s',
+                        json_encode($this->rawData[$k] ?? null),
+                        $k
+                    ));
                 } else {
                     $filtered = null;
                 }
@@ -239,8 +243,9 @@ class Gate
      *
      * @param string $key
      * @return mixed
-     * @see Gate::getData()
+     * @see                Gate::getData()
      * @codeCoverageIgnore trivial
+     * @throws InvalidValue
      */
     public function get(string $key = null)
     {
@@ -252,14 +257,21 @@ class Gate
      *
      * @param string $key
      * @return mixed
-     * @see Gate::getData()
+     * @see                Gate::getData()
      * @codeCoverageIgnore trivial
+     * @throws InvalidValue
      */
     public function __get(string $key)
     {
         return $this->getData($key);
     }
 
+    /**
+     * Validate $data or previously stored data
+     *
+     * @param array $data
+     * @return bool
+     */
     public function validate(array $data = null)
     {
         if ($data) {
@@ -268,13 +280,12 @@ class Gate
 
         $valid = true;
         $this->errors = [];
-        $filtered = $this->getData(null, false);
         foreach ($this->fields as $key => $field) {
-            if (empty($filtered[$key]) && !$field->isRequired()) {
+            if (empty($this->rawData[$key]) && !$field->isRequired()) {
                 continue;
             }
 
-            if (!$field->validate($filtered[$key], $this->rawData)) {
+            if (!$field->validate($this->rawData[$key] ?? null, $this->rawData)) {
                 $valid = false;
                 $this->errors[$key] = $field->getErrors();
             }
