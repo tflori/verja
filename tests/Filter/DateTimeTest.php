@@ -9,7 +9,7 @@ use Verja\Test\TestCase;
 
 class DateTimeTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         date_default_timezone_set('Europe/Berlin');

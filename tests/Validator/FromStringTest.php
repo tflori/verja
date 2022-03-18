@@ -9,7 +9,7 @@ use Verja\Validator;
 
 class FromStringTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         Validator::resetNamespaces();

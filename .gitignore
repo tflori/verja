@@ -6,5 +6,8 @@ composer.phar
 # ide settings
 /.idea*
 
+# phpunit result
+/.phpunit.result.cache
+
 # rendered documentation
 /docs/_site
