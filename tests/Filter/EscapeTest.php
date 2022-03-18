@@ -39,7 +39,7 @@ class EscapeTest extends TestCase
 
         $filtered = $filter->filter(42);
 
-        self::assertInternalType('integer', $filtered);
+        self::assertIsInt($filtered);
     }
 
     /** @dataProvider provideStringsWithHtmlEntities

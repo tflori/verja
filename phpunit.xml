@@ -9,8 +9,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="true"
-         printerClass="\Verja\Test\Printer">
+         printerClass="PhpUnitPrinter\TextPrinter">
     <testsuite name="tests">
         <directory>./tests/</directory>
     </testsuite>

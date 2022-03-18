@@ -2,7 +2,6 @@
 
 namespace Verja\Test\Field;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Verja\Field;
 use Verja\Gate;
 use Verja\Test\Examples\NotSerializable;
@@ -13,8 +12,6 @@ use Verja\ValidatorInterface;
 
 class ValidatorTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     /** @dataProvider provideValidatorsValueExpected
      * @param ValidatorInterface[] $validators
      * @param mixed $value

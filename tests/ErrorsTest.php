@@ -43,9 +43,9 @@ class ErrorsTest extends TestCase
 
         $serialized = serialize($error);
 
-        self::assertContains('ERROR_KEY', $serialized);
-        self::assertContains('validated value', $serialized);
-        self::assertContains('Error message from validator', $serialized);
+        self::assertStringContainsString('ERROR_KEY', $serialized);
+        self::assertStringContainsString('validated value', $serialized);
+        self::assertStringContainsString('Error message from validator', $serialized);
     }
 
     /** @test */

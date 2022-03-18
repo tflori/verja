@@ -14,7 +14,7 @@ class UrlTest extends TestCase
     /** @var Helper|Mock */
     protected $helperMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -208,11 +208,10 @@ class UrlTest extends TestCase
     public function provideInvalidUrls()
     {
         return [
-            [':'],
-            ['//'],
-            ['//example.com:65536'], // port out of range
-            ['//example.com:0'], // port out of range
-            ['//:'],
+            'only-colon' => [':'],
+            'only-slashes' => ['//'],
+            'port>65k' => ['//example.com:65536'], // port out of range
+            'no-port-and-host' => ['//:'],
         ];
     }
 
