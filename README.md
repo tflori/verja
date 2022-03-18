@@ -1,7 +1,8 @@
 # tflori/verja
 
-[![Build Status](https://travis-ci.org/tflori/verja.svg?branch=master)](https://travis-ci.org/tflori/verja)
-[![Coverage Status](https://coveralls.io/repos/github/tflori/verja/badge.svg?branch=master)](https://coveralls.io/github/tflori/verja?branch=master)
+[![.github/workflows/push.yml](https://github.com/tflori/verja/actions/workflows/push.yml/badge.svg)](https://github.com/tflori/verja/actions/workflows/push.yml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e07f4d5da0789699e27c/test_coverage)](https://codeclimate.com/github/tflori/verja/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e07f4d5da0789699e27c/maintainability)](https://codeclimate.com/github/tflori/verja/maintainability)
 [![Latest Stable Version](https://poser.pugx.org/tflori/verja/v/stable.svg)](https://packagist.org/packages/tflori/verja) 
 [![Total Downloads](https://poser.pugx.org/tflori/verja/downloads.svg)](https://packagist.org/packages/tflori/verja) 
 [![License](https://poser.pugx.org/tflori/verja/license.svg)](https://packagist.org/packages/tflori/verja)
